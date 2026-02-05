@@ -1,0 +1,125 @@
+import { NextRequest, NextResponse } from "next/server";
+import { auth } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
+
+// GET - List all users
+export async function GET(request: NextRequest) {
+  try {
+    const session = await auth();
+
+    if (!session?.user || !["ADMIN", "RAM"].includes(session.user.role)) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const searchParams = request.nextUrl.searchParams;
+    const platoon = searchParams.get("platoon");
+    const role = searchParams.get("role");
+    const search = searchParams.get("search");
+
+    const where: Record<string, unknown> = {};
+
+    // RAMs can only see their platoon's users
+    if (session.user.role === "RAM" && session.user.platoon) {
+      where.platoon = session.user.platoon;
+    } else if (platoon) {
+      where.platoon = platoon;
+    }
+
+    if (role) {
+      where.role = role;
+    }
+
+    if (search) {
+      where.OR = [
+        { name: { contains: search, mode: "insensitive" } },
+        { email: { contains: search, mode: "insensitive" } },
+      ];
+    }
+
+    const users = await prisma.user.findMany({
+      where,
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        image: true,
+        role: true,
+        platoon: true,
+        points: true,
+        streak: true,
+        lastLoginDate: true,
+        createdAt: true,
+        _count: {
+          select: { learningSessions: true },
+        },
+      },
+      orderBy: { createdAt: "desc" },
+    });
+
+    // Get distinct platoons
+    const platoons = await prisma.user.findMany({
+      where: { platoon: { not: null } },
+      select: { platoon: true },
+      distinct: ["platoon"],
+    });
+
+    return NextResponse.json({
+      users,
+      platoons: platoons.map((p) => p.platoon).filter(Boolean),
+    });
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch users" },
+      { status: 500 }
+    );
+  }
+}
+
+// PATCH - Update user
+export async function PATCH(request: NextRequest) {
+  try {
+    const session = await auth();
+
+    if (!session?.user || session.user.role !== "ADMIN") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const body = await request.json();
+    const { userId, role, platoon } = body;
+
+    if (!userId) {
+      return NextResponse.json({ error: "Missing user ID" }, { status: 400 });
+    }
+
+    const updateData: Record<string, unknown> = {};
+
+    if (role && ["USER", "RAM", "ADMIN"].includes(role)) {
+      updateData.role = role;
+    }
+
+    if (platoon !== undefined) {
+      updateData.platoon = platoon || null;
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: updateData,
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        platoon: true,
+      },
+    });
+
+    return NextResponse.json({ user: updatedUser });
+  } catch (error) {
+    console.error("Error updating user:", error);
+    return NextResponse.json(
+      { error: "Failed to update user" },
+      { status: 500 }
+    );
+  }
+}
