@@ -21,6 +21,7 @@ enum ContentType {
   RAMBAM
   CHASSIDUT
   MUSAR
+  THOUGHT
 }
 
 enum RedemptionStatus {

@@ -11,20 +11,33 @@ import {
   Trash2,
   ExternalLink,
   Play,
+  BookOpen,
+  Sparkles,
+  Heart,
+  FileText,
 } from "lucide-react";
 
 interface Content {
   id: string;
   title: string;
   description: string | null;
+  content: string | null;
   type: string;
-  url: string;
+  videoUrl: string | null;
   platoon: string | null;
   createdAt: string;
   createdBy: {
     name: string | null;
   };
 }
+
+const CONTENT_TYPES = [
+  { value: "VIDEO", label: "סרטון חיזוק", icon: Video, color: "from-violet-400 to-violet-600" },
+  { value: "CHASSIDUT", label: "חסידות יומית", icon: Sparkles, color: "from-amber-400 to-amber-600" },
+  { value: "MUSAR", label: "מוסר יומי", icon: Heart, color: "from-rose-400 to-rose-600" },
+  { value: "THOUGHT", label: "מחשבה יומית", icon: BookOpen, color: "from-sky-400 to-sky-600" },
+  { value: "ARTICLE", label: "מאמר", icon: FileText, color: "from-emerald-400 to-emerald-600" },
+];
 
 export default function ContentPage() {
   const { data: session, status } = useSession();
@@ -36,8 +49,9 @@ export default function ContentPage() {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
+    content: "",
     type: "VIDEO",
-    url: "",
+    videoUrl: "",
     platoon: "",
   });
 
@@ -94,8 +108,9 @@ export default function ContentPage() {
         setFormData({
           title: "",
           description: "",
+          content: "",
           type: "VIDEO",
-          url: "",
+          videoUrl: "",
           platoon: "",
         });
       }
@@ -125,23 +140,29 @@ export default function ContentPage() {
     setFormData({
       title: content.title,
       description: content.description || "",
+      content: content.content || "",
       type: content.type,
-      url: content.url,
+      videoUrl: content.videoUrl || "",
       platoon: content.platoon || "",
     });
     setShowModal(true);
   };
 
-  const openNewModal = () => {
+  const openNewModal = (contentType?: string) => {
     setEditingContent(null);
     setFormData({
       title: "",
       description: "",
-      type: "VIDEO",
-      url: "",
+      content: "",
+      type: contentType || "VIDEO",
+      videoUrl: "",
       platoon: isRam && !isAdmin ? session?.user?.platoon || "" : "",
     });
     setShowModal(true);
+  };
+
+  const getContentTypeInfo = (type: string) => {
+    return CONTENT_TYPES.find(t => t.value === type) || CONTENT_TYPES[0];
   };
 
   return (
@@ -194,70 +215,76 @@ export default function ContentPage() {
           </div>
         ) : (
           <div className="divide-y divide-cream-dark/30">
-            {contents.map((content) => (
-              <div key={content.id} className="p-4 hover:bg-cream/30 transition-colors">
-                <div className="flex items-start gap-3">
-                  {/* Icon */}
-                  <div className="w-12 h-12 bg-gradient-to-br from-violet-400 to-violet-600 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <Play className="w-6 h-6 text-white" />
-                  </div>
+            {contents.map((content) => {
+              const typeInfo = getContentTypeInfo(content.type);
+              const Icon = typeInfo.icon;
+              return (
+                <div key={content.id} className="p-4 hover:bg-cream/30 transition-colors">
+                  <div className="flex items-start gap-3">
+                    {/* Icon */}
+                    <div className={`w-12 h-12 bg-gradient-to-br ${typeInfo.color} rounded-xl flex items-center justify-center flex-shrink-0`}>
+                      <Icon className="w-6 h-6 text-white" />
+                    </div>
 
-                  {/* Content Info */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <p className="font-bold text-brown-dark">{content.title}</p>
-                      <span className="px-2 py-0.5 bg-violet-100 text-violet-700 rounded-full text-xs">
-                        {content.type === "VIDEO" ? "סרטון" : "תוכן"}
-                      </span>
-                      {content.platoon && (
-                        <span className="px-2 py-0.5 bg-sky-100 text-sky-700 rounded-full text-xs">
-                          {content.platoon}
+                    {/* Content Info */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <p className="font-bold text-brown-dark">{content.title}</p>
+                        <span className="px-2 py-0.5 bg-violet-100 text-violet-700 rounded-full text-xs">
+                          {typeInfo.label}
                         </span>
+                        {content.platoon && (
+                          <span className="px-2 py-0.5 bg-sky-100 text-sky-700 rounded-full text-xs">
+                            {content.platoon}
+                          </span>
+                        )}
+                      </div>
+
+                      {content.description && (
+                        <p className="text-brown-light text-sm mt-1 line-clamp-2">
+                          {content.description}
+                        </p>
                       )}
+
+                      <div className="flex items-center gap-3 mt-2 text-xs text-brown-light">
+                        <span>
+                          נוצר ע״י: {content.createdBy?.name || "לא ידוע"}
+                        </span>
+                        <span>
+                          {new Date(content.createdAt).toLocaleDateString("he-IL")}
+                        </span>
+                      </div>
                     </div>
 
-                    {content.description && (
-                      <p className="text-brown-light text-sm mt-1 line-clamp-2">
-                        {content.description}
-                      </p>
-                    )}
-
-                    <div className="flex items-center gap-3 mt-2 text-xs text-brown-light">
-                      <span>
-                        נוצר ע״י: {content.createdBy?.name || "לא ידוע"}
-                      </span>
-                      <span>
-                        {new Date(content.createdAt).toLocaleDateString("he-IL")}
-                      </span>
+                    {/* Actions */}
+                    <div className="flex items-center gap-1">
+                      {content.videoUrl && (
+                        <a
+                          href={content.videoUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-2 text-brown-light hover:text-sky-dark hover:bg-sky-light/50 rounded-lg transition-colors"
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                        </a>
+                      )}
+                      <button
+                        onClick={() => openEditModal(content)}
+                        className="p-2 text-brown-light hover:text-brown-dark hover:bg-cream rounded-lg transition-colors"
+                      >
+                        <Edit2 className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(content.id)}
+                        className="p-2 text-brown-light hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
                     </div>
-                  </div>
-
-                  {/* Actions */}
-                  <div className="flex items-center gap-1">
-                    <a
-                      href={content.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-2 text-brown-light hover:text-sky-dark hover:bg-sky-light/50 rounded-lg transition-colors"
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                    </a>
-                    <button
-                      onClick={() => openEditModal(content)}
-                      className="p-2 text-brown-light hover:text-brown-dark hover:bg-cream rounded-lg transition-colors"
-                    >
-                      <Edit2 className="w-4 h-4" />
-                    </button>
-                    <button
-                      onClick={() => handleDelete(content.id)}
-                      className="p-2 text-brown-light hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
@@ -313,28 +340,50 @@ export default function ContentPage() {
                   }
                   className="w-full px-4 py-3 bg-cream/50 border border-cream-dark rounded-xl"
                 >
-                  <option value="VIDEO">סרטון</option>
-                  <option value="AUDIO">שמע</option>
-                  <option value="ARTICLE">מאמר</option>
+                  {CONTENT_TYPES.map((type) => (
+                    <option key={type.value} value={type.value}>
+                      {type.label}
+                    </option>
+                  ))}
                 </select>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-brown-medium mb-1">
-                  קישור
-                </label>
-                <input
-                  type="url"
-                  value={formData.url}
-                  onChange={(e) =>
-                    setFormData({ ...formData, url: e.target.value })
-                  }
-                  required
-                  placeholder="https://..."
-                  dir="ltr"
-                  className="w-full px-4 py-3 bg-cream/50 border border-cream-dark rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-medium"
-                />
-              </div>
+              {/* Video URL field - only for VIDEO type */}
+              {formData.type === "VIDEO" && (
+                <div>
+                  <label className="block text-sm font-medium text-brown-medium mb-1">
+                    קישור לסרטון
+                  </label>
+                  <input
+                    type="url"
+                    value={formData.videoUrl}
+                    onChange={(e) =>
+                      setFormData({ ...formData, videoUrl: e.target.value })
+                    }
+                    placeholder="https://youtube.com/..."
+                    dir="ltr"
+                    className="w-full px-4 py-3 bg-cream/50 border border-cream-dark rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-medium"
+                  />
+                </div>
+              )}
+
+              {/* Content textarea - for text-based content types */}
+              {(formData.type === "CHASSIDUT" || formData.type === "MUSAR" || formData.type === "THOUGHT" || formData.type === "ARTICLE") && (
+                <div>
+                  <label className="block text-sm font-medium text-brown-medium mb-1">
+                    תוכן
+                  </label>
+                  <textarea
+                    value={formData.content}
+                    onChange={(e) =>
+                      setFormData({ ...formData, content: e.target.value })
+                    }
+                    placeholder="הכנס את התוכן כאן..."
+                    rows={6}
+                    className="w-full px-4 py-3 bg-cream/50 border border-cream-dark rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-medium resize-none"
+                  />
+                </div>
+              )}
 
               {isAdmin && (
                 <div>

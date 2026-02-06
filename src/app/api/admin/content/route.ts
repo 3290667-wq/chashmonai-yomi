@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
       },
     });
 
-    return NextResponse.json({ content });
+    return NextResponse.json({ contents: content });
   } catch (error) {
     console.error("Error fetching content:", error);
     return NextResponse.json(
@@ -75,6 +75,46 @@ export async function POST(request: NextRequest) {
     console.error("Error creating content:", error);
     return NextResponse.json(
       { error: "Failed to create content" },
+      { status: 500 }
+    );
+  }
+}
+
+// PATCH - Update content
+export async function PATCH(request: NextRequest) {
+  try {
+    const session = await auth();
+
+    if (!session?.user || !["ADMIN", "RAM"].includes(session.user.role)) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const body = await request.json();
+    const { id, type, title, description, content: contentText, videoUrl, platoon } = body;
+
+    if (!id || !title) {
+      return NextResponse.json(
+        { error: "Missing required fields" },
+        { status: 400 }
+      );
+    }
+
+    const updatedContent = await prisma.content.update({
+      where: { id },
+      data: {
+        type,
+        title,
+        description,
+        content: contentText,
+        videoUrl,
+      },
+    });
+
+    return NextResponse.json({ content: updatedContent });
+  } catch (error) {
+    console.error("Error updating content:", error);
+    return NextResponse.json(
+      { error: "Failed to update content" },
       { status: 500 }
     );
   }
