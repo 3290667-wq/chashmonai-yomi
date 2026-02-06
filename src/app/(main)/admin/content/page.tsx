@@ -182,7 +182,7 @@ export default function ContentPage() {
         </div>
 
         <button
-          onClick={openNewModal}
+          onClick={() => openNewModal()}
           className="flex items-center gap-2 px-4 py-2 bg-brown-medium text-cream rounded-xl font-medium hover:bg-brown-dark transition-colors"
         >
           <Plus className="w-5 h-5" />
@@ -207,7 +207,7 @@ export default function ContentPage() {
             <Video className="w-16 h-16 text-cream-dark mx-auto mb-3" />
             <p className="text-brown-light mb-4">עדיין לא הועלו תכנים</p>
             <button
-              onClick={openNewModal}
+              onClick={() => openNewModal()}
               className="px-4 py-2 bg-sky-light text-sky-dark rounded-xl font-medium hover:bg-sky-medium/30 transition-colors"
             >
               העלה תוכן ראשון
