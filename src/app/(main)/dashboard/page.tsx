@@ -1,6 +1,6 @@
 import { auth } from "@/lib/auth";
 import Link from "next/link";
-import Card, { CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
+import Image from "next/image";
 import {
   BookOpen,
   Clock,
@@ -8,6 +8,8 @@ import {
   TrendingUp,
   Play,
   ChevronLeft,
+  Flame,
+  Star,
 } from "lucide-react";
 
 export default async function DashboardPage() {
@@ -18,147 +20,171 @@ export default async function DashboardPage() {
     {
       href: "/daily",
       title: "לימוד יומי",
-      description: "משנה יומית, רמב״ם ועוד",
+      description: "משנה יומית ורמב״ם",
       icon: BookOpen,
-      color: "bg-blue-500",
+      gradient: "from-sky-medium to-sky-dark",
     },
     {
       href: "/zmanim",
       title: "זמני היום",
-      description: "עלות השחר, נץ, שקיעה",
+      description: "תפילות וזמנים",
       icon: Clock,
-      color: "bg-orange-500",
+      gradient: "from-amber-400 to-amber-600",
     },
     {
       href: "/content",
       title: "חיזוק יומי",
-      description: "סרטון מחזק להיום",
+      description: "סרטון מחזק",
       icon: Play,
-      color: "bg-green-500",
+      gradient: "from-emerald-400 to-emerald-600",
     },
     {
       href: "/points",
       title: "נקודות",
-      description: "ניהול וסליקת נקודות",
+      description: "צבירה ופדיון",
       icon: Award,
-      color: "bg-yellow-500",
+      gradient: "from-violet-400 to-violet-600",
     },
   ];
 
   return (
-    <div className="py-6 space-y-6">
-      {/* Welcome Section */}
-      <div className="bg-gradient-to-l from-primary to-primary-light rounded-2xl p-6 text-white">
-        <h1 className="text-2xl font-bold mb-2">
-          שלום, {user?.name?.split(" ")[0] || "חייל"}!
-        </h1>
-        <p className="text-white/80 mb-4">
-          ברוכים הבאים לחשמונאי יומי - המקום שלך ללמוד ולהתקדם
-        </p>
+    <div className="py-4 sm:py-6 space-y-6">
+      {/* Welcome Card */}
+      <div className="bg-gradient-to-l from-brown-dark to-brown-medium rounded-2xl p-5 sm:p-6 text-cream relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute left-0 top-0 w-32 h-32 opacity-10">
+          <Image
+            src="/רוח חשמונאית.png"
+            alt=""
+            fill
+            className="object-contain"
+          />
+        </div>
 
-        <div className="flex items-center gap-6">
-          <div className="flex items-center gap-2">
-            <Award className="text-secondary" size={24} />
-            <div>
-              <p className="text-2xl font-bold">{user?.points || 0}</p>
-              <p className="text-sm text-white/70">נקודות</p>
-            </div>
-          </div>
+        <div className="relative">
+          <p className="text-cream/70 text-sm mb-1">שלום וברכה,</p>
+          <h1 className="text-2xl sm:text-3xl font-bold mb-4">
+            {user?.name?.split(" ")[0] || "חייל יקר"}!
+          </h1>
 
-          <div className="flex items-center gap-2">
-            <TrendingUp className="text-accent" size={24} />
-            <div>
-              <p className="text-2xl font-bold">{user?.streak || 0}</p>
-              <p className="text-sm text-white/70">ימים רצופים</p>
+          <div className="flex flex-wrap items-center gap-4 sm:gap-6">
+            <div className="flex items-center gap-2 bg-white/10 rounded-xl px-4 py-2">
+              <Star className="w-5 h-5 text-amber-300" />
+              <div>
+                <p className="text-xl font-bold">{user?.points || 0}</p>
+                <p className="text-xs text-cream/70">נקודות</p>
+              </div>
             </div>
+
+            <div className="flex items-center gap-2 bg-white/10 rounded-xl px-4 py-2">
+              <Flame className="w-5 h-5 text-orange-400" />
+              <div>
+                <p className="text-xl font-bold">{user?.streak || 0}</p>
+                <p className="text-xs text-cream/70">ימים רצופים</p>
+              </div>
+            </div>
+
+            {user?.platoon && (
+              <div className="flex items-center gap-2 bg-white/10 rounded-xl px-4 py-2">
+                <TrendingUp className="w-5 h-5 text-sky-light" />
+                <div>
+                  <p className="text-sm font-bold">{user.platoon}</p>
+                  <p className="text-xs text-cream/70">פלוגה</p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Quick Links */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {/* Quick Links Grid */}
+      <div className="grid grid-cols-2 gap-3 sm:gap-4">
         {quickLinks.map((link) => {
           const Icon = link.icon;
           return (
             <Link key={link.href} href={link.href}>
-              <Card
-                variant="bordered"
-                className="h-full hover:border-primary transition-colors cursor-pointer"
-              >
-                <div
-                  className={`w-12 h-12 ${link.color} rounded-xl flex items-center justify-center mb-3`}
-                >
-                  <Icon className="text-white" size={24} />
+              <div className="bg-white rounded-2xl p-4 sm:p-5 border border-cream-dark/50 card-hover h-full">
+                <div className={`w-12 h-12 bg-gradient-to-br ${link.gradient} rounded-xl flex items-center justify-center mb-3 shadow-md`}>
+                  <Icon className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="font-bold text-foreground">{link.title}</h3>
-                <p className="text-sm text-muted mt-1">{link.description}</p>
-              </Card>
+                <h3 className="font-bold text-brown-dark">{link.title}</h3>
+                <p className="text-sm text-brown-light mt-0.5">{link.description}</p>
+              </div>
             </Link>
           );
         })}
       </div>
 
       {/* Daily Learning Preview */}
-      <Card variant="bordered">
-        <CardHeader className="flex flex-row items-center justify-between">
+      <div className="bg-white rounded-2xl border border-cream-dark/50 overflow-hidden">
+        <div className="flex items-center justify-between p-4 sm:p-5 border-b border-cream-dark/30">
           <div>
-            <CardTitle>לימוד יומי</CardTitle>
-            <CardDescription>הלימודים של היום</CardDescription>
+            <h2 className="font-bold text-brown-dark text-lg">לימוד היום</h2>
+            <p className="text-sm text-brown-light">הלימודים שמחכים לך</p>
           </div>
           <Link
             href="/daily"
-            className="flex items-center gap-1 text-primary hover:underline"
+            className="flex items-center gap-1 text-sky-dark hover:text-brown-dark transition-colors font-medium text-sm"
           >
             לכל הלימודים
-            <ChevronLeft size={16} />
+            <ChevronLeft className="w-4 h-4" />
           </Link>
-        </CardHeader>
+        </div>
 
-        <CardContent>
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="p-4 bg-background rounded-lg border border-card-border">
+        <div className="p-4 sm:p-5 grid sm:grid-cols-2 gap-3">
+          <Link href="/daily" className="block">
+            <div className="p-4 bg-cream/50 rounded-xl border border-cream-dark/30 hover:border-sky-medium transition-colors">
               <div className="flex items-center gap-2 mb-2">
-                <BookOpen size={18} className="text-primary" />
-                <span className="font-medium">משנה יומית</span>
+                <div className="w-8 h-8 bg-sky-light rounded-lg flex items-center justify-center">
+                  <BookOpen className="w-4 h-4 text-sky-dark" />
+                </div>
+                <span className="font-bold text-brown-dark">משנה יומית</span>
               </div>
-              <p className="text-muted text-sm">פרק היום מחכה לך</p>
+              <p className="text-brown-light text-sm">2 משניות - מסכת תמורה</p>
             </div>
+          </Link>
 
-            <div className="p-4 bg-background rounded-lg border border-card-border">
+          <Link href="/daily" className="block">
+            <div className="p-4 bg-cream/50 rounded-xl border border-cream-dark/30 hover:border-sky-medium transition-colors">
               <div className="flex items-center gap-2 mb-2">
-                <BookOpen size={18} className="text-primary" />
-                <span className="font-medium">רמב"ם יומי</span>
+                <div className="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center">
+                  <BookOpen className="w-4 h-4 text-amber-600" />
+                </div>
+                <span className="font-bold text-brown-dark">רמב״ם יומי</span>
               </div>
-              <p className="text-muted text-sm">הלכה יומית</p>
+              <p className="text-brown-light text-sm">הקדמה - מסירת תורה שבעל פה</p>
             </div>
-          </div>
-        </CardContent>
-      </Card>
+          </Link>
+        </div>
+      </div>
 
-      {/* Stats */}
-      <Card variant="bordered">
-        <CardHeader>
-          <CardTitle>הסטטיסטיקות שלי</CardTitle>
-          <CardDescription>סיכום הפעילות שלך</CardDescription>
-        </CardHeader>
+      {/* Stats Card */}
+      <div className="bg-white rounded-2xl border border-cream-dark/50 p-4 sm:p-5">
+        <h2 className="font-bold text-brown-dark text-lg mb-4">הסטטיסטיקות שלי</h2>
 
-        <CardContent>
-          <div className="grid grid-cols-3 gap-4 text-center">
-            <div className="p-4 bg-background rounded-lg">
-              <p className="text-2xl font-bold text-primary">0</p>
-              <p className="text-sm text-muted">דקות לימוד היום</p>
-            </div>
-            <div className="p-4 bg-background rounded-lg">
-              <p className="text-2xl font-bold text-primary">0</p>
-              <p className="text-sm text-muted">פרקים שהושלמו</p>
-            </div>
-            <div className="p-4 bg-background rounded-lg">
-              <p className="text-2xl font-bold text-primary">{user?.streak || 0}</p>
-              <p className="text-sm text-muted">ימים רצופים</p>
-            </div>
+        <div className="grid grid-cols-3 gap-3">
+          <div className="text-center p-3 bg-cream/50 rounded-xl">
+            <p className="text-2xl font-bold text-brown-dark">0</p>
+            <p className="text-xs text-brown-light mt-1">דקות היום</p>
           </div>
-        </CardContent>
-      </Card>
+          <div className="text-center p-3 bg-cream/50 rounded-xl">
+            <p className="text-2xl font-bold text-brown-dark">0</p>
+            <p className="text-xs text-brown-light mt-1">פרקים שהושלמו</p>
+          </div>
+          <div className="text-center p-3 bg-cream/50 rounded-xl">
+            <p className="text-2xl font-bold text-brown-dark">{user?.streak || 0}</p>
+            <p className="text-xs text-brown-light mt-1">ימים רצופים</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Motivation */}
+      <div className="bg-gradient-to-l from-sky-light to-sky-medium rounded-2xl p-5 text-center">
+        <p className="text-brown-dark font-medium text-lg">
+          &ldquo;לעלות ולהתעלות - למען שמו באהבה&rdquo;
+        </p>
+        <p className="text-brown-medium text-sm mt-2">רוח חשמונאית</p>
+      </div>
     </div>
   );
 }

@@ -91,7 +91,21 @@ export async function GET() {
       _count: true,
     });
 
+    // Count RAMs
+    const totalRams = await prisma.user.count({
+      where: { role: "RAM" },
+    });
+
+    // Count distinct platoons
+    const totalPlatoons = usersByPlatoon.filter(p => p.platoon).length;
+
     return NextResponse.json({
+      // Simple stats for admin dashboard
+      totalUsers,
+      activeToday: activeUsersToday.length,
+      totalRams,
+      totalPlatoons,
+      // Detailed stats
       users: {
         total: totalUsers,
         activeToday: activeUsersToday.length,

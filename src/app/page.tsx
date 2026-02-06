@@ -1,34 +1,143 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import SplashScreen from "@/components/splash-screen";
+import { BookOpen, Clock, Users, Award } from "lucide-react";
 
 export default function Home() {
-  return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-blue-900 to-slate-900 text-white p-4">
-      <div className="text-center max-w-md">
-        <h1 className="text-4xl font-bold mb-4">חשמונאי יומי</h1>
-        <p className="text-xl text-blue-200 mb-8">
-          אפליקציית לימוד לחיילי חטיבת חשמונאים
-        </p>
+  const [showSplash, setShowSplash] = useState(true);
+  const [isLoaded, setIsLoaded] = useState(false);
 
-        <div className="space-y-4">
+  useEffect(() => {
+    const hasSeenSplash = sessionStorage.getItem("hasSeenSplash");
+    if (hasSeenSplash) {
+      setShowSplash(false);
+      setIsLoaded(true);
+    }
+  }, []);
+
+  const handleSplashComplete = () => {
+    sessionStorage.setItem("hasSeenSplash", "true");
+    setShowSplash(false);
+    setIsLoaded(true);
+  };
+
+  if (showSplash) {
+    return <SplashScreen onComplete={handleSplashComplete} />;
+  }
+
+  return (
+    <div className={`min-h-screen bg-gradient-logo ${isLoaded ? "animate-fade-in" : ""}`}>
+      {/* Header */}
+      <header className="safe-area-top">
+        <div className="container mx-auto px-4 py-6 flex justify-between items-center">
+          <div className="flex items-center gap-3">
+            <Image
+              src="/רוח חשמונאית.png"
+              alt="רוח חשמונאית"
+              width={50}
+              height={50}
+              className="drop-shadow-md"
+            />
+            <span className="text-xl font-bold text-brown-dark">חשמונאי יומי</span>
+          </div>
           <Link
             href="/login"
-            className="block w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition-colors"
+            className="px-5 py-2 bg-brown-medium text-cream rounded-full font-medium hover:bg-brown-dark transition-colors shadow-md"
           >
-            כניסה למערכת
-          </Link>
-
-          <Link
-            href="/daily"
-            className="block w-full bg-transparent border border-blue-400 hover:bg-blue-800 text-blue-200 font-bold py-3 px-6 rounded-lg transition-colors"
-          >
-            לימוד יומי
+            כניסה
           </Link>
         </div>
+      </header>
 
-        <div className="mt-12 text-sm text-blue-300">
-          <p>משנה יומית • רמב״ם יומי • חסידות ומוסר</p>
+      {/* Hero Section */}
+      <main className="container mx-auto px-4 py-8 sm:py-16">
+        <div className="text-center max-w-2xl mx-auto">
+          <div className="relative w-32 h-32 sm:w-40 sm:h-40 mx-auto mb-6">
+            <Image
+              src="/רוח חשמונאית.png"
+              alt="רוח חשמונאית"
+              fill
+              className="object-contain drop-shadow-xl"
+              priority
+            />
+          </div>
+
+          <h1 className="text-4xl sm:text-5xl font-bold text-brown-dark mb-4">
+            רוח חשמונאית
+          </h1>
+          <p className="text-xl sm:text-2xl text-brown-medium mb-2">
+            אפליקציית לימוד לחיילי חטיבת חשמונאים
+          </p>
+          <p className="text-brown-light mb-8">
+            למען שמו באהבה - לעלות ולהתעלות
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            <Link
+              href="/login"
+              className="px-8 py-4 bg-brown-medium text-cream rounded-xl font-bold text-lg hover:bg-brown-dark transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+            >
+              התחל ללמוד
+            </Link>
+            <Link
+              href="/daily"
+              className="px-8 py-4 bg-white/80 text-brown-dark rounded-xl font-bold text-lg hover:bg-white transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1 border border-cream-dark"
+            >
+              צפה בלימוד היומי
+            </Link>
+          </div>
         </div>
-      </div>
+
+        {/* Features */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto">
+          <FeatureCard
+            icon={<BookOpen className="w-8 h-8" />}
+            title="לימוד יומי"
+            description="משנה ורמב״ם"
+          />
+          <FeatureCard
+            icon={<Clock className="w-8 h-8" />}
+            title="זמני היום"
+            description="תפילות וזמנים"
+          />
+          <FeatureCard
+            icon={<Users className="w-8 h-8" />}
+            title="קהילה"
+            description="לומדים יחד"
+          />
+          <FeatureCard
+            icon={<Award className="w-8 h-8" />}
+            title="נקודות"
+            description="צבירה ופדיון"
+          />
+        </div>
+      </main>
+
+      {/* Footer */}
+      <footer className="mt-auto py-6 text-center text-brown-light safe-area-bottom">
+        <p>חטיבת חשמונאים - גדוד 932</p>
+      </footer>
+    </div>
+  );
+}
+
+function FeatureCard({
+  icon,
+  title,
+  description,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-4 text-center card-hover border border-cream-dark/50">
+      <div className="text-brown-medium mb-2 flex justify-center">{icon}</div>
+      <h3 className="font-bold text-brown-dark text-sm sm:text-base">{title}</h3>
+      <p className="text-brown-light text-xs sm:text-sm">{description}</p>
     </div>
   );
 }

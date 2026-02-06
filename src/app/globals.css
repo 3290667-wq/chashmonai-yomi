@@ -1,18 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&family=Frank+Ruhl+Libre:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 :root {
-  --background: #f8fafc;
-  --foreground: #1e293b;
-  --primary: #1e3a5f;
-  --primary-light: #2d5a8a;
-  --secondary: #d4af37;
-  --accent: #10b981;
-  --muted: #64748b;
-  --card: #ffffff;
-  --card-border: #e2e8f0;
-  --success: #22c55e;
-  --warning: #f59e0b;
-  --error: #ef4444;
+  /* Logo-based color palette */
+  --brown-dark: #4A3728;
+  --brown-medium: #5D4037;
+  --brown-light: #8B7355;
+  --cream: #F5F1E8;
+  --cream-dark: #E8DCC8;
+  --sand: #D4C4A8;
+  --sky-light: #C5DCE8;
+  --sky-medium: #A8C8D8;
+  --sky-dark: #7BA3B8;
+
+  /* Semantic colors */
+  --background: #F5F1E8;
+  --foreground: #4A3728;
+  --primary: #5D4037;
+  --primary-light: #8B7355;
+  --primary-dark: #3E2723;
+  --secondary: #A8C8D8;
+  --secondary-dark: #7BA3B8;
+  --accent: #D4C4A8;
+  --muted: #8B7355;
+  --card: #FFFFFF;
+  --card-border: #E8DCC8;
+  --success: #4CAF50;
+  --warning: #FF9800;
+  --error: #F44336;
+
+  /* Fonts */
+  --font-body: 'Heebo', system-ui, sans-serif;
+  --font-learning: 'Frank Ruhl Libre', 'David', serif;
 }
 
 @theme inline {
@@ -20,7 +39,9 @@
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
   --color-primary-light: var(--primary-light);
+  --color-primary-dark: var(--primary-dark);
   --color-secondary: var(--secondary);
+  --color-secondary-dark: var(--secondary-dark);
   --color-accent: var(--accent);
   --color-muted: var(--muted);
   --color-card: var(--card);
@@ -28,14 +49,23 @@
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-error: var(--error);
+  --color-cream: var(--cream);
+  --color-cream-dark: var(--cream-dark);
+  --color-sand: var(--sand);
+  --color-sky-light: var(--sky-light);
+  --color-sky-medium: var(--sky-medium);
+  --color-sky-dark: var(--sky-dark);
+  --color-brown-dark: var(--brown-dark);
+  --color-brown-medium: var(--brown-medium);
+  --color-brown-light: var(--brown-light);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0f172a;
-    --foreground: #f1f5f9;
-    --card: #1e293b;
-    --card-border: #334155;
+    --background: #2C1810;
+    --foreground: #F5F1E8;
+    --card: #3E2723;
+    --card-border: #5D4037;
   }
 }
 
@@ -43,10 +73,17 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Hebrew text optimization */
@@ -54,21 +91,140 @@ html[dir="rtl"] {
   text-align: right;
 }
 
+/* Learning content font */
+.font-learning {
+  font-family: var(--font-learning);
+  line-height: 1.9;
+  font-size: 1.1rem;
+}
+
+/* Gradient backgrounds */
+.bg-gradient-logo {
+  background: linear-gradient(180deg, var(--sky-light) 0%, var(--sky-medium) 50%, var(--cream-dark) 100%);
+}
+
+.bg-gradient-primary {
+  background: linear-gradient(135deg, var(--brown-dark) 0%, var(--brown-medium) 100%);
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--background);
+  background: var(--cream-dark);
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--muted);
-  border-radius: 4px;
+  background: var(--brown-light);
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
+  background: var(--brown-medium);
+}
+
+/* Splash screen animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.animate-fade-out {
+  animation: fadeOut 0.5s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.6s ease-out forwards;
+}
+
+.animate-pulse-slow {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Card hover effects */
+.card-hover {
+  transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(74, 55, 40, 0.15);
+}
+
+/* Button styles */
+.btn-primary {
   background: var(--primary);
+  color: var(--cream);
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: var(--secondary);
+  color: var(--primary-dark);
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: var(--secondary-dark);
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  .font-learning {
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+
+  body {
+    font-size: 15px;
+  }
+}
+
+/* Safe area for mobile */
+.safe-area-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Focus states for accessibility */
+:focus-visible {
+  outline: 2px solid var(--secondary-dark);
+  outline-offset: 2px;
+}
+
+/* Selection color */
+::selection {
+  background: var(--secondary);
+  color: var(--primary-dark);
 }

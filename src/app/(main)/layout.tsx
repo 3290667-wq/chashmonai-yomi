@@ -14,15 +14,17 @@ export default async function MainLayout({
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-cream">
       <Navbar
         userName={session.user?.name || undefined}
         userPoints={session.user?.points || 0}
       />
 
       {/* Main content with padding for navbar */}
-      <main className="pt-16 pb-20 md:pb-6 px-4 md:px-6 max-w-7xl mx-auto">
-        {children}
+      <main className="pt-16 pb-20 lg:pb-6 lg:pr-64 px-4 lg:px-8">
+        <div className="max-w-4xl mx-auto">
+          {children}
+        </div>
       </main>
     </div>
   );
