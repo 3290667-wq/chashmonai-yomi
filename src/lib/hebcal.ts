@@ -25,8 +25,8 @@ export async function getZmanim(
 ): Promise<ZmanimData> {
   const params = new URLSearchParams({
     cfg: "json",
-    lat: latitude.toString(),
-    lng: longitude.toString(),
+    latitude: latitude.toString(),
+    longitude: longitude.toString(),
     tzid,
   });
 
