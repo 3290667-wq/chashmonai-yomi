@@ -2,7 +2,17 @@
 
 import { useState, useEffect } from "react";
 import { useEngagement } from "@/hooks/use-engagement";
-import { BookOpen, Clock, Award, ChevronDown, ChevronUp, CheckCircle2, Sparkles } from "lucide-react";
+import { BookOpen, Clock, Award, ChevronDown, ChevronUp, CheckCircle2, Sparkles, Heart, Video, Play } from "lucide-react";
+
+interface AdminContent {
+  id: string;
+  type: string;
+  title: string;
+  description: string | null;
+  content: string | null;
+  videoUrl: string | null;
+  createdAt: string;
+}
 
 interface DailyContent {
   mishnah: {
@@ -15,6 +25,10 @@ interface DailyContent {
     heRef: string;
     text: string[];
   } | null;
+  chassidut: AdminContent | null;
+  musar: AdminContent | null;
+  thought: AdminContent | null;
+  dailyVideo: AdminContent | null;
 }
 
 export default function DailyPage() {
@@ -195,6 +209,54 @@ export default function DailyPage() {
           )}
         </div>
 
+        {/* Daily Video Section */}
+        {content?.dailyVideo && (
+          <div className="bg-white rounded-2xl border border-cream-dark/50 overflow-hidden shadow-sm">
+            <button
+              onClick={() => toggleSection("video")}
+              className="w-full text-right p-4 sm:p-5 flex items-center justify-between hover:bg-cream/30 transition-colors"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-gradient-to-br from-violet-400 to-violet-600 rounded-xl flex items-center justify-center shadow-md">
+                  <Video className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h2 className="font-bold text-brown-dark text-lg">סרטון חיזוק יומי</h2>
+                  <p className="text-sm text-brown-light mt-0.5">{content.dailyVideo.title}</p>
+                </div>
+              </div>
+              <div className={`p-2 rounded-lg transition-colors ${expandedSection === "video" ? "bg-violet-100" : "bg-cream"}`}>
+                {expandedSection === "video" ? (
+                  <ChevronUp className="w-5 h-5 text-brown-medium" />
+                ) : (
+                  <ChevronDown className="w-5 h-5 text-brown-light" />
+                )}
+              </div>
+            </button>
+
+            {expandedSection === "video" && (
+              <div className="px-4 sm:px-6 pb-5 border-t border-cream-dark/30">
+                <div className="pt-5">
+                  {content.dailyVideo.description && (
+                    <p className="text-brown-medium mb-4">{content.dailyVideo.description}</p>
+                  )}
+                  {content.dailyVideo.videoUrl && (
+                    <a
+                      href={content.dailyVideo.videoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-3 w-full py-4 bg-gradient-to-l from-violet-500 to-violet-600 text-white rounded-xl font-bold hover:shadow-lg transition-all"
+                    >
+                      <Play className="w-5 h-5" />
+                      צפה בסרטון
+                    </a>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Chassidut Section */}
         <div className="bg-white rounded-2xl border border-cream-dark/50 overflow-hidden shadow-sm">
           <button
@@ -202,15 +264,17 @@ export default function DailyPage() {
             className="w-full text-right p-4 sm:p-5 flex items-center justify-between hover:bg-cream/30 transition-colors"
           >
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-gradient-to-br from-violet-400 to-violet-600 rounded-xl flex items-center justify-center shadow-md">
+              <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-amber-600 rounded-xl flex items-center justify-center shadow-md">
                 <Sparkles className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h2 className="font-bold text-brown-dark text-lg">חסידות ומוסר</h2>
-                <p className="text-sm text-brown-light mt-0.5">מחשבה יומית</p>
+                <h2 className="font-bold text-brown-dark text-lg">חסידות יומית</h2>
+                {content?.chassidut && (
+                  <p className="text-sm text-brown-light mt-0.5">{content.chassidut.title}</p>
+                )}
               </div>
             </div>
-            <div className={`p-2 rounded-lg transition-colors ${expandedSection === "chassidut" ? "bg-violet-100" : "bg-cream"}`}>
+            <div className={`p-2 rounded-lg transition-colors ${expandedSection === "chassidut" ? "bg-amber-100" : "bg-cream"}`}>
               {expandedSection === "chassidut" ? (
                 <ChevronUp className="w-5 h-5 text-brown-medium" />
               ) : (
@@ -221,10 +285,68 @@ export default function DailyPage() {
 
           {expandedSection === "chassidut" && (
             <div className="px-4 sm:px-6 pb-5 border-t border-cream-dark/30">
-              <div className="pt-5 text-center py-8">
-                <Sparkles className="w-12 h-12 text-violet-300 mx-auto mb-3" />
-                <p className="text-brown-light">תוכן זה יתווסף בקרוב...</p>
+              {content?.chassidut ? (
+                <div className="pt-5">
+                  {content.chassidut.description && (
+                    <p className="text-brown-medium text-sm mb-3">{content.chassidut.description}</p>
+                  )}
+                  <div className="font-learning text-lg text-brown-dark leading-[2] whitespace-pre-wrap">
+                    {content.chassidut.content}
+                  </div>
+                </div>
+              ) : (
+                <div className="pt-5 text-center py-8">
+                  <Sparkles className="w-12 h-12 text-amber-300 mx-auto mb-3" />
+                  <p className="text-brown-light">לא הועלה תוכן חסידות להיום</p>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Musar Section */}
+        <div className="bg-white rounded-2xl border border-cream-dark/50 overflow-hidden shadow-sm">
+          <button
+            onClick={() => toggleSection("musar")}
+            className="w-full text-right p-4 sm:p-5 flex items-center justify-between hover:bg-cream/30 transition-colors"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-gradient-to-br from-rose-400 to-rose-600 rounded-xl flex items-center justify-center shadow-md">
+                <Heart className="w-6 h-6 text-white" />
               </div>
+              <div>
+                <h2 className="font-bold text-brown-dark text-lg">מוסר יומי</h2>
+                {content?.musar && (
+                  <p className="text-sm text-brown-light mt-0.5">{content.musar.title}</p>
+                )}
+              </div>
+            </div>
+            <div className={`p-2 rounded-lg transition-colors ${expandedSection === "musar" ? "bg-rose-100" : "bg-cream"}`}>
+              {expandedSection === "musar" ? (
+                <ChevronUp className="w-5 h-5 text-brown-medium" />
+              ) : (
+                <ChevronDown className="w-5 h-5 text-brown-light" />
+              )}
+            </div>
+          </button>
+
+          {expandedSection === "musar" && (
+            <div className="px-4 sm:px-6 pb-5 border-t border-cream-dark/30">
+              {content?.musar ? (
+                <div className="pt-5">
+                  {content.musar.description && (
+                    <p className="text-brown-medium text-sm mb-3">{content.musar.description}</p>
+                  )}
+                  <div className="font-learning text-lg text-brown-dark leading-[2] whitespace-pre-wrap">
+                    {content.musar.content}
+                  </div>
+                </div>
+              ) : (
+                <div className="pt-5 text-center py-8">
+                  <Heart className="w-12 h-12 text-rose-300 mx-auto mb-3" />
+                  <p className="text-brown-light">לא הועלה תוכן מוסר להיום</p>
+                </div>
+              )}
             </div>
           )}
         </div>

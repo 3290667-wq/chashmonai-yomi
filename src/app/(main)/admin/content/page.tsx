@@ -15,6 +15,8 @@ import {
   Sparkles,
   Heart,
   FileText,
+  Upload,
+  Loader2,
 } from "lucide-react";
 
 interface Content {
@@ -54,9 +56,42 @@ export default function ContentPage() {
     videoUrl: "",
     platoon: "",
   });
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState("");
 
   const isAdmin = session?.user?.role === "ADMIN";
   const isRam = session?.user?.role === "RAM";
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    setUploadError("");
+
+    try {
+      const formDataUpload = new FormData();
+      formDataUpload.append("file", file);
+
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formDataUpload,
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setUploadError(data.error || "שגיאה בהעלאה");
+        return;
+      }
+
+      setFormData(prev => ({ ...prev, videoUrl: data.url }));
+    } catch (error) {
+      setUploadError("שגיאה בהעלאת הקובץ");
+    } finally {
+      setUploading(false);
+    }
+  };
 
   useEffect(() => {
     if (status === "loading") return;
@@ -348,22 +383,81 @@ export default function ContentPage() {
                 </select>
               </div>
 
-              {/* Video URL field - only for VIDEO type */}
+              {/* Video field - only for VIDEO type */}
               {formData.type === "VIDEO" && (
-                <div>
-                  <label className="block text-sm font-medium text-brown-medium mb-1">
-                    קישור לסרטון
-                  </label>
-                  <input
-                    type="url"
-                    value={formData.videoUrl}
-                    onChange={(e) =>
-                      setFormData({ ...formData, videoUrl: e.target.value })
-                    }
-                    placeholder="https://youtube.com/..."
-                    dir="ltr"
-                    className="w-full px-4 py-3 bg-cream/50 border border-cream-dark rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-medium"
-                  />
+                <div className="space-y-3">
+                  {/* File Upload */}
+                  <div>
+                    <label className="block text-sm font-medium text-brown-medium mb-1">
+                      העלאת סרטון מהמכשיר
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="file"
+                        accept="video/*"
+                        onChange={handleFileUpload}
+                        disabled={uploading}
+                        className="hidden"
+                        id="video-upload"
+                      />
+                      <label
+                        htmlFor="video-upload"
+                        className={`flex items-center justify-center gap-2 w-full px-4 py-3 border-2 border-dashed border-cream-dark rounded-xl cursor-pointer hover:border-sky-medium hover:bg-sky-light/20 transition-colors ${uploading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                      >
+                        {uploading ? (
+                          <>
+                            <Loader2 className="w-5 h-5 animate-spin text-sky-dark" />
+                            <span className="text-brown-medium">מעלה סרטון...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Upload className="w-5 h-5 text-brown-light" />
+                            <span className="text-brown-medium">לחץ להעלאת סרטון</span>
+                          </>
+                        )}
+                      </label>
+                    </div>
+                    {uploadError && (
+                      <p className="text-red-500 text-sm mt-1">{uploadError}</p>
+                    )}
+                  </div>
+
+                  {/* Divider */}
+                  <div className="flex items-center gap-3">
+                    <div className="flex-1 h-px bg-cream-dark"></div>
+                    <span className="text-brown-light text-sm">או</span>
+                    <div className="flex-1 h-px bg-cream-dark"></div>
+                  </div>
+
+                  {/* URL Input */}
+                  <div>
+                    <label className="block text-sm font-medium text-brown-medium mb-1">
+                      קישור לסרטון (YouTube / Vimeo)
+                    </label>
+                    <input
+                      type="url"
+                      value={formData.videoUrl}
+                      onChange={(e) =>
+                        setFormData({ ...formData, videoUrl: e.target.value })
+                      }
+                      placeholder="https://youtube.com/..."
+                      dir="ltr"
+                      className="w-full px-4 py-3 bg-cream/50 border border-cream-dark rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-medium"
+                    />
+                  </div>
+
+                  {/* Preview */}
+                  {formData.videoUrl && (
+                    <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl">
+                      <p className="text-emerald-700 text-sm font-medium flex items-center gap-2">
+                        <Video className="w-4 h-4" />
+                        סרטון הועלה בהצלחה
+                      </p>
+                      <p className="text-emerald-600 text-xs mt-1 truncate" dir="ltr">
+                        {formData.videoUrl}
+                      </p>
+                    </div>
+                  )}
                 </div>
               )}
 

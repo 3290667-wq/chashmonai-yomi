@@ -4,13 +4,48 @@ import { useState, useEffect } from "react";
 import { Clock, MapPin, Sun, Sunrise, Sunset, Moon, ChevronLeft, Check } from "lucide-react";
 import type { ZmanimData } from "@/types";
 
-const LOCATIONS = [
-  { id: "jerusalem", name: "ירושלים", lat: 31.7683, lng: 35.2137 },
-  { id: "telAviv", name: "תל אביב", lat: 32.0853, lng: 34.7818 },
-  { id: "haifa", name: "חיפה", lat: 32.794, lng: 34.9896 },
-  { id: "beerSheva", name: "באר שבע", lat: 31.2518, lng: 34.7913 },
-  { id: "eilat", name: "אילת", lat: 29.5577, lng: 34.9519 },
+const LOCATION_CATEGORIES = [
+  {
+    name: "ערים מרכזיות",
+    locations: [
+      { id: "jerusalem", name: "ירושלים", lat: 31.7683, lng: 35.2137 },
+      { id: "telAviv", name: "תל אביב", lat: 32.0853, lng: 34.7818 },
+      { id: "haifa", name: "חיפה", lat: 32.794, lng: 34.9896 },
+      { id: "beerSheva", name: "באר שבע", lat: 31.2518, lng: 34.7913 },
+      { id: "eilat", name: "אילת", lat: 29.5577, lng: 34.9519 },
+    ],
+  },
+  {
+    name: "אזור עזה",
+    locations: [
+      { id: "gaza", name: "עזה", lat: 31.5, lng: 34.47 },
+      { id: "rafah", name: "רפיח", lat: 31.2969, lng: 34.2458 },
+      { id: "khanYunis", name: "חאן יונס", lat: 31.3462, lng: 34.3032 },
+      { id: "sderot", name: "שדרות", lat: 31.5247, lng: 34.5961 },
+      { id: "ashkelon", name: "אשקלון", lat: 31.6658, lng: 34.5664 },
+    ],
+  },
+  {
+    name: "יהודה ושומרון",
+    locations: [
+      { id: "jenin", name: "ג'נין", lat: 32.4607, lng: 35.3004 },
+      { id: "nablus", name: "שכם", lat: 32.2211, lng: 35.2544 },
+      { id: "ramallah", name: "רמאללה", lat: 31.9038, lng: 35.2034 },
+      { id: "hebron", name: "חברון", lat: 31.5326, lng: 35.0998 },
+    ],
+  },
+  {
+    name: "הצפון",
+    locations: [
+      { id: "golanHeights", name: "רמת הגולן", lat: 33.0, lng: 35.75 },
+      { id: "metula", name: "מטולה", lat: 33.2778, lng: 35.5778 },
+      { id: "kiryatShmona", name: "קריית שמונה", lat: 33.2075, lng: 35.5697 },
+    ],
+  },
 ];
+
+// Flatten for initial selection
+const ALL_LOCATIONS = LOCATION_CATEGORIES.flatMap(cat => cat.locations);
 
 interface ZmanItem {
   key: keyof ZmanimData;
@@ -37,7 +72,7 @@ const ZMANIM_LIST: ZmanItem[] = [
 export default function ZmanimPage() {
   const [zmanim, setZmanim] = useState<ZmanimData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [selectedLocation, setSelectedLocation] = useState(LOCATIONS[0]);
+  const [selectedLocation, setSelectedLocation] = useState(ALL_LOCATIONS[0]);
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
@@ -145,26 +180,32 @@ export default function ZmanimPage() {
       </div>
 
       {/* Location Selector */}
-      <div className="bg-white rounded-2xl border border-cream-dark/50 p-4">
-        <div className="flex items-center gap-2 mb-3">
+      <div className="bg-white rounded-2xl border border-cream-dark/50 p-4 space-y-4">
+        <div className="flex items-center gap-2">
           <MapPin className="w-4 h-4 text-brown-light" />
           <span className="text-sm text-brown-medium font-medium">בחר מיקום</span>
         </div>
-        <div className="flex flex-wrap gap-2">
-          {LOCATIONS.map((location) => (
-            <button
-              key={location.id}
-              onClick={() => setSelectedLocation(location)}
-              className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
-                selectedLocation.id === location.id
-                  ? "bg-brown-medium text-cream shadow-md"
-                  : "bg-cream/70 text-brown-dark hover:bg-cream-dark/50 border border-cream-dark/30"
-              }`}
-            >
-              {location.name}
-            </button>
-          ))}
-        </div>
+
+        {LOCATION_CATEGORIES.map((category) => (
+          <div key={category.name}>
+            <p className="text-xs text-brown-light font-medium mb-2">{category.name}</p>
+            <div className="flex flex-wrap gap-2">
+              {category.locations.map((location) => (
+                <button
+                  key={location.id}
+                  onClick={() => setSelectedLocation(location)}
+                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+                    selectedLocation.id === location.id
+                      ? "bg-brown-medium text-cream shadow-md"
+                      : "bg-cream/70 text-brown-dark hover:bg-cream-dark/50 border border-cream-dark/30"
+                  }`}
+                >
+                  {location.name}
+                </button>
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
 
       {/* Zmanim List */}
