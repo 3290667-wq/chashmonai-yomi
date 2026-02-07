@@ -66,6 +66,7 @@ export async function POST(request: NextRequest) {
         content: contentText,
         videoUrl,
         imageUrl,
+        isPublished: true,
         createdById: session.user.id,
       },
     });

@@ -2,6 +2,10 @@ import { NextResponse } from "next/server";
 import { getDailyMishnah, getDailyRambam } from "@/lib/sefaria";
 import { prisma } from "@/lib/prisma";
 
+// Disable caching to ensure fresh content
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function GET() {
   try {
     // Fetch from Sefaria API

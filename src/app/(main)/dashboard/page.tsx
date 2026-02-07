@@ -32,7 +32,7 @@ export default async function DashboardPage() {
       gradient: "from-amber-400 to-amber-600",
     },
     {
-      href: "/content",
+      href: "/daily",
       title: "חיזוק יומי",
       description: "סרטון מחזק",
       icon: Play,
