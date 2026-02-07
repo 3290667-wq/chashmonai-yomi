@@ -10,6 +10,18 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    // Check if Blob storage is configured
+    if (!process.env.BLOB_READ_WRITE_TOKEN) {
+      console.error("BLOB_READ_WRITE_TOKEN is not configured");
+      return NextResponse.json(
+        {
+          error: "שירות האחסון לא מוגדר. יש להשתמש בקישור YouTube/Vimeo במקום.",
+          details: "Blob storage not configured"
+        },
+        { status: 503 }
+      );
+    }
+
     const formData = await request.formData();
     const file = formData.get("file") as File;
 
@@ -48,8 +60,18 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error("Upload error:", error);
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+
+    // Check for specific Blob errors
+    if (errorMessage.includes("BLOB_READ_WRITE_TOKEN") || errorMessage.includes("token")) {
+      return NextResponse.json(
+        { error: "שירות האחסון לא מוגדר. יש להשתמש בקישור YouTube/Vimeo במקום." },
+        { status: 503 }
+      );
+    }
+
     return NextResponse.json(
-      { error: "שגיאה בהעלאת הקובץ" },
+      { error: "שגיאה בהעלאת הקובץ. נסה שוב או השתמש בקישור YouTube." },
       { status: 500 }
     );
   }

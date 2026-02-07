@@ -386,6 +386,33 @@ export default function ContentPage() {
               {/* Video field - only for VIDEO type */}
               {formData.type === "VIDEO" && (
                 <div className="space-y-3">
+                  {/* URL Input - Primary option */}
+                  <div>
+                    <label className="block text-sm font-medium text-brown-medium mb-1">
+                      קישור לסרטון (YouTube / Vimeo / קישור ישיר)
+                    </label>
+                    <input
+                      type="url"
+                      value={formData.videoUrl}
+                      onChange={(e) =>
+                        setFormData({ ...formData, videoUrl: e.target.value })
+                      }
+                      placeholder="https://youtube.com/watch?v=..."
+                      dir="ltr"
+                      className="w-full px-4 py-3 bg-cream/50 border border-cream-dark rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-medium"
+                    />
+                    <p className="text-brown-light text-xs mt-1">
+                      ניתן להדביק קישור מיוטיוב, Vimeo או קישור ישיר לקובץ וידאו
+                    </p>
+                  </div>
+
+                  {/* Divider */}
+                  <div className="flex items-center gap-3">
+                    <div className="flex-1 h-px bg-cream-dark"></div>
+                    <span className="text-brown-light text-sm">או</span>
+                    <div className="flex-1 h-px bg-cream-dark"></div>
+                  </div>
+
                   {/* File Upload */}
                   <div>
                     <label className="block text-sm font-medium text-brown-medium mb-1">
@@ -423,36 +450,12 @@ export default function ContentPage() {
                     )}
                   </div>
 
-                  {/* Divider */}
-                  <div className="flex items-center gap-3">
-                    <div className="flex-1 h-px bg-cream-dark"></div>
-                    <span className="text-brown-light text-sm">או</span>
-                    <div className="flex-1 h-px bg-cream-dark"></div>
-                  </div>
-
-                  {/* URL Input */}
-                  <div>
-                    <label className="block text-sm font-medium text-brown-medium mb-1">
-                      קישור לסרטון (YouTube / Vimeo)
-                    </label>
-                    <input
-                      type="url"
-                      value={formData.videoUrl}
-                      onChange={(e) =>
-                        setFormData({ ...formData, videoUrl: e.target.value })
-                      }
-                      placeholder="https://youtube.com/..."
-                      dir="ltr"
-                      className="w-full px-4 py-3 bg-cream/50 border border-cream-dark rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-medium"
-                    />
-                  </div>
-
                   {/* Preview */}
                   {formData.videoUrl && (
                     <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl">
                       <p className="text-emerald-700 text-sm font-medium flex items-center gap-2">
                         <Video className="w-4 h-4" />
-                        סרטון הועלה בהצלחה
+                        קישור לסרטון נוסף
                       </p>
                       <p className="text-emerald-600 text-xs mt-1 truncate" dir="ltr">
                         {formData.videoUrl}
