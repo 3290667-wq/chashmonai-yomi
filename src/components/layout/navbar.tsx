@@ -14,13 +14,15 @@ import {
   X,
   LogOut,
   Settings,
+  MessageCircle,
 } from "lucide-react";
 import { useState } from "react";
 
 const navItems = [
   { href: "/dashboard", label: "ראשי", icon: Home },
   { href: "/daily", label: "לימוד יומי", icon: BookOpen },
-  { href: "/zmanim", label: "זמני היום", icon: Clock },
+  { href: "/chat", label: "שאל את הר\"מ", icon: MessageCircle },
+  { href: "/zmanim", label: "זמנים", icon: Clock },
   { href: "/points", label: "נקודות", icon: Award },
   { href: "/profile", label: "פרופיל", icon: User },
 ];

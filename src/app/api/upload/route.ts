@@ -26,11 +26,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate file size (max 100MB)
-    const maxSize = 100 * 1024 * 1024;
+    // Validate file size (max 300MB)
+    const maxSize = 300 * 1024 * 1024;
     if (file.size > maxSize) {
       return NextResponse.json(
-        { error: "הקובץ גדול מדי. גודל מקסימלי: 100MB" },
+        { error: "הקובץ גדול מדי. גודל מקסימלי: 300MB" },
         { status: 400 }
       );
     }

@@ -410,10 +410,11 @@ export default function ContentPage() {
                             <span className="text-brown-medium">מעלה סרטון...</span>
                           </>
                         ) : (
-                          <>
-                            <Upload className="w-5 h-5 text-brown-light" />
-                            <span className="text-brown-medium">לחץ להעלאת סרטון</span>
-                          </>
+                          <div className="text-center">
+                            <Upload className="w-6 h-6 text-brown-light mx-auto mb-1" />
+                            <span className="text-brown-medium block">לחץ להעלאת סרטון</span>
+                            <span className="text-brown-light text-xs">עד 300MB</span>
+                          </div>
                         )}
                       </label>
                     </div>
