@@ -59,6 +59,18 @@ export async function GET() {
 
   // Fetch admin-uploaded content from database
   try {
+    // First, let's see ALL content without filters
+    const allContent = await prisma.content.findMany({
+      orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        type: true,
+        title: true,
+        isPublished: true,
+      },
+    });
+    console.log("[Daily API] All content in DB:", JSON.stringify(allContent));
+
     adminContent = await prisma.content.findMany({
       where: {
         isPublished: true,
@@ -78,9 +90,11 @@ export async function GET() {
         createdAt: true,
       },
     });
-    console.log("[Daily API] Found", adminContent.length, "content items");
+    console.log("[Daily API] Found", adminContent.length, "content items after filter");
+    console.log("[Daily API] Content:", JSON.stringify(adminContent));
   } catch (dbError) {
     console.error("Error fetching admin content:", dbError);
+    console.error("DB Error details:", dbError);
     // Continue with empty admin content
   }
 
