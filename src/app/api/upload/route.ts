@@ -36,9 +36,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Upload to Vercel Blob
+    const token = process.env.BLOB_READ_WRITE_TOKEN;
+    console.log("Token exists:", !!token);
+
     const blob = await put(file.name, file, {
       access: "public",
       addRandomSuffix: true,
+      token: token,
     });
 
     return NextResponse.json({
