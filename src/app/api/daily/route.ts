@@ -129,3 +129,4 @@ export async function GET(request: NextRequest) {
     },
   });
 }
+// Trigger redeploy יום א 08 פבר 2026 23:34:01
