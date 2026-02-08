@@ -32,11 +32,11 @@ export default async function DashboardPage() {
       gradient: "from-amber-400 to-amber-600",
     },
     {
-      href: "/daily",
+      href: "/boost",
       title: "חיזוק יומי",
       description: "סרטון מחזק",
       icon: Play,
-      gradient: "from-emerald-400 to-emerald-600",
+      gradient: "from-violet-400 to-violet-600",
     },
     {
       href: "/points",
