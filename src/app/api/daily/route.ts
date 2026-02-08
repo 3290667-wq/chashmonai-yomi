@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { getDailyMishnah, getDailyRambam } from "@/lib/sefaria";
 import { prisma } from "@/lib/prisma";
-import { ContentType } from "@prisma/client";
 
 // Disable caching to ensure fresh content
 export const dynamic = "force-dynamic";
@@ -13,7 +12,7 @@ export async function GET() {
   let rambam = null;
   let adminContent: Array<{
     id: string;
-    type: ContentType;
+    type: string;
     title: string;
     description: string | null;
     content: string | null;
@@ -59,53 +58,53 @@ export async function GET() {
   }
 
   // Fetch admin-uploaded content from database
+  let debugInfo: Record<string, unknown> = {};
   try {
-    // First, let's see ALL content without filters
-    const allContent = await prisma.content.findMany({
+    // First, let's see ALL content without any filters
+    const allContentRaw = await prisma.content.findMany({
       orderBy: { createdAt: "desc" },
-      select: {
-        id: true,
-        type: true,
-        title: true,
-        isPublished: true,
-      },
     });
-    console.log("[Daily API] All content in DB:", JSON.stringify(allContent));
 
-    adminContent = await prisma.content.findMany({
-      where: {
-        isPublished: true,
-        type: {
-          in: [ContentType.CHASSIDUT, ContentType.MUSAR, ContentType.THOUGHT, ContentType.VIDEO],
-        },
-      },
-      orderBy: { createdAt: "desc" },
-      take: 10,
-      select: {
-        id: true,
-        type: true,
-        title: true,
-        description: true,
-        content: true,
-        videoUrl: true,
-        createdAt: true,
-      },
-    });
+    debugInfo.totalInDb = allContentRaw.length;
+    debugInfo.allContentTypes = allContentRaw.map(c => ({ id: c.id, type: c.type, typeOf: typeof c.type, isPublished: c.isPublished, title: c.title }));
+
+    console.log("[Daily API] Raw content from DB:", JSON.stringify(debugInfo.allContentTypes));
+
+    // Filter for published content only - no type filter yet
+    const publishedContent = allContentRaw.filter(c => c.isPublished === true);
+    debugInfo.publishedCount = publishedContent.length;
+
+    // Now filter by type using string comparison (more reliable)
+    const validTypes = ["CHASSIDUT", "MUSAR", "THOUGHT", "VIDEO"];
+    adminContent = publishedContent
+      .filter(c => validTypes.includes(String(c.type)))
+      .slice(0, 10)
+      .map(c => ({
+        id: c.id,
+        type: c.type,
+        title: c.title,
+        description: c.description,
+        content: c.content,
+        videoUrl: c.videoUrl,
+        createdAt: c.createdAt,
+      }));
+
+    debugInfo.afterTypeFilter = adminContent.length;
     console.log("[Daily API] Found", adminContent.length, "content items after filter");
-    console.log("[Daily API] Content:", JSON.stringify(adminContent));
   } catch (dbError) {
     console.error("Error fetching admin content:", dbError);
-    console.error("DB Error details:", dbError);
+    debugInfo.error = String(dbError);
     // Continue with empty admin content
   }
 
-  // Group content by type
-  const chassidut = adminContent.filter(c => c.type === ContentType.CHASSIDUT);
-  const musar = adminContent.filter(c => c.type === ContentType.MUSAR);
-  const thought = adminContent.filter(c => c.type === ContentType.THOUGHT);
-  const videos = adminContent.filter(c => c.type === ContentType.VIDEO);
+  // Group content by type (using string comparison for reliability)
+  const chassidut = adminContent.filter(c => String(c.type) === "CHASSIDUT");
+  const musar = adminContent.filter(c => String(c.type) === "MUSAR");
+  const thought = adminContent.filter(c => String(c.type) === "THOUGHT");
+  const videos = adminContent.filter(c => String(c.type) === "VIDEO");
 
   console.log("[Daily API] Videos found:", videos.length);
+  console.log("[Daily API] All types:", adminContent.map(c => String(c.type)));
 
   return NextResponse.json({
     mishnah,
@@ -115,11 +114,14 @@ export async function GET() {
     musar: musar.length > 0 ? musar[0] : null,
     thought: thought.length > 0 ? thought[0] : null,
     dailyVideo: videos.length > 0 ? videos[0] : null,
-    // Debug info
+    // Debug info - full details
     _debug: {
-      totalAdminContent: adminContent.length,
+      ...debugInfo,
       videosCount: videos.length,
-      contentTypes: adminContent.map(c => c.type),
+      chassidutCount: chassidut.length,
+      musarCount: musar.length,
+      thoughtCount: thought.length,
+      contentTypes: adminContent.map(c => String(c.type)),
     },
   });
 }
