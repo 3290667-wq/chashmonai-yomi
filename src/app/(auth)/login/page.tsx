@@ -112,7 +112,7 @@ export default function LoginPage() {
           </div>
 
           {/* Form Card */}
-          <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl p-6 sm:p-8 border border-cream-dark/30">
+          <div className="bg-white rounded-3xl shadow-xl p-6 sm:p-8 border border-cream-dark/30">
             <form onSubmit={handleSubmit} className="space-y-4">
               {isRegister && (
                 <>

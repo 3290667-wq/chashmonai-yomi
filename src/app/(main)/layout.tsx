@@ -14,7 +14,7 @@ export default async function MainLayout({
   }
 
   return (
-    <div className="min-h-screen bg-cream">
+    <div className="min-h-screen relative">
       <Navbar
         userName={session.user?.name || undefined}
         userPoints={session.user?.points || 0}
