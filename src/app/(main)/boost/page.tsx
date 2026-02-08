@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Play, Video, ChevronRight, Clock, Award, Loader2, X } from "lucide-react";
+import { Play, Video, ChevronRight, Clock, Award, Loader2, X, Eye } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEngagement } from "@/hooks/use-engagement";
+import Image from "next/image";
 
 interface VideoContent {
   id: string;
@@ -35,11 +36,9 @@ export default function BoostPage() {
       const res = await fetch("/api/daily?all=true");
       const data = await res.json();
       console.log("Fetched videos:", data);
-      // Combine all videos from different sources
       const allVideos: VideoContent[] = [];
       if (data.dailyVideo) allVideos.push(data.dailyVideo);
       if (data.allVideos) allVideos.push(...data.allVideos);
-      // Remove duplicates by id
       const uniqueVideos = allVideos.filter((v, i, arr) =>
         arr.findIndex(x => x.id === v.id) === i
       );
@@ -51,20 +50,32 @@ export default function BoostPage() {
     }
   };
 
+  // Get YouTube video ID from URL
+  const getYoutubeId = (url: string): string | null => {
+    const match = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]+)/);
+    return match ? match[1] : null;
+  };
+
+  // Get thumbnail URL for video
+  const getThumbnailUrl = (url: string): string | null => {
+    const youtubeId = getYoutubeId(url);
+    if (youtubeId) {
+      return `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`;
+    }
+    return null;
+  };
+
   const getEmbedUrl = (url: string): string | null => {
-    // YouTube
-    const youtubeMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]+)/);
-    if (youtubeMatch) {
-      return `https://www.youtube.com/embed/${youtubeMatch[1]}?autoplay=1`;
+    const youtubeId = getYoutubeId(url);
+    if (youtubeId) {
+      return `https://www.youtube.com/embed/${youtubeId}?autoplay=1`;
     }
 
-    // Vimeo
     const vimeoMatch = url.match(/vimeo\.com\/(\d+)/);
     if (vimeoMatch) {
       return `https://player.vimeo.com/video/${vimeoMatch[1]}?autoplay=1`;
     }
 
-    // Direct video URL (mp4, webm, etc.)
     if (url.match(/\.(mp4|webm|ogg|mov)(\?|$)/i) || url.includes('blob.vercel-storage.com')) {
       return url;
     }
@@ -89,31 +100,34 @@ export default function BoostPage() {
   if (loading) {
     return (
       <div className="py-12 flex flex-col items-center justify-center gap-4 min-h-[60vh]">
-        <Loader2 className="w-12 h-12 text-violet-500 animate-spin" />
-        <p className="text-brown-light animate-pulse">טוען שיעורי וידיאו...</p>
+        <Loader2 className="w-12 h-12 text-gold animate-spin" />
+        <p className="text-brown-warm animate-pulse">טוען שיעורי וידיאו...</p>
       </div>
     );
   }
 
   return (
-    <div className="py-4 sm:py-6 space-y-5">
+    <div className="relative py-4 sm:py-6 space-y-6">
+      {/* Aurora Background */}
+      <div className="aurora-bg" />
+
       {/* Header */}
-      <div className="flex items-center gap-2">
-        <button onClick={() => router.back()} className="p-2 hover:bg-cream rounded-lg">
-          <ChevronRight className="w-5 h-5 text-brown-medium" />
+      <div className="relative flex items-center gap-3">
+        <button onClick={() => router.back()} className="p-2 glass rounded-xl hover:glow-gold transition-all">
+          <ChevronRight className="w-5 h-5 text-gold" />
         </button>
         <div>
-          <h1 className="text-2xl font-bold text-brown-dark">שיעורי וידיאו</h1>
-          <p className="text-sm text-brown-light">{videos.length} סרטונים זמינים</p>
+          <h1 className="text-2xl font-bold text-brown-deep text-glow">שיעורי וידיאו</h1>
+          <p className="text-sm text-brown-warm">{videos.length} סרטונים זמינים</p>
         </div>
       </div>
 
       {/* Stats Bar */}
       {isPlaying && (
-        <div className="flex flex-wrap items-center gap-3">
-          <div className="flex items-center gap-2 bg-violet-100 rounded-xl px-4 py-2.5">
-            <Clock className="w-5 h-5 text-violet-600" />
-            <span className="font-mono text-lg font-bold text-violet-700">{formattedDuration}</span>
+        <div className="relative flex flex-wrap items-center gap-3">
+          <div className="glass-card flex items-center gap-2 px-4 py-2.5">
+            <Clock className="w-5 h-5 text-gold" />
+            <span className="font-mono text-lg font-bold text-brown-deep">{formattedDuration}</span>
             <div
               className={`w-2.5 h-2.5 rounded-full ${
                 isEngaged ? "bg-emerald-400 animate-pulse" : "bg-gray-300"
@@ -121,53 +135,92 @@ export default function BoostPage() {
             />
           </div>
 
-          <div className="flex items-center gap-2 bg-amber-100 rounded-xl px-4 py-2.5">
-            <Award className="w-5 h-5 text-amber-600" />
-            <span className="font-bold text-lg text-amber-700">+{estimatedPoints}</span>
-            <span className="text-amber-600 text-sm">נקודות</span>
+          <div className="glass-card flex items-center gap-2 px-4 py-2.5 glow-gold">
+            <Award className="w-5 h-5 text-gold" />
+            <span className="font-bold text-lg text-brown-deep">+{estimatedPoints}</span>
+            <span className="text-brown-warm text-sm">נקודות</span>
           </div>
         </div>
       )}
 
-      {/* Video List */}
+      {/* Video Grid - YouTube Style */}
       {videos.length > 0 ? (
-        <div className="grid gap-4">
-          {videos.map((video) => (
-            <div
-              key={video.id}
-              onClick={() => openVideo(video)}
-              className="bg-white rounded-2xl border border-cream-dark/50 overflow-hidden shadow-sm cursor-pointer hover:shadow-md transition-shadow"
-            >
-              <div className="p-4 sm:p-5 flex items-center gap-4">
-                <div className="w-16 h-16 bg-gradient-to-br from-violet-400 to-violet-600 rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
-                  <Play className="w-8 h-8 text-white" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-bold text-brown-dark text-lg truncate">{video.title}</h3>
-                  {video.description && (
-                    <p className="text-sm text-brown-light mt-1 line-clamp-2">{video.description}</p>
+        <div className="relative grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {videos.map((video) => {
+            const thumbnailUrl = video.videoUrl ? getThumbnailUrl(video.videoUrl) : null;
+            const isYoutube = video.videoUrl ? !!getYoutubeId(video.videoUrl) : false;
+
+            return (
+              <div
+                key={video.id}
+                onClick={() => openVideo(video)}
+                className="glass-card overflow-hidden cursor-pointer group hover-lift"
+              >
+                {/* Thumbnail */}
+                <div className="relative aspect-video bg-gradient-to-br from-brown-deep to-brown-rich overflow-hidden">
+                  {thumbnailUrl ? (
+                    <Image
+                      src={thumbnailUrl}
+                      alt={video.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-20 h-20 bg-gold/20 rounded-full flex items-center justify-center">
+                        <Video className="w-10 h-10 text-gold" />
+                      </div>
+                    </div>
                   )}
-                  <p className="text-xs text-brown-light/70 mt-2">
-                    {new Date(video.createdAt).toLocaleDateString("he-IL")}
-                  </p>
+
+                  {/* Play Button Overlay */}
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="w-16 h-16 bg-gold/90 rounded-full flex items-center justify-center shadow-lg transform scale-90 group-hover:scale-100 transition-transform">
+                      <Play className="w-8 h-8 text-brown-deep mr-[-2px]" />
+                    </div>
+                  </div>
+
+                  {/* Duration Badge (placeholder) */}
+                  <div className="absolute bottom-2 left-2 bg-black/80 text-white text-xs px-2 py-1 rounded">
+                    {isYoutube ? "YouTube" : "וידאו"}
+                  </div>
                 </div>
-                <ChevronRight className="w-5 h-5 text-brown-light rotate-180 flex-shrink-0" />
+
+                {/* Video Info */}
+                <div className="p-4">
+                  <h3 className="font-bold text-brown-deep text-lg line-clamp-2 group-hover:text-gold transition-colors">
+                    {video.title}
+                  </h3>
+                  {video.description && (
+                    <p className="text-sm text-brown-warm mt-1 line-clamp-2">{video.description}</p>
+                  )}
+                  <div className="flex items-center gap-3 mt-3 text-xs text-brown-soft">
+                    <span className="flex items-center gap-1">
+                      <Eye className="w-3 h-3" />
+                      רוח חשמונאית
+                    </span>
+                    <span>•</span>
+                    <span>{new Date(video.createdAt).toLocaleDateString("he-IL")}</span>
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       ) : (
-        <div className="bg-white rounded-2xl border border-cream-dark/50 p-8 text-center">
-          <Video className="w-16 h-16 text-violet-300 mx-auto mb-4" />
-          <h3 className="font-bold text-brown-dark text-lg mb-2">אין סרטונים</h3>
-          <p className="text-brown-light">
+        <div className="glass-card p-8 text-center">
+          <div className="w-20 h-20 mx-auto mb-4 bg-gold/10 rounded-full flex items-center justify-center">
+            <Video className="w-10 h-10 text-gold" />
+          </div>
+          <h3 className="font-bold text-brown-deep text-lg mb-2">אין סרטונים</h3>
+          <p className="text-brown-warm">
             עדיין לא הועלו סרטונים.
             <br />
             חזור מאוחר יותר או עבור ללימוד היומי.
           </p>
           <button
             onClick={() => router.push("/daily")}
-            className="mt-4 px-6 py-3 bg-gradient-to-l from-brown-dark to-brown-medium text-cream rounded-xl font-medium"
+            className="mt-4 px-6 py-3 bg-gradient-to-l from-gold to-gold-dark text-brown-deep rounded-xl font-bold shadow-lg hover:shadow-xl transition-all"
           >
             לימוד יומי
           </button>
@@ -176,31 +229,31 @@ export default function BoostPage() {
 
       {/* Video Player Modal */}
       {selectedVideo && (
-        <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
+        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4">
+          <div className="glass-card w-full max-w-4xl max-h-[90vh] overflow-hidden">
             {/* Modal Header */}
-            <div className="p-4 border-b border-cream-dark/30 flex items-center justify-between">
+            <div className="p-4 border-b border-gold/20 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-violet-400 to-violet-600 rounded-lg flex items-center justify-center">
+                <div className="w-10 h-10 bg-gradient-to-br from-gold to-gold-dark rounded-lg flex items-center justify-center shadow-lg">
                   <Video className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h2 className="font-bold text-brown-dark">{selectedVideo.title}</h2>
+                  <h2 className="font-bold text-brown-deep">{selectedVideo.title}</h2>
                   {selectedVideo.description && (
-                    <p className="text-sm text-brown-light">{selectedVideo.description}</p>
+                    <p className="text-sm text-brown-warm">{selectedVideo.description}</p>
                   )}
                 </div>
               </div>
               <button
                 onClick={closeVideo}
-                className="p-2 hover:bg-cream rounded-lg"
+                className="p-2 glass rounded-lg hover:glow-gold transition-all"
               >
-                <X className="w-6 h-6 text-brown-medium" />
+                <X className="w-6 h-6 text-brown-warm" />
               </button>
             </div>
 
             {/* Video Player */}
-            <div className="aspect-video bg-gray-900 relative">
+            <div className="aspect-video bg-black relative">
               {isPlaying && selectedVideo.videoUrl ? (
                 isDirectVideo(selectedVideo.videoUrl) ? (
                   <video
@@ -220,26 +273,37 @@ export default function BoostPage() {
                   />
                 )
               ) : (
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <button
-                    onClick={() => setIsPlaying(true)}
-                    className="w-20 h-20 bg-violet-500 hover:bg-violet-600 rounded-full flex items-center justify-center shadow-lg transition-all hover:scale-105 active:scale-95"
-                  >
-                    <Play className="w-10 h-10 text-white mr-[-4px]" />
-                  </button>
-                  <p className="text-white/70 mt-4 text-sm">לחץ להפעלה</p>
+                <div className="absolute inset-0">
+                  {/* Thumbnail as background */}
+                  {selectedVideo.videoUrl && getThumbnailUrl(selectedVideo.videoUrl) && (
+                    <Image
+                      src={getThumbnailUrl(selectedVideo.videoUrl)!}
+                      alt={selectedVideo.title}
+                      fill
+                      className="object-cover"
+                    />
+                  )}
+                  <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center">
+                    <button
+                      onClick={() => setIsPlaying(true)}
+                      className="w-20 h-20 bg-gold hover:bg-gold-light rounded-full flex items-center justify-center shadow-2xl transition-all hover:scale-110 active:scale-95 glow-gold"
+                    >
+                      <Play className="w-10 h-10 text-brown-deep mr-[-4px]" />
+                    </button>
+                    <p className="text-white/90 mt-4 font-medium">לחץ להפעלה</p>
+                  </div>
                 </div>
               )}
             </div>
 
             {/* External Link Option */}
             {selectedVideo.videoUrl && !isPlaying && (
-              <div className="p-4 border-t border-cream-dark/30">
+              <div className="p-4 border-t border-gold/20">
                 <a
                   href={selectedVideo.videoUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 w-full py-3 bg-cream hover:bg-cream-dark/30 text-brown-dark rounded-xl font-medium transition-colors"
+                  className="flex items-center justify-center gap-2 w-full py-3 glass hover:glow-gold text-brown-deep rounded-xl font-medium transition-all"
                 >
                   <Play className="w-4 h-4" />
                   פתח בחלון חדש
@@ -251,11 +315,11 @@ export default function BoostPage() {
       )}
 
       {/* Motivation */}
-      <div className="bg-gradient-to-l from-violet-100 to-violet-200 rounded-2xl p-5 text-center">
-        <p className="text-violet-800 font-medium text-lg">
+      <div className="relative glass-card p-6 text-center glow-gold">
+        <p className="text-brown-deep font-bold text-lg">
           &ldquo;חזק ואמץ - לעלות ולהתעלות&rdquo;
         </p>
-        <p className="text-violet-600 text-sm mt-2">רוח חשמונאית</p>
+        <p className="text-gold text-sm mt-2 font-semibold">רוח חשמונאית</p>
       </div>
     </div>
   );

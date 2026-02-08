@@ -19,6 +19,20 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   // Use webpack instead of Turbopack for PWA compatibility
   turbopack: {},
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "img.youtube.com",
+        pathname: "/vi/**",
+      },
+      {
+        protocol: "https",
+        hostname: "i.ytimg.com",
+        pathname: "/**",
+      },
+    ],
+  },
 };
 
 export default withPWA(nextConfig);
