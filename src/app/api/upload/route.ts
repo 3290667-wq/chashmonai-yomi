@@ -52,18 +52,9 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error("Upload error:", error);
-    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    const errorMessage = error instanceof Error ? error.message : String(error);
     console.error("Error message:", errorMessage);
-
-    // Check for specific Blob errors
-    if (errorMessage.includes("token") || errorMessage.includes("Token") ||
-        errorMessage.includes("BLOB") || errorMessage.includes("unauthorized") ||
-        errorMessage.includes("Unauthorized")) {
-      return NextResponse.json(
-        { error: "שגיאה באימות שירות האחסון. אנא פנה למנהל המערכת." },
-        { status: 503 }
-      );
-    }
+    console.error("Error stack:", error instanceof Error ? error.stack : "No stack");
 
     return NextResponse.json(
       { error: `שגיאה בהעלאת הקובץ: ${errorMessage}` },
