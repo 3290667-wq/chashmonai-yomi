@@ -58,6 +58,7 @@ export default function ContentPage() {
   });
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState("");
+  const [saving, setSaving] = useState(false);
 
   const isAdmin = session?.user?.role === "ADMIN";
   const isRam = session?.user?.role === "RAM";
@@ -122,6 +123,12 @@ export default function ContentPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaveError("");
+    setSaving(true);
+
+    console.log("[Admin Content] Form submitted");
+    console.log("[Admin Content] Session:", session?.user);
+    console.log("[Admin Content] Form data:", formData);
+
     try {
       const method = editingContent ? "PATCH" : "POST";
       const body = editingContent
@@ -133,7 +140,7 @@ export default function ContentPage() {
         body.platoon = session.user.platoon;
       }
 
-      console.log("Saving content:", body);
+      console.log("[Admin Content] Sending request:", { method, body });
 
       const res = await fetch("/api/admin/content", {
         method,
@@ -141,10 +148,13 @@ export default function ContentPage() {
         body: JSON.stringify(body),
       });
 
-      const data = await res.json();
-      console.log("Save response:", data);
+      console.log("[Admin Content] Response status:", res.status);
 
-      if (res.ok) {
+      const data = await res.json();
+      console.log("[Admin Content] Response data:", data);
+
+      if (res.ok && data.success) {
+        console.log("[Admin Content] Success! Content ID:", data.content?.id);
         fetchContents();
         setShowModal(false);
         setEditingContent(null);
@@ -157,13 +167,17 @@ export default function ContentPage() {
           platoon: "",
         });
       } else {
-        setSaveError(data.error || "שגיאה בשמירת התוכן");
-        alert("שגיאה: " + (data.error || "לא ניתן לשמור את התוכן"));
+        const errorMsg = data.error || "שגיאה בשמירת התוכן";
+        console.error("[Admin Content] Save failed:", errorMsg, "Code:", data.code);
+        setSaveError(errorMsg);
+        alert("שגיאה: " + errorMsg + (data.code ? ` (${data.code})` : ""));
       }
     } catch (error) {
-      console.error("Failed to save content:", error);
-      setSaveError("שגיאה בשמירת התוכן");
+      console.error("[Admin Content] Request failed:", error);
+      setSaveError("שגיאה בשמירת התוכן - נא לנסות שוב");
       alert("שגיאה בשמירת התוכן: " + String(error));
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -513,6 +527,12 @@ export default function ContentPage() {
                 </div>
               )}
 
+              {saveError && (
+                <div className="p-3 bg-red-50 border border-red-200 rounded-xl">
+                  <p className="text-red-700 text-sm">{saveError}</p>
+                </div>
+              )}
+
               <div className="flex gap-3 mt-6">
                 <button
                   type="button"
@@ -526,9 +546,17 @@ export default function ContentPage() {
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-3 bg-brown-medium text-cream rounded-xl font-medium hover:bg-brown-dark transition-colors"
+                  disabled={saving}
+                  className="flex-1 py-3 bg-brown-medium text-cream rounded-xl font-medium hover:bg-brown-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
-                  {editingContent ? "שמור" : "הוסף"}
+                  {saving ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      שומר...
+                    </>
+                  ) : (
+                    editingContent ? "שמור" : "הוסף"
+                  )}
                 </button>
               </div>
             </form>

@@ -41,48 +41,129 @@ export async function GET(request: NextRequest) {
 
 // POST - Create new content
 export async function POST(request: NextRequest) {
-  try {
-    const session = await auth();
-    console.log("Session:", session?.user?.id, session?.user?.role);
+  const startTime = Date.now();
+  console.log("[Content API] POST request started");
 
-    if (!session?.user || !["ADMIN", "RAM"].includes(session.user.role)) {
-      console.log("Unauthorized - no session or wrong role");
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  try {
+    // Step 1: Get session
+    console.log("[Content API] Getting session...");
+    const session = await auth();
+    console.log("[Content API] Session result:", {
+      exists: !!session,
+      userId: session?.user?.id,
+      userRole: session?.user?.role,
+      userName: session?.user?.name,
+    });
+
+    if (!session?.user) {
+      console.log("[Content API] FAILED: No session or user");
+      return NextResponse.json(
+        { error: "לא מחובר - נא להתחבר מחדש", code: "NO_SESSION" },
+        { status: 401 }
+      );
     }
 
-    const body = await request.json();
-    console.log("Request body:", body);
-    const { type, title, description, content: contentText, videoUrl, imageUrl } = body;
-
-    if (!type || !title) {
-      console.log("Missing required fields");
+    if (!session.user.id) {
+      console.log("[Content API] FAILED: User ID missing from session");
       return NextResponse.json(
-        { error: "Missing required fields" },
+        { error: "חסר מזהה משתמש - נא להתחבר מחדש", code: "NO_USER_ID" },
+        { status: 401 }
+      );
+    }
+
+    if (!["ADMIN", "RAM"].includes(session.user.role)) {
+      console.log("[Content API] FAILED: Insufficient role:", session.user.role);
+      return NextResponse.json(
+        { error: "אין הרשאה - נדרשת גישת מנהל", code: "INSUFFICIENT_ROLE" },
+        { status: 401 }
+      );
+    }
+
+    // Step 2: Parse request body
+    console.log("[Content API] Parsing request body...");
+    let body;
+    try {
+      body = await request.json();
+    } catch (parseError) {
+      console.log("[Content API] FAILED: Could not parse request body:", parseError);
+      return NextResponse.json(
+        { error: "שגיאה בפרסור הבקשה", code: "PARSE_ERROR" },
         { status: 400 }
       );
     }
 
-    console.log("Creating content with:", { type, title, videoUrl, createdById: session.user.id });
+    console.log("[Content API] Request body:", JSON.stringify(body, null, 2));
+    const { type, title, description, content: contentText, videoUrl, imageUrl } = body;
+
+    // Step 3: Validate required fields
+    if (!type) {
+      console.log("[Content API] FAILED: Missing type field");
+      return NextResponse.json(
+        { error: "חסר סוג תוכן", code: "MISSING_TYPE" },
+        { status: 400 }
+      );
+    }
+
+    if (!title || title.trim() === "") {
+      console.log("[Content API] FAILED: Missing title field");
+      return NextResponse.json(
+        { error: "חסרה כותרת", code: "MISSING_TITLE" },
+        { status: 400 }
+      );
+    }
+
+    // Step 4: Create content in database
+    console.log("[Content API] Creating content in database...", {
+      type,
+      title,
+      videoUrl: videoUrl ? videoUrl.substring(0, 50) + "..." : null,
+      createdById: session.user.id,
+    });
 
     const newContent = await prisma.content.create({
       data: {
         type,
-        title,
-        description,
-        content: contentText,
-        videoUrl,
-        imageUrl,
+        title: title.trim(),
+        description: description?.trim() || null,
+        content: contentText?.trim() || null,
+        videoUrl: videoUrl?.trim() || null,
+        imageUrl: imageUrl?.trim() || null,
         isPublished: true,
         createdById: session.user.id,
       },
     });
 
-    console.log("Content created:", newContent.id);
-    return NextResponse.json({ content: newContent });
+    const elapsed = Date.now() - startTime;
+    console.log(`[Content API] SUCCESS: Content created in ${elapsed}ms`, {
+      id: newContent.id,
+      type: newContent.type,
+      title: newContent.title,
+    });
+
+    return NextResponse.json({ content: newContent, success: true });
   } catch (error) {
-    console.error("Error creating content:", error);
+    const elapsed = Date.now() - startTime;
+    console.error(`[Content API] ERROR after ${elapsed}ms:`, error);
+    console.error("[Content API] Error stack:", error instanceof Error ? error.stack : "No stack");
+
+    // Check for specific Prisma errors
+    const errorMessage = String(error);
+    if (errorMessage.includes("Foreign key constraint")) {
+      return NextResponse.json(
+        { error: "משתמש לא קיים במערכת - נא להתחבר מחדש", code: "FK_ERROR" },
+        { status: 400 }
+      );
+    }
+
+    if (errorMessage.includes("Invalid value for argument `type`")) {
+      return NextResponse.json(
+        { error: "סוג תוכן לא תקין", code: "INVALID_TYPE" },
+        { status: 400 }
+      );
+    }
+
     return NextResponse.json(
-      { error: "Failed to create content: " + String(error) },
+      { error: "שגיאה ביצירת תוכן: " + errorMessage, code: "CREATE_ERROR" },
       { status: 500 }
     );
   }
