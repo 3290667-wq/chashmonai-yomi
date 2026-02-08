@@ -22,6 +22,7 @@ export default function BoostPage() {
 
   const { formattedDuration, isEngaged, estimatedPoints } = useEngagement({
     contentType: "VIDEO",
+    enabled: isPlaying,
   });
 
   useEffect(() => {
@@ -32,6 +33,8 @@ export default function BoostPage() {
     try {
       const res = await fetch("/api/daily");
       const data = await res.json();
+      console.log("Fetched daily data:", data);
+      console.log("Daily video:", data.dailyVideo);
       setVideo(data.dailyVideo);
     } catch (error) {
       console.error("Failed to fetch video:", error);

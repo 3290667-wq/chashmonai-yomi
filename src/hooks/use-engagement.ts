@@ -7,6 +7,7 @@ interface UseEngagementOptions {
   contentType: string;
   contentId?: string;
   contentRef?: string;
+  enabled?: boolean;
   onSessionEnd?: (data: {
     duration: number;
     verified: boolean;
@@ -15,7 +16,7 @@ interface UseEngagementOptions {
 }
 
 export function useEngagement(options: UseEngagementOptions) {
-  const { contentType, contentId, contentRef, onSessionEnd } = options;
+  const { contentType, contentId, contentRef, enabled = true, onSessionEnd } = options;
   const [isEngaged, setIsEngaged] = useState(false);
   const [duration, setDuration] = useState(0);
   const [formattedDuration, setFormattedDuration] = useState("0:00");
@@ -28,6 +29,15 @@ export function useEngagement(options: UseEngagementOptions) {
   }, []);
 
   useEffect(() => {
+    if (!enabled) {
+      // If disabled, stop any existing tracker
+      if (trackerRef.current) {
+        trackerRef.current.stop();
+        trackerRef.current = null;
+      }
+      return;
+    }
+
     trackerRef.current = new EngagementTracker(handleEngagementUpdate);
     trackerRef.current.start();
 
@@ -53,7 +63,7 @@ export function useEngagement(options: UseEngagementOptions) {
         });
       }
     };
-  }, [contentType, contentId, contentRef, handleEngagementUpdate, onSessionEnd]);
+  }, [contentType, contentId, contentRef, enabled, handleEngagementUpdate, onSessionEnd]);
 
   return {
     isEngaged,
