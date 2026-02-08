@@ -77,13 +77,20 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex flex-col relative overflow-hidden">
-      {/* Aurora Background */}
+      {/* Background Image */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-brown-deep via-brown-rich to-brown-deep" />
-        <div className="absolute inset-0 opacity-30">
+        <Image
+          src="/login-bg.png"
+          alt=""
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-brown-deep/40" />
+        {/* Aurora Overlay */}
+        <div className="absolute inset-0 opacity-20">
           <div className="absolute top-0 left-1/4 w-96 h-96 bg-gold/40 rounded-full blur-[100px] animate-aurora" />
           <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-amber-500/30 rounded-full blur-[80px] animate-aurora" style={{ animationDelay: "-5s" }} />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gold/20 rounded-full blur-[60px] animate-aurora" style={{ animationDelay: "-2.5s" }} />
         </div>
       </div>
 

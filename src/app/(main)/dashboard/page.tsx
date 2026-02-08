@@ -77,6 +77,16 @@ export default async function DashboardPage() {
       {/* Aurora Background */}
       <div className="aurora-bg" />
 
+      {/* Pattern Overlay */}
+      <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-0">
+        <Image
+          src="/pattern-overlay.png"
+          alt=""
+          fill
+          className="object-cover"
+        />
+      </div>
+
       {/* Floating Orbs */}
       <div className="floating-orbs">
         <div className="orb orb-1" />
@@ -86,6 +96,16 @@ export default async function DashboardPage() {
 
       {/* Hero Welcome Card - Glassmorphism */}
       <div className="glass-card p-8 sm:p-10 relative overflow-hidden group stagger-item">
+        {/* Hero Background Image */}
+        <div className="absolute inset-0 opacity-30">
+          <Image
+            src="/hero-banner.png"
+            alt=""
+            fill
+            className="object-cover"
+          />
+        </div>
+
         {/* Animated Gradient Border */}
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gold/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
