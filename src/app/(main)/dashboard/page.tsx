@@ -96,14 +96,15 @@ export default async function DashboardPage() {
 
       {/* Hero Welcome Card - Glassmorphism */}
       <div className="glass-card p-8 sm:p-10 relative overflow-hidden group stagger-item">
-        {/* Hero Background Image */}
-        <div className="absolute inset-0 opacity-30">
+        {/* Hero Background Image - Military Style */}
+        <div className="absolute inset-0">
           <Image
             src="/hero-banner.png"
             alt=""
             fill
-            className="object-cover"
+            className="object-cover opacity-40"
           />
+          <div className="absolute inset-0 bg-gradient-to-l from-transparent via-cream-white/60 to-cream-white/90" />
         </div>
 
         {/* Animated Gradient Border */}
@@ -309,17 +310,16 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      {/* Motivation Card - Premium Glass with Glow */}
+      {/* Motivation Card - Military Brotherhood */}
       <div className="glass-card p-10 text-center relative overflow-hidden stagger-item glow-gold-intense">
-        {/* Animated Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-gold/10 via-transparent to-gold/10 animate-shimmer" />
-
-        {/* Background Shield */}
-        <div className="absolute inset-0 flex items-center justify-center opacity-10">
-          <div className="relative w-48 h-48 animate-float">
-            <Image src="/shield-emblem.png" alt="" fill className="object-contain" />
-          </div>
+        {/* Background Image - Soldiers Studying */}
+        <div className="absolute inset-0">
+          <Image src="/dashboard-bg.png" alt="" fill className="object-cover opacity-30" />
+          <div className="absolute inset-0 bg-gradient-to-t from-cream-white via-cream-white/80 to-transparent" />
         </div>
+
+        {/* Animated Shimmer */}
+        <div className="absolute inset-0 bg-gradient-to-br from-gold/10 via-transparent to-gold/10 animate-shimmer" />
 
         <div className="relative z-10">
           <div className="relative w-20 h-20 mx-auto mb-6">
