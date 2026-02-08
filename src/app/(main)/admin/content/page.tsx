@@ -345,7 +345,7 @@ export default function ContentPage() {
                   }
                   required
                   placeholder="הכנס כותרת"
-                  className="w-full px-4 py-3 bg-cream/50 border border-cream-dark rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-medium"
+                  className="w-full px-4 py-3 bg-cream/50 border border-cream-dark rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-medium text-brown-dark placeholder:text-brown-light/50"
                 />
               </div>
 
@@ -360,7 +360,7 @@ export default function ContentPage() {
                   }
                   placeholder="תיאור קצר של התוכן"
                   rows={3}
-                  className="w-full px-4 py-3 bg-cream/50 border border-cream-dark rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-medium resize-none"
+                  className="w-full px-4 py-3 bg-cream/50 border border-cream-dark rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-medium resize-none text-brown-dark placeholder:text-brown-light/50"
                 />
               </div>
 
@@ -373,7 +373,7 @@ export default function ContentPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, type: e.target.value })
                   }
-                  className="w-full px-4 py-3 bg-cream/50 border border-cream-dark rounded-xl"
+                  className="w-full px-4 py-3 bg-cream/50 border border-cream-dark rounded-xl text-brown-dark"
                 >
                   {CONTENT_TYPES.map((type) => (
                     <option key={type.value} value={type.value}>
@@ -399,7 +399,7 @@ export default function ContentPage() {
                       }
                       placeholder="https://youtube.com/watch?v=..."
                       dir="ltr"
-                      className="w-full px-4 py-3 bg-cream/50 border border-cream-dark rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-medium"
+                      className="w-full px-4 py-3 bg-cream/50 border border-cream-dark rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-medium text-brown-dark placeholder:text-brown-light/50"
                     />
                     <p className="text-brown-light text-xs mt-1">
                       ניתן להדביק קישור מיוטיוב, Vimeo או קישור ישיר לקובץ וידאו
@@ -478,7 +478,7 @@ export default function ContentPage() {
                     }
                     placeholder="הכנס את התוכן כאן..."
                     rows={6}
-                    className="w-full px-4 py-3 bg-cream/50 border border-cream-dark rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-medium resize-none"
+                    className="w-full px-4 py-3 bg-cream/50 border border-cream-dark rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-medium resize-none text-brown-dark placeholder:text-brown-light/50"
                   />
                 </div>
               )}
@@ -495,7 +495,7 @@ export default function ContentPage() {
                       setFormData({ ...formData, platoon: e.target.value })
                     }
                     placeholder="השאר ריק להצגה לכל הפלוגות"
-                    className="w-full px-4 py-3 bg-cream/50 border border-cream-dark rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-medium"
+                    className="w-full px-4 py-3 bg-cream/50 border border-cream-dark rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-medium text-brown-dark placeholder:text-brown-light/50"
                   />
                 </div>
               )}
