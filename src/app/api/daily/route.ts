@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getDailyMishnah, getDailyRambam } from "@/lib/sefaria";
 import { prisma } from "@/lib/prisma";
+import { ContentType } from "@prisma/client";
 
 // Disable caching to ensure fresh content
 export const dynamic = "force-dynamic";
@@ -12,7 +13,7 @@ export async function GET() {
   let rambam = null;
   let adminContent: Array<{
     id: string;
-    type: string;
+    type: ContentType;
     title: string;
     description: string | null;
     content: string | null;
@@ -75,7 +76,7 @@ export async function GET() {
       where: {
         isPublished: true,
         type: {
-          in: ["CHASSIDUT", "MUSAR", "THOUGHT", "VIDEO"],
+          in: [ContentType.CHASSIDUT, ContentType.MUSAR, ContentType.THOUGHT, ContentType.VIDEO],
         },
       },
       orderBy: { createdAt: "desc" },
@@ -99,10 +100,10 @@ export async function GET() {
   }
 
   // Group content by type
-  const chassidut = adminContent.filter(c => c.type === "CHASSIDUT");
-  const musar = adminContent.filter(c => c.type === "MUSAR");
-  const thought = adminContent.filter(c => c.type === "THOUGHT");
-  const videos = adminContent.filter(c => c.type === "VIDEO");
+  const chassidut = adminContent.filter(c => c.type === ContentType.CHASSIDUT);
+  const musar = adminContent.filter(c => c.type === ContentType.MUSAR);
+  const thought = adminContent.filter(c => c.type === ContentType.THOUGHT);
+  const videos = adminContent.filter(c => c.type === ContentType.VIDEO);
 
   console.log("[Daily API] Videos found:", videos.length);
 
@@ -114,5 +115,11 @@ export async function GET() {
     musar: musar.length > 0 ? musar[0] : null,
     thought: thought.length > 0 ? thought[0] : null,
     dailyVideo: videos.length > 0 ? videos[0] : null,
+    // Debug info
+    _debug: {
+      totalAdminContent: adminContent.length,
+      videosCount: videos.length,
+      contentTypes: adminContent.map(c => c.type),
+    },
   });
 }
