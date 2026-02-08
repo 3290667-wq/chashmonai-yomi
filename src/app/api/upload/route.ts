@@ -10,18 +10,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Check if Blob storage is configured
-    if (!process.env.BLOB_READ_WRITE_TOKEN) {
-      console.error("BLOB_READ_WRITE_TOKEN is not configured");
-      return NextResponse.json(
-        {
-          error: "שירות האחסון לא מוגדר. יש להשתמש בקישור YouTube/Vimeo במקום.",
-          details: "Blob storage not configured"
-        },
-        { status: 503 }
-      );
-    }
-
     const formData = await request.formData();
     const file = formData.get("file") as File;
 
@@ -61,17 +49,20 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("Upload error:", error);
     const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    console.error("Error message:", errorMessage);
 
     // Check for specific Blob errors
-    if (errorMessage.includes("BLOB_READ_WRITE_TOKEN") || errorMessage.includes("token")) {
+    if (errorMessage.includes("token") || errorMessage.includes("Token") ||
+        errorMessage.includes("BLOB") || errorMessage.includes("unauthorized") ||
+        errorMessage.includes("Unauthorized")) {
       return NextResponse.json(
-        { error: "שירות האחסון לא מוגדר. יש להשתמש בקישור YouTube/Vimeo במקום." },
+        { error: "שגיאה באימות שירות האחסון. אנא פנה למנהל המערכת." },
         { status: 503 }
       );
     }
 
     return NextResponse.json(
-      { error: "שגיאה בהעלאת הקובץ. נסה שוב או השתמש בקישור YouTube." },
+      { error: `שגיאה בהעלאת הקובץ: ${errorMessage}` },
       { status: 500 }
     );
   }
