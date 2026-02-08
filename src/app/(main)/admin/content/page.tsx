@@ -110,7 +110,7 @@ export default function ContentPage() {
         const data = await res.json();
         setContents(data.contents || []);
       }
-    } catch {
+    } catch (error) {
       console.error("Failed to fetch contents:", error);
     } finally {
       setLoading(false);
@@ -171,7 +171,7 @@ export default function ContentPage() {
         setSaveError(errorMsg);
         alert("שגיאה: " + errorMsg + (data.code ? ` (${data.code})` : ""));
       }
-    } catch {
+    } catch (error) {
       console.error("[Admin Content] Request failed:", error);
       setSaveError("שגיאה בשמירת התוכן - נא לנסות שוב");
       alert("שגיאה בשמירת התוכן: " + String(error));
@@ -191,7 +191,7 @@ export default function ContentPage() {
       if (res.ok) {
         fetchContents();
       }
-    } catch {
+    } catch (error) {
       console.error("Failed to delete content:", error);
     }
   };
