@@ -2,11 +2,19 @@
 @import "tailwindcss";
 
 :root {
-  /* Premium Luxury Color Palette */
+  /* Military Tactical Color Palette */
   --gold-primary: #C9A227;
   --gold-light: #E8D48A;
   --gold-dark: #9A7B1A;
   --gold-shine: #F4E4BA;
+
+  /* Military Olive & Khaki */
+  --olive-dark: #3d4a3a;
+  --olive: #4a5d23;
+  --olive-light: #5c6b3a;
+  --khaki: #c3b091;
+  --khaki-light: #d4c5a9;
+  --tan: #d2b48c;
 
   --brown-deep: #2C1810;
   --brown-rich: #4A3728;
@@ -27,9 +35,9 @@
   --foreground: #2C1810;
   --primary: #C9A227;
   --primary-hover: #9A7B1A;
-  --secondary: #4A3728;
+  --secondary: #4a5d23;
   --muted: #8B7355;
-  --success: #6B7B3E;
+  --success: #4a5d23;
   --warning: #CD7F32;
   --error: #C75B39;
 
@@ -71,6 +79,11 @@
   --color-bronze: var(--accent-bronze);
   --color-copper: var(--accent-copper);
   --color-olive: var(--accent-olive);
+  --color-olive-dark: var(--olive-dark);
+  --color-olive-light: var(--olive-light);
+  --color-khaki: var(--khaki);
+  --color-khaki-light: var(--khaki-light);
+  --color-tan: var(--tan);
 }
 
 /* ============================================

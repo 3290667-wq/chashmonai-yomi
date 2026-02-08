@@ -51,7 +51,7 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
 
   return (
     <>
-      {/* Desktop Sidebar - Glassmorphism */}
+      {/* Desktop Sidebar - Military Glassmorphism */}
       <aside className="hidden lg:flex w-72 flex-col fixed right-0 top-0 bottom-0 z-30">
         {/* Glass Background */}
         <div className="absolute inset-0 bg-gradient-to-b from-cream-white/95 via-cream-warm/90 to-cream-white/95 backdrop-blur-xl" />
