@@ -13,6 +13,7 @@ import {
   Sparkles,
   Heart,
   Shield,
+  Crown,
 } from "lucide-react";
 
 export default async function DashboardPage() {
@@ -25,32 +26,28 @@ export default async function DashboardPage() {
       title: "לימוד יומי",
       description: "משנה יומית ורמב״ם",
       icon: BookOpen,
-      gradient: "from-gold to-gold-dark",
-      shadowColor: "shadow-gold/20",
+      color: "gold",
     },
     {
       href: "/zmanim",
       title: "זמני היום",
       description: "תפילות וזמנים",
       icon: Clock,
-      gradient: "from-warm-orange to-amber-600",
-      shadowColor: "shadow-orange-500/20",
+      color: "bronze",
     },
     {
       href: "/boost",
       title: "חיזוק יומי",
       description: "סרטון מחזק",
       icon: Play,
-      gradient: "from-olive to-olive-light",
-      shadowColor: "shadow-olive/20",
+      color: "olive",
     },
     {
       href: "/points",
       title: "נקודות",
       description: "צבירה ופדיון",
       icon: Award,
-      gradient: "from-sky-dark to-sky-medium",
-      shadowColor: "shadow-sky-500/20",
+      color: "gold",
     },
   ];
 
@@ -64,22 +61,50 @@ export default async function DashboardPage() {
   };
 
   return (
-    <div className="py-4 sm:py-6 space-y-6">
-      {/* Hero Welcome Card with Reka Background */}
-      <div className="relative overflow-hidden rounded-3xl min-h-[200px]">
-        {/* Reka Background Image */}
-        <Image
-          src="/reka.png"
-          alt=""
-          fill
-          className="object-cover"
-          priority
-        />
-        {/* Semi-transparent overlay for readability */}
-        <div className="absolute inset-0 bg-gradient-to-l from-brown-dark/70 via-brown-medium/60 to-brown-dark/70" />
+    <div className="py-6 sm:py-8 space-y-8">
+      {/* Hero Welcome Card */}
+      <div className="hero-premium p-8 sm:p-10">
+        <div className="relative z-10">
+          <div className="flex items-start gap-5">
+            {/* User Avatar */}
+            <div className="icon-circle-gold w-20 h-20 animate-float">
+              <Crown className="w-10 h-10" />
+            </div>
+
+            <div className="flex-1">
+              <p className="text-gold-light text-sm mb-1 font-medium">{getGreeting()},</p>
+              <h1 className="text-3xl sm:text-4xl font-bold text-cream-white mb-2">
+                {user?.name?.split(" ")[0] || "חייל יקר"}!
+              </h1>
+              <p className="text-cream/70">ברוך הבא לרוח חשמונאית</p>
+            </div>
+          </div>
+
+          {/* Stats Row */}
+          <div className="flex flex-wrap items-center gap-4 mt-8">
+            <div className="badge-gold">
+              <Star className="w-4 h-4" />
+              <span className="text-lg font-bold">{user?.points || 0}</span>
+              <span className="text-sm">נקודות</span>
+            </div>
+
+            <div className="badge-dark">
+              <Flame className="w-4 h-4 text-orange-400" />
+              <span className="text-lg font-bold">{user?.streak || 0}</span>
+              <span className="text-sm">ימים רצופים</span>
+            </div>
+
+            {user?.platoon && (
+              <div className="badge-gold">
+                <Shield className="w-4 h-4" />
+                <span>{user.platoon}</span>
+              </div>
+            )}
+          </div>
+        </div>
 
         {/* Logo Watermark */}
-        <div className="absolute left-4 top-1/2 -translate-y-1/2 w-28 h-28 opacity-25 z-10">
+        <div className="absolute left-6 top-1/2 -translate-y-1/2 w-32 h-32 opacity-10 hidden sm:block">
           <Image
             src="/רוח חשמונאית.png"
             alt=""
@@ -87,84 +112,32 @@ export default async function DashboardPage() {
             className="object-contain"
           />
         </div>
-
-        <div className="relative z-10 p-6 sm:p-8">
-          <div className="flex items-start gap-4">
-            {/* User Avatar */}
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-gold to-gold-dark flex items-center justify-center shadow-lg animate-float">
-              <Shield className="w-8 h-8 text-brown-dark" />
-            </div>
-
-            <div className="flex-1">
-              <p className="text-gold-light/80 text-sm mb-1">{getGreeting()},</p>
-              <h1 className="text-2xl sm:text-3xl font-bold text-cream mb-1">
-                {user?.name?.split(" ")[0] || "חייל יקר"}!
-              </h1>
-              <p className="text-cream/60 text-sm">ברוך הבא לרוח חשמונאית</p>
-            </div>
-          </div>
-
-          {/* Stats Row */}
-          <div className="flex flex-wrap items-center gap-3 mt-6">
-            <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-2xl px-4 py-3 border border-white/10">
-              <div className="w-10 h-10 bg-gold/20 rounded-xl flex items-center justify-center">
-                <Star className="w-5 h-5 text-gold" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-cream">{user?.points || 0}</p>
-                <p className="text-xs text-cream/60">נקודות זכות</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-2xl px-4 py-3 border border-white/10">
-              <div className="w-10 h-10 bg-warm-orange/20 rounded-xl flex items-center justify-center">
-                <Flame className="w-5 h-5 text-warm-orange" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-cream">{user?.streak || 0}</p>
-                <p className="text-xs text-cream/60">ימים רצופים</p>
-              </div>
-            </div>
-
-            {user?.platoon && (
-              <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-2xl px-4 py-3 border border-white/10">
-                <div className="w-10 h-10 bg-olive/20 rounded-xl flex items-center justify-center">
-                  <TrendingUp className="w-5 h-5 text-olive-light" />
-                </div>
-                <div>
-                  <p className="text-sm font-bold text-cream">{user.platoon}</p>
-                  <p className="text-xs text-cream/60">פלוגה</p>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
       </div>
 
       {/* Inspiring Quote */}
-      <div className="quote-box glass-card">
-        <p className="text-brown-dark font-medium text-lg pr-6">
+      <div className="quote-box">
+        <p className="text-brown-deep font-semibold text-xl pr-8 font-hebrew">
           חזק ואמץ - כי ה׳ אלוקיך עמך בכל אשר תלך
         </p>
-        <p className="text-gold-dark text-sm mt-2 font-medium">יהושע א׳, ט׳</p>
+        <p className="text-gold-dark text-sm mt-3 font-bold">יהושע א׳, ט׳</p>
       </div>
 
       {/* Quick Links Grid */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-5">
         {quickLinks.map((link, index) => {
           const Icon = link.icon;
           return (
             <Link key={link.href} href={link.href}>
               <div
-                className="glass-card rounded-2xl p-5 card-hover h-full group"
+                className="card-luxury p-6 h-full group cursor-pointer"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                <div className={`w-14 h-14 bg-gradient-to-br ${link.gradient} rounded-2xl flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                  <Icon className="w-7 h-7 text-white" />
+                <div className={`icon-circle-${link.color === 'gold' ? 'gold' : 'dark'} w-14 h-14 mb-5 group-hover:scale-110 transition-transform duration-300`}>
+                  <Icon className="w-7 h-7" />
                 </div>
-                <h3 className="font-bold text-brown-dark text-lg">{link.title}</h3>
-                <p className="text-sm text-brown-light mt-1">{link.description}</p>
-                <div className="flex items-center gap-1 text-gold-dark mt-3 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                <h3 className="font-bold text-brown-deep text-xl mb-1">{link.title}</h3>
+                <p className="text-brown-soft">{link.description}</p>
+                <div className="flex items-center gap-1 text-gold mt-4 text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
                   <span>המשך</span>
                   <ChevronLeft className="w-4 h-4" />
                 </div>
@@ -175,59 +148,59 @@ export default async function DashboardPage() {
       </div>
 
       {/* Daily Learning Preview */}
-      <div className="glass-card rounded-3xl overflow-hidden">
-        <div className="flex items-center justify-between p-5 border-b border-sand/50">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-gold to-gold-dark rounded-xl flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-white" />
+      <div className="card-luxury overflow-hidden">
+        <div className="flex items-center justify-between p-6 border-b border-sand">
+          <div className="flex items-center gap-4">
+            <div className="icon-circle-gold">
+              <Sparkles className="w-6 h-6" />
             </div>
             <div>
-              <h2 className="font-bold text-brown-dark text-lg">לימוד היום</h2>
-              <p className="text-sm text-brown-light">הלימודים שמחכים לך</p>
+              <h2 className="font-bold text-brown-deep text-xl">לימוד היום</h2>
+              <p className="text-brown-soft">הלימודים שמחכים לך</p>
             </div>
           </div>
           <Link
             href="/daily"
-            className="flex items-center gap-1 text-gold-dark hover:text-brown-dark transition-colors font-medium text-sm bg-gold-light/50 px-4 py-2 rounded-xl"
+            className="btn-premium btn-outline text-sm py-2 px-4"
           >
             לכל הלימודים
-            <ChevronLeft className="w-4 h-4" />
+            <ChevronLeft className="w-4 h-4 mr-1" />
           </Link>
         </div>
 
-        <div className="p-5 grid sm:grid-cols-2 gap-4">
+        <div className="p-6 grid sm:grid-cols-2 gap-5">
           <Link href="/daily" className="block">
-            <div className="p-5 bg-gradient-to-br from-cream to-gold-light/30 rounded-2xl border border-gold-light/50 hover:border-gold transition-all hover:shadow-md group">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-gold to-gold-dark rounded-xl flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
-                  <BookOpen className="w-6 h-6 text-white" />
+            <div className="card-gold p-6 hover:scale-[1.02] transition-transform">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="icon-circle-dark w-14 h-14">
+                  <BookOpen className="w-7 h-7" />
                 </div>
                 <div>
-                  <span className="font-bold text-brown-dark text-lg">משנה יומית</span>
-                  <p className="text-brown-light text-sm">מסכת תמורה</p>
+                  <span className="font-bold text-brown-deep text-xl">משנה יומית</span>
+                  <p className="text-brown-warm">מסכת תמורה</p>
                 </div>
               </div>
               <div className="flex items-center justify-between text-sm">
-                <span className="text-brown-medium">2 משניות להיום</span>
-                <span className="text-gold-dark font-medium">+10 נקודות</span>
+                <span className="text-brown-rich">2 משניות להיום</span>
+                <span className="badge-dark text-xs">+10 נקודות</span>
               </div>
             </div>
           </Link>
 
           <Link href="/daily" className="block">
-            <div className="p-5 bg-gradient-to-br from-cream to-warm-orange/10 rounded-2xl border border-warm-orange/30 hover:border-warm-orange transition-all hover:shadow-md group">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-warm-orange to-amber-600 rounded-xl flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
-                  <BookOpen className="w-6 h-6 text-white" />
+            <div className="p-6 bg-gradient-to-br from-cream-white to-cream-warm rounded-2xl border border-sand hover:border-gold transition-all hover:scale-[1.02]">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="icon-circle-gold w-14 h-14">
+                  <BookOpen className="w-7 h-7" />
                 </div>
                 <div>
-                  <span className="font-bold text-brown-dark text-lg">רמב״ם יומי</span>
-                  <p className="text-brown-light text-sm">הלכות יומיות</p>
+                  <span className="font-bold text-brown-deep text-xl">רמב״ם יומי</span>
+                  <p className="text-brown-warm">הלכות יומיות</p>
                 </div>
               </div>
               <div className="flex items-center justify-between text-sm">
-                <span className="text-brown-medium">הקדמה - מסירת התורה</span>
-                <span className="text-warm-orange font-medium">+15 נקודות</span>
+                <span className="text-brown-rich">הקדמה - מסירת התורה</span>
+                <span className="badge-gold text-xs">+15 נקודות</span>
               </div>
             </div>
           </Link>
@@ -235,53 +208,46 @@ export default async function DashboardPage() {
       </div>
 
       {/* Stats Card */}
-      <div className="glass-card rounded-3xl p-6">
-        <div className="flex items-center gap-3 mb-5">
-          <div className="w-10 h-10 bg-gradient-to-br from-olive to-olive-light rounded-xl flex items-center justify-center">
-            <TrendingUp className="w-5 h-5 text-white" />
+      <div className="card-luxury p-7">
+        <div className="flex items-center gap-4 mb-6">
+          <div className="icon-circle-gold">
+            <TrendingUp className="w-6 h-6" />
           </div>
-          <h2 className="font-bold text-brown-dark text-lg">הסטטיסטיקות שלי</h2>
+          <h2 className="font-bold text-brown-deep text-xl">הסטטיסטיקות שלי</h2>
         </div>
 
         <div className="grid grid-cols-3 gap-4">
-          <div className="text-center p-4 bg-gradient-to-br from-cream to-gold-light/30 rounded-2xl border border-gold-light/50">
-            <div className="w-10 h-10 mx-auto bg-gold/20 rounded-xl flex items-center justify-center mb-2">
-              <Clock className="w-5 h-5 text-gold-dark" />
+          <div className="stat-card">
+            <div className="icon-circle-gold w-12 h-12 mx-auto mb-3">
+              <Clock className="w-6 h-6" />
             </div>
-            <p className="text-2xl font-bold text-brown-dark">0</p>
-            <p className="text-xs text-brown-light mt-1">דקות היום</p>
+            <p className="stat-value">0</p>
+            <p className="stat-label">דקות היום</p>
           </div>
-          <div className="text-center p-4 bg-gradient-to-br from-cream to-olive-light/20 rounded-2xl border border-olive-light/30">
-            <div className="w-10 h-10 mx-auto bg-olive/20 rounded-xl flex items-center justify-center mb-2">
-              <BookOpen className="w-5 h-5 text-olive" />
+          <div className="stat-card">
+            <div className="icon-circle-dark w-12 h-12 mx-auto mb-3">
+              <BookOpen className="w-6 h-6" />
             </div>
-            <p className="text-2xl font-bold text-brown-dark">0</p>
-            <p className="text-xs text-brown-light mt-1">פרקים שהושלמו</p>
+            <p className="stat-value">0</p>
+            <p className="stat-label">פרקים שהושלמו</p>
           </div>
-          <div className="text-center p-4 bg-gradient-to-br from-cream to-warm-orange/10 rounded-2xl border border-warm-orange/30">
-            <div className="w-10 h-10 mx-auto bg-warm-orange/20 rounded-xl flex items-center justify-center mb-2">
-              <Flame className="w-5 h-5 text-warm-orange" />
+          <div className="stat-card">
+            <div className="icon-circle-gold w-12 h-12 mx-auto mb-3">
+              <Flame className="w-6 h-6" />
             </div>
-            <p className="text-2xl font-bold text-brown-dark">{user?.streak || 0}</p>
-            <p className="text-xs text-brown-light mt-1">ימים רצופים</p>
+            <p className="stat-value">{user?.streak || 0}</p>
+            <p className="stat-label">ימים רצופים</p>
           </div>
         </div>
       </div>
 
       {/* Motivation Card */}
-      <div className="relative overflow-hidden rounded-3xl">
-        <div className="absolute inset-0 bg-gradient-to-l from-gold via-gold-dark to-gold" />
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-white rounded-full blur-2xl" />
-          <div className="absolute bottom-0 left-0 w-40 h-40 bg-warm-orange rounded-full blur-2xl" />
-        </div>
-        <div className="relative p-6 text-center">
-          <Heart className="w-8 h-8 text-brown-dark/30 mx-auto mb-3" />
-          <p className="text-brown-dark font-bold text-xl">
-            &ldquo;לעלות ולהתעלות - למען שמו באהבה&rdquo;
-          </p>
-          <p className="text-brown-dark/70 text-sm mt-3 font-medium">רוח חשמונאית</p>
-        </div>
+      <div className="card-gold p-8 text-center">
+        <Heart className="w-10 h-10 text-brown-deep/40 mx-auto mb-4" />
+        <p className="text-brown-deep font-bold text-2xl font-hebrew">
+          &ldquo;לעלות ולהתעלות - למען שמו באהבה&rdquo;
+        </p>
+        <p className="text-brown-rich mt-4 font-semibold">רוח חשמונאית</p>
       </div>
     </div>
   );
