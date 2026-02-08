@@ -43,20 +43,26 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const session = await auth();
+    console.log("Session:", session?.user?.id, session?.user?.role);
 
     if (!session?.user || !["ADMIN", "RAM"].includes(session.user.role)) {
+      console.log("Unauthorized - no session or wrong role");
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const body = await request.json();
+    console.log("Request body:", body);
     const { type, title, description, content: contentText, videoUrl, imageUrl } = body;
 
     if (!type || !title) {
+      console.log("Missing required fields");
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }
       );
     }
+
+    console.log("Creating content with:", { type, title, videoUrl, createdById: session.user.id });
 
     const newContent = await prisma.content.create({
       data: {
@@ -71,11 +77,12 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    console.log("Content created:", newContent.id);
     return NextResponse.json({ content: newContent });
   } catch (error) {
     console.error("Error creating content:", error);
     return NextResponse.json(
-      { error: "Failed to create content" },
+      { error: "Failed to create content: " + String(error) },
       { status: 500 }
     );
   }
