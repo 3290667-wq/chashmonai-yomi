@@ -76,12 +76,23 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-logo flex flex-col">
+    <div className="min-h-screen bg-gradient-logo flex flex-col relative overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0 opacity-15 pointer-events-none">
+        <Image
+          src="/splash-bg.png"
+          alt=""
+          fill
+          className="object-cover"
+          priority
+        />
+      </div>
+
       {/* Decorative top bar */}
-      <div className="h-1 bg-gradient-to-r from-transparent via-gold to-transparent" />
+      <div className="h-1 bg-gradient-to-r from-transparent via-gold to-transparent relative z-10" />
 
       {/* Header */}
-      <header className="safe-area-top p-5">
+      <header className="safe-area-top p-5 relative z-10">
         <Link href="/" className="flex items-center gap-3 w-fit">
           <Image
             src="/רוח חשמונאית.png"
@@ -98,16 +109,17 @@ export default function LoginPage() {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 flex items-center justify-center p-5">
+      <main className="flex-1 flex items-center justify-center p-5 relative z-10">
         <div className="w-full max-w-md animate-fade-in-up">
           {/* Logo Section */}
           <div className="text-center mb-10">
-            <div className="relative w-28 h-28 mx-auto mb-5">
+            <div className="relative w-32 h-32 mx-auto mb-5">
               <Image
-                src="/רוח חשמונאית.png"
+                src="/shield-emblem.png"
                 alt="רוח חשמונאית"
                 fill
-                className="object-contain drop-shadow-lg"
+                className="object-contain drop-shadow-xl"
+                priority
               />
             </div>
             <h1 className="text-3xl font-bold text-brown-deep mb-2">
@@ -119,8 +131,16 @@ export default function LoginPage() {
           </div>
 
           {/* Form Card */}
-          <div className="bg-white rounded-3xl shadow-xl p-7 sm:p-9 border border-sand">
-            <form onSubmit={handleSubmit} className="space-y-5">
+          <div className="bg-white rounded-3xl shadow-xl p-7 sm:p-9 border border-sand relative overflow-hidden">
+            {/* Corner Ornaments */}
+            <div className="absolute top-0 right-0 w-20 h-20 opacity-20 pointer-events-none">
+              <Image src="/corner-ornament.png" alt="" fill className="object-contain" />
+            </div>
+            <div className="absolute bottom-0 left-0 w-20 h-20 opacity-20 rotate-180 pointer-events-none">
+              <Image src="/corner-ornament.png" alt="" fill className="object-contain" />
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-5 relative z-10">
               {isRegister && (
                 <>
                   <div className="relative">
@@ -206,10 +226,10 @@ export default function LoginPage() {
             </form>
 
             {/* Divider */}
-            <div className="gold-divider" />
+            <div className="gold-divider relative z-10" />
 
             {/* Toggle Register/Login */}
-            <div className="text-center">
+            <div className="text-center relative z-10">
               <button
                 type="button"
                 onClick={() => {
@@ -234,7 +254,7 @@ export default function LoginPage() {
       </main>
 
       {/* Decorative bottom bar */}
-      <div className="h-1 bg-gradient-to-r from-transparent via-gold to-transparent" />
+      <div className="h-1 bg-gradient-to-r from-transparent via-gold to-transparent relative z-10" />
     </div>
   );
 }

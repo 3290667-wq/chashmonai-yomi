@@ -63,12 +63,27 @@ export default async function DashboardPage() {
   return (
     <div className="py-6 sm:py-8 space-y-8">
       {/* Hero Welcome Card */}
-      <div className="hero-premium p-8 sm:p-10">
+      <div className="hero-premium p-8 sm:p-10 relative overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0 opacity-20">
+          <Image
+            src="/hero-banner.png"
+            alt=""
+            fill
+            className="object-cover"
+          />
+        </div>
+
         <div className="relative z-10">
           <div className="flex items-start gap-5">
-            {/* User Avatar */}
-            <div className="icon-circle-gold w-20 h-20 animate-float">
-              <Crown className="w-10 h-10" />
+            {/* User Avatar with Shield Emblem */}
+            <div className="relative w-20 h-20 animate-float">
+              <Image
+                src="/shield-emblem.png"
+                alt="סמל רוח חשמונאית"
+                fill
+                className="object-contain drop-shadow-lg"
+              />
             </div>
 
             <div className="flex-1">
@@ -115,11 +130,19 @@ export default async function DashboardPage() {
       </div>
 
       {/* Inspiring Quote */}
-      <div className="quote-box">
-        <p className="text-brown-deep font-semibold text-xl pr-8 font-hebrew">
+      <div className="quote-box relative overflow-hidden">
+        {/* Corner Ornaments */}
+        <div className="absolute top-0 right-0 w-16 h-16 opacity-30">
+          <Image src="/corner-ornament.png" alt="" fill className="object-contain" />
+        </div>
+        <div className="absolute bottom-0 left-0 w-16 h-16 opacity-30 rotate-180">
+          <Image src="/corner-ornament.png" alt="" fill className="object-contain" />
+        </div>
+
+        <p className="text-brown-deep font-semibold text-xl pr-8 font-hebrew relative z-10">
           חזק ואמץ - כי ה׳ אלוקיך עמך בכל אשר תלך
         </p>
-        <p className="text-gold-dark text-sm mt-3 font-bold">יהושע א׳, ט׳</p>
+        <p className="text-gold-dark text-sm mt-3 font-bold relative z-10">יהושע א׳, ט׳</p>
       </div>
 
       {/* Quick Links Grid */}
@@ -242,12 +265,23 @@ export default async function DashboardPage() {
       </div>
 
       {/* Motivation Card */}
-      <div className="card-gold p-8 text-center">
-        <Heart className="w-10 h-10 text-brown-deep/40 mx-auto mb-4" />
-        <p className="text-brown-deep font-bold text-2xl font-hebrew">
-          &ldquo;לעלות ולהתעלות - למען שמו באהבה&rdquo;
-        </p>
-        <p className="text-brown-rich mt-4 font-semibold">רוח חשמונאית</p>
+      <div className="card-gold p-8 text-center relative overflow-hidden">
+        {/* Background Shield */}
+        <div className="absolute inset-0 flex items-center justify-center opacity-10">
+          <div className="relative w-40 h-40">
+            <Image src="/shield-emblem.png" alt="" fill className="object-contain" />
+          </div>
+        </div>
+
+        <div className="relative z-10">
+          <div className="relative w-16 h-16 mx-auto mb-4">
+            <Image src="/shield-emblem.png" alt="רוח חשמונאית" fill className="object-contain" />
+          </div>
+          <p className="text-brown-deep font-bold text-2xl font-hebrew">
+            &ldquo;לעלות ולהתעלות - למען שמו באהבה&rdquo;
+          </p>
+          <p className="text-brown-rich mt-4 font-semibold">רוח חשמונאית</p>
+        </div>
       </div>
     </div>
   );
