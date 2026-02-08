@@ -19,48 +19,28 @@ export async function GET() {
       },
     });
 
-    // Get only videos
-    const videos = await prisma.content.findMany({
-      where: {
-        type: "VIDEO",
-      },
+    // Get daily boosts
+    const dailyBoosts = await prisma.dailyBoost.findMany({
       orderBy: { createdAt: "desc" },
       select: {
         id: true,
-        type: true,
+        date: true,
         title: true,
         description: true,
         videoUrl: true,
-        isPublished: true,
         createdAt: true,
       },
     });
 
-    // Get published videos only
-    const publishedVideos = await prisma.content.findMany({
-      where: {
-        type: "VIDEO",
-        isPublished: true,
-      },
-      orderBy: { createdAt: "desc" },
-      select: {
-        id: true,
-        type: true,
-        title: true,
-        description: true,
-        videoUrl: true,
-        isPublished: true,
-        createdAt: true,
-      },
-    });
+    // Get users count
+    const usersCount = await prisma.user.count();
 
     return NextResponse.json({
       totalContent: allContent.length,
       allContent,
-      totalVideos: videos.length,
-      videos,
-      totalPublishedVideos: publishedVideos.length,
-      publishedVideos,
+      totalDailyBoosts: dailyBoosts.length,
+      dailyBoosts,
+      usersCount,
     });
   } catch (error) {
     console.error("Debug error:", error);
