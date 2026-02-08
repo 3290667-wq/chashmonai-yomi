@@ -36,8 +36,9 @@ export async function POST(request: NextRequest) {
     }
 
     // Upload to Vercel Blob
-    const token = process.env.BLOB_READ_WRITE_TOKEN;
-    console.log("Token exists:", !!token);
+    // Token from environment or fallback to direct value
+    const token = process.env.BLOB_READ_WRITE_TOKEN || "vercel_blob_rw_chsdfTY4A2gxjY0U_U58DBpPokTkoUX12ujUld5tz4Qi01D";
+    console.log("Token source:", process.env.BLOB_READ_WRITE_TOKEN ? "env" : "fallback");
 
     const blob = await put(file.name, file, {
       access: "public",
