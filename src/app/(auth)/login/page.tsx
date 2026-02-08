@@ -82,18 +82,17 @@ export default function LoginPage() {
 
       {/* Header */}
       <header className="safe-area-top p-5">
-        <Link href="/" className="flex items-center gap-3 w-fit group">
-          <div className="relative w-12 h-12 animate-float">
-            <Image
-              src="/רוח חשמונאית.png"
-              alt="רוח חשמונאית"
-              fill
-              className="object-contain"
-            />
-          </div>
+        <Link href="/" className="flex items-center gap-3 w-fit">
+          <Image
+            src="/רוח חשמונאית.png"
+            alt="רוח חשמונאית"
+            width={48}
+            height={48}
+            className="drop-shadow-md"
+          />
           <div>
             <span className="font-bold text-brown-deep text-lg">חשמונאי יומי</span>
-            <p className="text-xs text-brown-soft">רוח חשמונאית</p>
+            <p className="text-xs text-brown-warm">רוח חשמונאית</p>
           </div>
         </Link>
       </header>
@@ -104,12 +103,11 @@ export default function LoginPage() {
           {/* Logo Section */}
           <div className="text-center mb-10">
             <div className="relative w-28 h-28 mx-auto mb-5">
-              <div className="absolute inset-0 bg-gold/20 rounded-full blur-xl animate-pulse-gold" />
               <Image
                 src="/רוח חשמונאית.png"
                 alt="רוח חשמונאית"
                 fill
-                className="object-contain relative z-10"
+                className="object-contain drop-shadow-lg"
               />
             </div>
             <h1 className="text-3xl font-bold text-brown-deep mb-2">
@@ -121,7 +119,7 @@ export default function LoginPage() {
           </div>
 
           {/* Form Card */}
-          <div className="card-luxury p-7 sm:p-9">
+          <div className="bg-white rounded-3xl shadow-xl p-7 sm:p-9 border border-sand">
             <form onSubmit={handleSubmit} className="space-y-5">
               {isRegister && (
                 <>
