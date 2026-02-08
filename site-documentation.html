@@ -1,0 +1,552 @@
+
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+  <meta charset="UTF-8">
+  <title>מבנה האתר - חשמונאי יומי</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&display=swap');
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Heebo', Arial, sans-serif;
+      direction: rtl;
+      text-align: right;
+      background: linear-gradient(135deg, #FDF8F0 0%, #F5EDE0 100%);
+      color: #3D2914;
+      padding: 40px;
+      line-height: 1.8;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      color: #3D2914;
+      border-bottom: 4px solid #C9A227;
+      padding-bottom: 15px;
+      font-size: 2.5em;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    h2 {
+      color: #5D4037;
+      background: linear-gradient(90deg, #C9A227, #E8A04C);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-top: 40px;
+      font-size: 1.8em;
+      border-right: 5px solid #C9A227;
+      padding-right: 15px;
+    }
+
+    h3 {
+      color: #5D4037;
+      margin-top: 25px;
+      font-size: 1.3em;
+    }
+
+    .section {
+      background: rgba(255,255,255,0.9);
+      border-radius: 15px;
+      padding: 25px;
+      margin: 20px 0;
+      box-shadow: 0 4px 20px rgba(61,41,20,0.1);
+      border: 1px solid #E8D5B7;
+    }
+
+    .tech-box {
+      background: linear-gradient(135deg, #3D2914, #5D4037);
+      color: #FDF8F0;
+      padding: 20px;
+      border-radius: 12px;
+      font-family: 'Courier New', monospace;
+      direction: ltr;
+      text-align: left;
+      margin: 15px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    th {
+      background: linear-gradient(135deg, #C9A227, #A17D1A);
+      color: white;
+      padding: 15px;
+      font-weight: 600;
+    }
+
+    td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #E8D5B7;
+    }
+
+    tr:nth-child(even) {
+      background: #FDF8F0;
+    }
+
+    .highlight {
+      background: linear-gradient(90deg, rgba(201,162,39,0.1), rgba(232,160,76,0.1));
+      padding: 3px 8px;
+      border-radius: 5px;
+      font-weight: 600;
+    }
+
+    .icon {
+      font-size: 1.5em;
+      margin-left: 10px;
+    }
+
+    .diagram {
+      background: #2C1810;
+      color: #C9A227;
+      padding: 25px;
+      border-radius: 12px;
+      font-family: 'Courier New', monospace;
+      direction: ltr;
+      text-align: center;
+      white-space: pre;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 0.9em;
+      font-weight: 600;
+    }
+
+    .status-secure {
+      background: #6B7B3E;
+      color: white;
+    }
+
+    .status-active {
+      background: #C9A227;
+      color: #3D2914;
+    }
+
+    ul {
+      padding-right: 25px;
+    }
+
+    li {
+      margin: 8px 0;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 50px;
+      padding-top: 20px;
+      border-top: 2px solid #E8D5B7;
+      color: #8B7355;
+    }
+
+    .logo-section {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo-text {
+      font-size: 3em;
+      font-weight: 700;
+      background: linear-gradient(135deg, #C9A227, #A17D1A);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      color: #8B7355;
+      font-size: 1.2em;
+      margin-top: 5px;
+    }
+
+    @media print {
+      body {
+        background: white;
+        padding: 20px;
+      }
+      .section {
+        break-inside: avoid;
+      }
+      h2 {
+        break-after: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="logo-section">
+  <div class="logo-text">חשמונאי יומי</div>
+  <div class="subtitle">לעלות ולהתעלות</div>
+</div>
+
+<h1>📋 מסמך טכני - מבנה האתר</h1>
+
+<div class="section">
+  <h2>🏗️ ארכיטקטורת האתר</h2>
+
+  <h3>טכנולוגיות עיקריות</h3>
+  <div class="tech-box">
+Frontend:  Next.js 16 (React 19)
+Backend:   Next.js API Routes (Serverless)
+Database:  PostgreSQL (Neon Cloud)
+Auth:      NextAuth v5 (JWT Tokens)
+Storage:   Vercel Blob (Videos/Images)
+Hosting:   Vercel (Global CDN)
+Language:  TypeScript
+Styling:   Tailwind CSS 4
+  </div>
+</div>
+
+<div class="section">
+  <h2>📁 מבנה התיקיות</h2>
+
+  <div class="tech-box">
+chashmonai-yomi/
+├── src/
+│   ├── app/                    # דפי האפליקציה
+│   │   ├── (main)/            # דפים מוגנים
+│   │   │   ├── dashboard/     # דף ראשי
+│   │   │   ├── daily/         # לימוד יומי
+│   │   │   ├── boost/         # חיזוק יומי
+│   │   │   ├── search/        # חיפוש
+│   │   │   ├── zmanim/        # זמני תפילה
+│   │   │   ├── points/        # נקודות
+│   │   │   ├── chat/          # שאל את הרב
+│   │   │   ├── profile/       # פרופיל
+│   │   │   └── admin/         # ניהול
+│   │   ├── api/               # API Endpoints
+│   │   └── login/             # התחברות
+│   ├── components/            # רכיבים
+│   ├── lib/                   # ספריות
+│   ├── hooks/                 # React Hooks
+│   └── types/                 # TypeScript
+├── prisma/                    # Database Schema
+└── public/                    # קבצים סטטיים
+  </div>
+</div>
+
+<div class="section">
+  <h2>🗄️ אחסון נתונים</h2>
+
+  <h3>1. PostgreSQL (Neon) - דטהבייס ראשי</h3>
+  <table>
+    <tr>
+      <th>פרמטר</th>
+      <th>ערך</th>
+    </tr>
+    <tr>
+      <td>ספק</td>
+      <td>Neon Cloud</td>
+    </tr>
+    <tr>
+      <td>אזור</td>
+      <td>eu-central-1 (פרנקפורט)</td>
+    </tr>
+    <tr>
+      <td>גרסה</td>
+      <td>PostgreSQL 15</td>
+    </tr>
+    <tr>
+      <td>חיבור</td>
+      <td>SSL מוצפן</td>
+    </tr>
+  </table>
+
+  <h3>טבלאות בדטהבייס</h3>
+  <table>
+    <tr>
+      <th>טבלה</th>
+      <th>תיאור</th>
+      <th>שדות עיקריים</th>
+    </tr>
+    <tr>
+      <td><span class="highlight">User</span></td>
+      <td>משתמשים</td>
+      <td>id, email, password, role, points, streak</td>
+    </tr>
+    <tr>
+      <td><span class="highlight">Content</span></td>
+      <td>תכנים</td>
+      <td>id, type, title, videoUrl, isPublished</td>
+    </tr>
+    <tr>
+      <td><span class="highlight">LearningSession</span></td>
+      <td>מעקב למידה</td>
+      <td>userId, duration, pointsEarned</td>
+    </tr>
+    <tr>
+      <td><span class="highlight">ChatMessage</span></td>
+      <td>הודעות צ'אט</td>
+      <td>fromUserId, toUserId, message</td>
+    </tr>
+    <tr>
+      <td><span class="highlight">PointsRedemption</span></td>
+      <td>פדיון נקודות</td>
+      <td>userId, points, status</td>
+    </tr>
+  </table>
+
+  <h3>2. Vercel Blob - אחסון קבצים</h3>
+  <table>
+    <tr>
+      <th>פרמטר</th>
+      <th>ערך</th>
+    </tr>
+    <tr>
+      <td>שימוש</td>
+      <td>סרטונים ותמונות</td>
+    </tr>
+    <tr>
+      <td>גודל מקסימלי</td>
+      <td>300MB לקובץ</td>
+    </tr>
+    <tr>
+      <td>URL</td>
+      <td>*.public.blob.vercel-storage.com</td>
+    </tr>
+  </table>
+</div>
+
+<div class="section">
+  <h2>🔐 אבטחה</h2>
+
+  <h3>1. הזדהות (Authentication)</h3>
+  <table>
+    <tr>
+      <th>רכיב</th>
+      <th>טכנולוגיה</th>
+      <th>סטטוס</th>
+    </tr>
+    <tr>
+      <td>מערכת הזדהות</td>
+      <td>NextAuth v5</td>
+      <td><span class="status-badge status-secure">מאובטח</span></td>
+    </tr>
+    <tr>
+      <td>הצפנת סיסמאות</td>
+      <td>bcrypt (10 rounds)</td>
+      <td><span class="status-badge status-secure">מאובטח</span></td>
+    </tr>
+    <tr>
+      <td>טוקנים</td>
+      <td>JWT מוצפן</td>
+      <td><span class="status-badge status-secure">מאובטח</span></td>
+    </tr>
+    <tr>
+      <td>Session</td>
+      <td>HTTP-Only Cookie</td>
+      <td><span class="status-badge status-secure">מאובטח</span></td>
+    </tr>
+  </table>
+
+  <h3>2. הרשאות (Authorization)</h3>
+  <table>
+    <tr>
+      <th>תפקיד</th>
+      <th>הרשאות</th>
+    </tr>
+    <tr>
+      <td><span class="highlight">USER</span></td>
+      <td>צפייה בתוכן, צבירת נקודות, צ'אט</td>
+    </tr>
+    <tr>
+      <td><span class="highlight">RAM</span></td>
+      <td>הכל מ-USER + העלאת תוכן לפלוגה</td>
+    </tr>
+    <tr>
+      <td><span class="highlight">ADMIN</span></td>
+      <td>גישה מלאה לכל המערכת</td>
+    </tr>
+  </table>
+
+  <h3>3. הגנות נוספות</h3>
+  <table>
+    <tr>
+      <th>הגנה</th>
+      <th>פירוט</th>
+      <th>סטטוס</th>
+    </tr>
+    <tr>
+      <td>HTTPS</td>
+      <td>כל התקשורת מוצפנת (TLS 1.3)</td>
+      <td><span class="status-badge status-active">פעיל</span></td>
+    </tr>
+    <tr>
+      <td>SQL Injection</td>
+      <td>Prisma ORM מונע הזרקות</td>
+      <td><span class="status-badge status-active">פעיל</span></td>
+    </tr>
+    <tr>
+      <td>XSS</td>
+      <td>React מסנן אוטומטית</td>
+      <td><span class="status-badge status-active">פעיל</span></td>
+    </tr>
+    <tr>
+      <td>CSRF</td>
+      <td>NextAuth מגן אוטומטית</td>
+      <td><span class="status-badge status-active">פעיל</span></td>
+    </tr>
+    <tr>
+      <td>Input Validation</td>
+      <td>בדיקת קלט בשרת</td>
+      <td><span class="status-badge status-active">פעיל</span></td>
+    </tr>
+  </table>
+</div>
+
+<div class="section">
+  <h2>🔄 סנכרון בין שרתים</h2>
+
+  <h3>ארכיטקטורת Serverless</h3>
+  <div class="diagram">
+┌─────────────────────────────────────────────────────────┐
+│                     Vercel CDN                          │
+│                   (Edge Network)                        │
+│   ┌─────────┐    ┌─────────┐    ┌─────────┐           │
+│   │  USA    │    │ Europe  │    │  Asia   │           │
+│   └────┬────┘    └────┬────┘    └────┬────┘           │
+└────────┼──────────────┼──────────────┼─────────────────┘
+         │              │              │
+         └──────────────┼──────────────┘
+                        │
+                        ▼
+              ┌─────────────────┐
+              │ Serverless Func │
+              │   (Next.js)     │
+              └────────┬────────┘
+                       │
+                       ▼
+              ┌─────────────────┐
+              │   Neon DB       │
+              │  (PostgreSQL)   │
+              │  Frankfurt      │
+              └─────────────────┘
+  </div>
+
+  <h3>איך זה עובד</h3>
+  <ul>
+    <li><strong>Serverless:</strong> כל בקשה רצה בפונקציה נפרדת - אין שרת קבוע</li>
+    <li><strong>Auto-scaling:</strong> המערכת מתרחבת אוטומטית לפי עומס</li>
+    <li><strong>Database:</strong> דטהבייס יחיד משותף לכל השרתים</li>
+    <li><strong>CDN:</strong> קבצים סטטיים מופצים גלובלית</li>
+    <li><strong>Cache:</strong> תוכן סטטי נשמר ב-cache, API דינמי ללא cache</li>
+  </ul>
+</div>
+
+<div class="section">
+  <h2>📊 זרימת בקשה</h2>
+
+  <div class="diagram">
+משתמש שולח בקשה
+        │
+        ▼
+┌───────────────────┐
+│   Vercel Edge     │ ──► בדיקת cache
+└────────┬──────────┘
+         │
+         ▼
+┌───────────────────┐
+│ Serverless Func   │ ──► הרצת קוד
+└────────┬──────────┘
+         │
+         ▼
+┌───────────────────┐
+│   NextAuth        │ ──► בדיקת session
+└────────┬──────────┘
+         │
+         ▼
+┌───────────────────┐
+│   Prisma ORM      │ ──► שליפת נתונים
+└────────┬──────────┘
+         │
+         ▼
+┌───────────────────┐
+│   Neon Database   │ ──► PostgreSQL
+└───────────────────┘
+  </div>
+</div>
+
+<div class="section">
+  <h2>🌐 כתובות ונקודות קצה</h2>
+
+  <table>
+    <tr>
+      <th>שירות</th>
+      <th>כתובת</th>
+    </tr>
+    <tr>
+      <td>אתר ראשי</td>
+      <td>https://chashmonai-yomi.vercel.app</td>
+    </tr>
+    <tr>
+      <td>API</td>
+      <td>https://chashmonai-yomi.vercel.app/api/*</td>
+    </tr>
+    <tr>
+      <td>דטהבייס</td>
+      <td>neon.tech (פרטי - מוצפן)</td>
+    </tr>
+    <tr>
+      <td>אחסון קבצים</td>
+      <td>*.public.blob.vercel-storage.com</td>
+    </tr>
+  </table>
+</div>
+
+<div class="section">
+  <h2>💡 סיכום</h2>
+
+  <table>
+    <tr>
+      <th>קטגוריה</th>
+      <th>פירוט</th>
+    </tr>
+    <tr>
+      <td><strong>אחסון</strong></td>
+      <td>Vercel (קוד) + Neon (דטהבייס) + Blob (קבצים)</td>
+    </tr>
+    <tr>
+      <td><strong>אבטחה</strong></td>
+      <td>JWT + bcrypt + HTTPS + Role-based access</td>
+    </tr>
+    <tr>
+      <td><strong>סנכרון</strong></td>
+      <td>דטהבייס יחיד משותף לכל השרתים</td>
+    </tr>
+    <tr>
+      <td><strong>ביצועים</strong></td>
+      <td>Serverless + CDN + Auto-scaling</td>
+    </tr>
+    <tr>
+      <td><strong>זמינות</strong></td>
+      <td>99.9% uptime, גיבוי אוטומטי</td>
+    </tr>
+  </table>
+</div>
+
+<div class="footer">
+  <p>מסמך זה נוצר אוטומטית עבור פרויקט <strong>חשמונאי יומי</strong></p>
+  <p>תאריך: 8.2.2026</p>
+  <p style="color: #C9A227; font-weight: 600;">לעלות ולהתעלות - למען שמו באהבה</p>
+</div>
+
+</body>
+</html>

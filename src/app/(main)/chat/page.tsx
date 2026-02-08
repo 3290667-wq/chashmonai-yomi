@@ -91,8 +91,8 @@ export default function ChatPage() {
     <div className="py-6 space-y-6">
       {/* Header */}
       <div className="bg-gradient-to-l from-primary to-primary-light rounded-2xl p-6 text-white">
-        <h1 className="text-2xl font-bold mb-2">צ'אט</h1>
-        <p className="text-white/80">שלח הודעה לר"מ הפלוגתי</p>
+        <h1 className="text-2xl font-bold mb-2">צ&apos;אט</h1>
+        <p className="text-white/80">שלח הודעה לר&quot;מ הפלוגתי</p>
       </div>
 
       {/* Contacts List */}
@@ -104,7 +104,7 @@ export default function ChatPage() {
             <MessageCircle size={48} className="mx-auto text-muted mb-4" />
             <p className="text-lg font-medium mb-2">אין אנשי קשר זמינים</p>
             <p className="text-muted text-sm">
-              פנה למנהל המערכת להוספת ר"מ לפלוגה שלך
+              פנה למנהל המערכת להוספת ר&quot;מ לפלוגה שלך
             </p>
           </div>
         ) : (
@@ -180,7 +180,7 @@ export default function ChatPage() {
       {/* Info */}
       <div className="text-center text-sm text-muted">
         <p>ההודעות שלך נשמרות בצורה מאובטחת</p>
-        <p>רק אתה והר"מ יכולים לראות את השיחה</p>
+        <p>רק אתה והר&quot;מ יכולים לראות את השיחה</p>
       </div>
     </div>
   );

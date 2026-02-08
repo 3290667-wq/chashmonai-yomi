@@ -10,7 +10,6 @@ import {
   Edit2,
   Trash2,
   ExternalLink,
-  Play,
   BookOpen,
   Sparkles,
   Heart,
@@ -111,7 +110,7 @@ export default function ContentPage() {
         const data = await res.json();
         setContents(data.contents || []);
       }
-    } catch (error) {
+    } catch {
       console.error("Failed to fetch contents:", error);
     } finally {
       setLoading(false);
@@ -172,7 +171,7 @@ export default function ContentPage() {
         setSaveError(errorMsg);
         alert("שגיאה: " + errorMsg + (data.code ? ` (${data.code})` : ""));
       }
-    } catch (error) {
+    } catch {
       console.error("[Admin Content] Request failed:", error);
       setSaveError("שגיאה בשמירת התוכן - נא לנסות שוב");
       alert("שגיאה בשמירת התוכן: " + String(error));
@@ -192,7 +191,7 @@ export default function ContentPage() {
       if (res.ok) {
         fetchContents();
       }
-    } catch (error) {
+    } catch {
       console.error("Failed to delete content:", error);
     }
   };

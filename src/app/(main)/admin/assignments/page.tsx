@@ -35,7 +35,7 @@ export default function AssignmentsPage() {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [selectedPlatoon, setSelectedPlatoon] = useState("");
-  const [newPlatoon, setNewPlatoon] = useState("");
+  
 
   const isAdmin = session?.user?.role === "ADMIN";
 
@@ -118,15 +118,7 @@ export default function AssignmentsPage() {
     }
   };
 
-  const handleCreatePlatoon = async () => {
-    if (!newPlatoon.trim()) return;
-
-    // Create a dummy user with this platoon to register it
-    // Or we can update an existing user
-    // For now, we'll just refresh - platoons are created when users register
-    setNewPlatoon("");
-    alert("פלוגות נוצרות אוטומטית כאשר משתמשים נרשמים עם שם פלוגה");
-  };
+  
 
   return (
     <div className="py-4 sm:py-6 space-y-5">

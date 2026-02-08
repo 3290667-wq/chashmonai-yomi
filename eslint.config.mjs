@@ -12,6 +12,14 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Build outputs
+    ".netlify/**",
+    // Utility scripts
+    "create-pdf.js",
+    "generate-pdf.js",
+    "generate-site-docs.js",
+    "generate-images.py",
+    "generate-more.py",
   ]),
 ]);
 

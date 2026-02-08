@@ -1,27 +1,39 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useSyncExternalStore, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import SplashScreen from "@/components/splash-screen";
 import { BookOpen, Clock, Users, Award } from "lucide-react";
 
-export default function Home() {
-  const [showSplash, setShowSplash] = useState(true);
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  useEffect(() => {
-    const hasSeenSplash = sessionStorage.getItem("hasSeenSplash");
-    if (hasSeenSplash) {
-      setShowSplash(false);
-      setIsLoaded(true);
-    }
+// Custom hook for session storage with SSR support
+function useSessionStorage(key: string) {
+  const subscribe = useCallback((callback: () => void) => {
+    window.addEventListener('storage', callback);
+    return () => window.removeEventListener('storage', callback);
   }, []);
+  
+  const getSnapshot = useCallback(() => {
+    return sessionStorage.getItem(key);
+  }, [key]);
+  
+  const getServerSnapshot = useCallback(() => {
+    return null;
+  }, []);
+  
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+}
+
+export default function Home() {
+  const hasSeenSplash = useSessionStorage("hasSeenSplash");
+  const [splashCompleted, setSplashCompleted] = useState(false);
+  
+  const showSplash = hasSeenSplash === null && !splashCompleted;
+  const isLoaded = hasSeenSplash !== null || splashCompleted;
 
   const handleSplashComplete = () => {
     sessionStorage.setItem("hasSeenSplash", "true");
-    setShowSplash(false);
-    setIsLoaded(true);
+    setSplashCompleted(true);
   };
 
   if (showSplash) {
