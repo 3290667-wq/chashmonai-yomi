@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getDailyMishnah, getDailyRambam } from "@/lib/sefaria";
 import { prisma } from "@/lib/prisma";
 
@@ -6,7 +6,9 @@ import { prisma } from "@/lib/prisma";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams;
+  const getAllVideos = searchParams.get("all") === "true";
   // Initialize response data
   let mishnah = null;
   let rambam = null;
@@ -114,6 +116,8 @@ export async function GET() {
     musar: musar.length > 0 ? musar[0] : null,
     thought: thought.length > 0 ? thought[0] : null,
     dailyVideo: videos.length > 0 ? videos[0] : null,
+    // All videos (when requested)
+    allVideos: getAllVideos ? videos : undefined,
     // Debug info - full details
     _debug: {
       ...debugInfo,
