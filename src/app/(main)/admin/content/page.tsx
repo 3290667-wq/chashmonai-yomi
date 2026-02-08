@@ -117,8 +117,11 @@ export default function ContentPage() {
     }
   };
 
+  const [saveError, setSaveError] = useState("");
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSaveError("");
     try {
       const method = editingContent ? "PATCH" : "POST";
       const body = editingContent
@@ -130,11 +133,16 @@ export default function ContentPage() {
         body.platoon = session.user.platoon;
       }
 
+      console.log("Saving content:", body);
+
       const res = await fetch("/api/admin/content", {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
+
+      const data = await res.json();
+      console.log("Save response:", data);
 
       if (res.ok) {
         fetchContents();
@@ -148,9 +156,14 @@ export default function ContentPage() {
           videoUrl: "",
           platoon: "",
         });
+      } else {
+        setSaveError(data.error || "שגיאה בשמירת התוכן");
+        alert("שגיאה: " + (data.error || "לא ניתן לשמור את התוכן"));
       }
     } catch (error) {
       console.error("Failed to save content:", error);
+      setSaveError("שגיאה בשמירת התוכן");
+      alert("שגיאה בשמירת התוכן: " + String(error));
     }
   };
 
