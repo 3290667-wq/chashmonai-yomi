@@ -254,6 +254,7 @@ export default function ContentPage() {
           content: "",
           type: "VIDEO",
           videoUrl: "",
+          imageUrl: "",
           platoon: "",
         });
       } else {
@@ -293,7 +294,7 @@ export default function ContentPage() {
       content: content.content || "",
       type: content.type,
       videoUrl: content.videoUrl || "",
-      imageUrl: (content as Content & { imageUrl?: string }).imageUrl || "",
+      imageUrl: content.imageUrl || "",
       platoon: content.platoon || "",
     });
     setShowModal(true);
