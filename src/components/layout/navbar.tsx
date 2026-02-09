@@ -19,8 +19,6 @@ import {
   Search,
   Star,
   Shield,
-  Crown,
-  Sparkles,
   Flame,
 } from "lucide-react";
 import { useState } from "react";
@@ -51,76 +49,60 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
 
   return (
     <>
-      {/* Desktop Sidebar - Military Glassmorphism */}
+      {/* Desktop Sidebar - Artlist Dark Theme */}
       <aside className="hidden lg:flex w-72 flex-col fixed right-0 top-0 bottom-0 z-30">
-        {/* Glass Background */}
-        <div className="absolute inset-0 bg-gradient-to-b from-cream-white/95 via-cream-warm/90 to-cream-white/95 backdrop-blur-xl" />
+        {/* Background */}
+        <div className="absolute inset-0 bg-[#121212] border-l border-white/10" />
 
-        {/* Animated Glow Border */}
-        <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-transparent via-gold to-transparent animate-shimmer" />
+        {/* Subtle Gold Glow */}
+        <div className="absolute left-0 top-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-gold/50 to-transparent" />
 
-        {/* Floating Particles */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute w-32 h-32 rounded-full bg-gold/10 blur-3xl top-20 -left-10 animate-float" />
-          <div className="absolute w-24 h-24 rounded-full bg-gold/15 blur-2xl bottom-40 right-4 animate-float" style={{ animationDelay: "-2s" }} />
-          <div className="absolute w-20 h-20 rounded-full bg-amber-400/10 blur-2xl top-1/2 left-1/4 animate-float" style={{ animationDelay: "-4s" }} />
-        </div>
+        {/* Gold Top Line */}
+        <div className="relative h-1 bg-gradient-to-l from-gold-dark via-gold to-gold-dark" />
 
-        {/* Gold Top Border - Animated */}
-        <div className="relative h-1.5 bg-gradient-to-l from-gold-dark via-gold-light to-gold-dark overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-l from-transparent via-white/50 to-transparent animate-shimmer" />
-        </div>
-
-        {/* Logo Header - Enhanced */}
-        <div className="relative p-6 border-b border-gold/20">
+        {/* Logo Header */}
+        <div className="relative p-6 border-b border-white/10">
           <Link href="/dashboard" className="flex items-center gap-4 group">
             <div className="relative">
-              {/* Multi-layer Glow */}
-              <div className="absolute inset-0 bg-gradient-to-br from-gold via-amber-400 to-gold-dark rounded-2xl blur-xl opacity-40 group-hover:opacity-60 transition-all animate-pulse-gold" />
-              <div className="absolute inset-0 bg-gold/30 rounded-xl blur-lg group-hover:blur-xl transition-all" />
+              <div className="absolute inset-0 bg-gold/30 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity" />
               <Image
                 src="/רוח חשמונאית.png"
                 alt="רוח חשמונאית"
-                width={56}
-                height={56}
-                className="relative drop-shadow-2xl group-hover:scale-110 group-hover:rotate-3 transition-all duration-500"
+                width={48}
+                height={48}
+                className="relative drop-shadow-lg group-hover:scale-105 transition-transform"
               />
             </div>
             <div>
-              <h1 className="font-bold text-brown-deep text-xl text-glow">חשמונאי יומי</h1>
-              <p className="text-xs text-gold font-semibold flex items-center gap-1">
-                <Sparkles className="w-3 h-3" />
-                לעלות ולהתעלות
-              </p>
+              <h1 className="font-bold text-white text-lg">חשמונאי יומי</h1>
+              <p className="text-xs text-gold font-medium">לעלות ולהתעלות</p>
             </div>
           </Link>
         </div>
 
-        <nav className="relative z-10 flex-1 p-4 space-y-2 overflow-y-auto scrollbar-hide">
-          {/* Search Button - Glass */}
+        <nav className="relative z-10 flex-1 p-4 space-y-1 overflow-y-auto">
+          {/* Search Button */}
           <Link
             href="/search"
-            className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
+            className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
               pathname === "/search"
-                ? "glass-card glow-gold"
-                : "hover:glass hover:translate-x-[-4px]"
+                ? "bg-gold/15 text-gold"
+                : "text-white/60 hover:bg-white/5 hover:text-white"
             }`}
           >
             <div className={`p-2 rounded-lg transition-all ${
               pathname === "/search"
-                ? "bg-gradient-to-br from-gold to-gold-dark text-white"
-                : "bg-gold/10 text-gold group-hover:bg-gold/20"
+                ? "bg-gold text-[#0a0a0a]"
+                : "bg-white/5 text-white/60 group-hover:bg-white/10 group-hover:text-white"
             }`}>
               <Search className="w-4 h-4" />
             </div>
-            <span className={`font-medium ${pathname === "/search" ? "text-brown-deep" : "text-brown-warm group-hover:text-brown-deep"}`}>
-              חיפוש
-            </span>
+            <span className="font-medium">חיפוש</span>
           </Link>
 
-          <div className="gold-divider !my-4" />
+          <div className="h-px bg-white/10 my-4" />
 
-          {navItems.map((item, index) => {
+          {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
 
@@ -128,27 +110,22 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
               <Link
                 key={item.href}
                 href={item.href}
-                className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 stagger-item ${
+                className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
                   isActive
-                    ? "glass-card glow-gold"
-                    : "hover:glass hover:translate-x-[-4px]"
+                    ? "bg-gold/15 text-gold"
+                    : "text-white/60 hover:bg-white/5 hover:text-white"
                 }`}
-                style={{ animationDelay: `${index * 50}ms` }}
               >
-                <div className={`p-2 rounded-lg transition-all duration-300 ${
+                <div className={`p-2 rounded-lg transition-all ${
                   isActive
-                    ? "bg-gradient-to-br from-gold to-gold-dark text-white shadow-lg"
-                    : "bg-gold/10 text-gold group-hover:bg-gold/20 group-hover:scale-110"
+                    ? "bg-gold text-[#0a0a0a]"
+                    : "bg-white/5 text-white/60 group-hover:bg-white/10 group-hover:text-white"
                 }`}>
                   <Icon className="w-4 h-4" />
                 </div>
-                <span className={`font-medium transition-colors ${
-                  isActive ? "text-brown-deep" : "text-brown-warm group-hover:text-brown-deep"
-                }`}>
-                  {item.label}
-                </span>
+                <span className="font-medium">{item.label}</span>
                 {item.href === "/points" && (
-                  <span className="mr-auto flex items-center gap-1 bg-gradient-to-r from-gold to-gold-dark text-white text-xs py-1 px-2.5 rounded-full shadow-md">
+                  <span className="mr-auto flex items-center gap-1 bg-gold text-[#0a0a0a] text-xs py-1 px-2.5 rounded-full font-bold">
                     <Star className="w-3 h-3" />
                     {userPoints}
                   </span>
@@ -161,59 +138,46 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
             <>
               <div className="pt-6 pb-2">
                 <p className="text-xs text-gold px-4 font-bold uppercase tracking-wider flex items-center gap-2">
-                  <Shield className="w-3 h-3 animate-pulse" />
+                  <Shield className="w-3 h-3" />
                   ניהול
                 </p>
               </div>
               <Link
                 href="/admin"
-                className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
+                className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
                   pathname.startsWith("/admin")
-                    ? "glass-card border border-gold/30 glow-gold"
-                    : "hover:glass hover:translate-x-[-4px]"
+                    ? "bg-gold/15 text-gold"
+                    : "text-white/60 hover:bg-white/5 hover:text-white"
                 }`}
               >
                 <div className={`p-2 rounded-lg transition-all ${
                   pathname.startsWith("/admin")
-                    ? "bg-gradient-to-br from-gold to-gold-dark text-white"
-                    : "bg-gold/10 text-gold group-hover:bg-gold/20"
+                    ? "bg-gold text-[#0a0a0a]"
+                    : "bg-white/5 text-white/60 group-hover:bg-white/10 group-hover:text-white"
                 }`}>
                   <Settings className="w-4 h-4" />
                 </div>
-                <span className={`font-medium ${
-                  pathname.startsWith("/admin") ? "text-brown-deep" : "text-brown-warm group-hover:text-brown-deep"
-                }`}>
-                  דף ניהול
-                </span>
+                <span className="font-medium">דף ניהול</span>
               </Link>
             </>
           )}
         </nav>
 
-        {/* User Section - Enhanced Glass */}
-        <div className="relative p-4 border-t border-gold/20">
-          {/* Background Glow */}
-          <div className="absolute inset-0 bg-gradient-to-t from-gold/5 to-transparent" />
-
-          <div className="relative glass-card p-4 mb-3 glow-gold overflow-hidden group">
-            {/* Shimmer Effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 animate-shimmer" />
-
-            <div className="relative flex items-center gap-3">
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-gold to-amber-500 rounded-xl blur opacity-50 animate-pulse" />
-                <div className="relative w-12 h-12 bg-gradient-to-br from-gold via-gold-light to-gold-dark rounded-xl flex items-center justify-center shadow-lg">
-                  <Crown className="w-6 h-6 text-white" />
-                </div>
+        {/* User Section */}
+        <div className="relative p-4 border-t border-white/10">
+          <div className="bg-[#1e1e1e] border border-white/10 rounded-xl p-4 mb-3">
+            <div className="flex items-center gap-3">
+              <div className="w-11 h-11 bg-gradient-to-br from-gold to-gold-dark rounded-xl flex items-center justify-center shadow-lg">
+                <User className="w-5 h-5 text-white" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="font-bold text-brown-deep truncate text-glow">{userName || "משתמש"}</p>
+                <p className="font-bold text-white truncate">{userName || "משתמש"}</p>
                 <div className="flex items-center gap-3 mt-1">
-                  <span className="text-xs text-gold font-semibold flex items-center gap-1">
+                  <span className="text-xs text-gold font-medium flex items-center gap-1">
                     <Star className="w-3 h-3" />
                     {userPoints}
                   </span>
-                  <span className="text-xs text-orange-500 font-semibold flex items-center gap-1">
+                  <span className="text-xs text-orange-400 font-medium flex items-center gap-1">
                     <Flame className="w-3 h-3" />
                     {userStreak}
                   </span>
@@ -224,9 +188,9 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
 
           <button
             onClick={() => signOut({ callbackUrl: "/" })}
-            className="group flex items-center gap-3 px-4 py-3 rounded-xl w-full transition-all duration-300 hover:glass text-brown-warm hover:text-error"
+            className="group flex items-center gap-3 px-4 py-3 rounded-xl w-full transition-all duration-200 text-white/60 hover:bg-white/5 hover:text-red-400"
           >
-            <div className="p-2 rounded-lg bg-error/10 text-error group-hover:bg-error group-hover:text-white transition-all">
+            <div className="p-2 rounded-lg bg-red-500/10 text-red-400 group-hover:bg-red-500 group-hover:text-white transition-all">
               <LogOut className="w-4 h-4" />
             </div>
             <span className="font-medium">התנתק</span>
@@ -234,43 +198,40 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
         </div>
       </aside>
 
-      {/* Mobile Header - Glassmorphism */}
+      {/* Mobile Header - Dark Theme */}
       <header className="lg:hidden fixed top-0 right-0 left-0 h-16 px-4 flex items-center justify-between z-50 safe-area-top">
-        {/* Glass Background */}
-        <div className="absolute inset-0 bg-cream-white/80 backdrop-blur-xl" />
-        <div className="absolute inset-x-0 bottom-0 h-[1px] bg-gradient-to-r from-transparent via-gold to-transparent" />
+        <div className="absolute inset-0 bg-[#0a0a0a]/95 backdrop-blur-xl border-b border-white/10" />
 
         <Link href="/dashboard" className="relative flex items-center gap-3 group">
-          <div className="relative">
-            <div className="absolute inset-0 bg-gold/30 rounded-xl blur-md group-hover:blur-lg transition-all animate-pulse-gold" />
-            <Image
-              src="/רוח חשמונאית.png"
-              alt="רוח חשמונאית"
-              width={40}
-              height={40}
-              className="relative drop-shadow-lg group-hover:scale-110 transition-transform"
-            />
-          </div>
-          <span className="font-bold text-brown-deep text-lg text-glow">חשמונאי יומי</span>
+          <Image
+            src="/רוח חשמונאית.png"
+            alt="רוח חשמונאית"
+            width={36}
+            height={36}
+            className="drop-shadow-lg"
+          />
+          <span className="font-bold text-white">חשמונאי יומי</span>
         </Link>
 
         <div className="relative flex items-center gap-2">
           <Link
             href="/search"
-            className="p-2.5 glass rounded-xl transition-all text-gold hover:glow-gold"
+            className="p-2 rounded-xl bg-white/5 border border-white/10 text-white/70 hover:text-gold transition-colors"
           >
             <Search className="w-5 h-5" />
           </Link>
 
-          <div className="flex items-center gap-1 bg-gradient-to-r from-gold to-gold-dark text-white px-3 py-1.5 rounded-full shadow-md">
+          <div className="flex items-center gap-1 bg-gold text-[#0a0a0a] px-3 py-1.5 rounded-full font-bold text-sm">
             <Star className="w-4 h-4" />
-            <span className="font-bold text-sm">{userPoints}</span>
+            {userPoints}
           </div>
 
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className={`p-2.5 rounded-xl transition-all duration-300 ${
-              isOpen ? "glass glow-gold text-gold rotate-90" : "text-brown-warm hover:glass hover:text-gold"
+            className={`p-2 rounded-xl transition-all ${
+              isOpen
+                ? "bg-gold text-[#0a0a0a]"
+                : "bg-white/5 border border-white/10 text-white/70 hover:text-white"
             }`}
           >
             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -278,48 +239,35 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
         </div>
       </header>
 
-      {/* Mobile Dropdown Menu - Full Glass Effect */}
+      {/* Mobile Dropdown Menu - Dark Theme */}
       {isOpen && (
-        <div className="lg:hidden fixed inset-0 top-16 z-40 animate-fade-in-up overflow-hidden">
-          {/* Glass Background with Aurora */}
-          <div className="absolute inset-0 bg-cream-white/95 backdrop-blur-2xl" />
+        <div className="lg:hidden fixed inset-0 top-16 z-40 animate-fade-in overflow-hidden">
+          <div className="absolute inset-0 bg-[#0a0a0a]/98 backdrop-blur-xl" />
 
-          {/* Floating Orbs */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute w-40 h-40 rounded-full bg-gold/20 blur-3xl top-10 right-10 animate-float" />
-            <div className="absolute w-32 h-32 rounded-full bg-amber-400/15 blur-2xl bottom-20 left-10 animate-float" style={{ animationDelay: "-3s" }} />
-            <div className="absolute w-24 h-24 rounded-full bg-gold/10 blur-2xl top-1/2 left-1/2 animate-float" style={{ animationDelay: "-1.5s" }} />
-          </div>
-
-          {/* Animated Gold Line */}
-          <div className="relative h-1 bg-gradient-to-r from-transparent via-gold to-transparent overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent animate-shimmer" />
-          </div>
-
-          <div className="relative flex flex-col p-5 gap-2 overflow-y-auto max-h-[calc(100vh-4rem)]">
+          <div className="relative flex flex-col p-5 gap-1 overflow-y-auto max-h-[calc(100vh-4rem)]">
             {/* Search Link */}
             <Link
               href="/search"
               onClick={() => setIsOpen(false)}
-              className={`group flex items-center gap-3 px-4 py-4 rounded-xl transition-all duration-300 stagger-item ${
-                pathname === "/search" ? "glass-card glow-gold" : "hover:glass"
+              className={`group flex items-center gap-3 px-4 py-4 rounded-xl transition-all ${
+                pathname === "/search"
+                  ? "bg-gold/15 text-gold"
+                  : "text-white/60 hover:bg-white/5 hover:text-white"
               }`}
             >
-              <div className={`p-2 rounded-lg transition-all ${
+              <div className={`p-2 rounded-lg ${
                 pathname === "/search"
-                  ? "bg-gradient-to-br from-gold to-gold-dark text-white"
-                  : "bg-gold/10 text-gold group-hover:bg-gold/20"
+                  ? "bg-gold text-[#0a0a0a]"
+                  : "bg-white/5"
               }`}>
                 <Search className="w-5 h-5" />
               </div>
-              <span className={`font-medium text-lg ${pathname === "/search" ? "text-brown-deep" : "text-brown-warm"}`}>
-                חיפוש
-              </span>
+              <span className="font-medium text-lg">חיפוש</span>
             </Link>
 
-            <div className="gold-divider !my-3" />
+            <div className="h-px bg-white/10 my-3" />
 
-            {navItems.map((item, index) => {
+            {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = pathname === item.href;
 
@@ -328,23 +276,22 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
                   key={item.href}
                   href={item.href}
                   onClick={() => setIsOpen(false)}
-                  className={`group flex items-center gap-3 px-4 py-4 rounded-xl transition-all duration-300 stagger-item ${
-                    isActive ? "glass-card glow-gold" : "hover:glass"
-                  }`}
-                  style={{ animationDelay: `${(index + 1) * 50}ms` }}
-                >
-                  <div className={`p-2 rounded-lg transition-all ${
+                  className={`group flex items-center gap-3 px-4 py-4 rounded-xl transition-all ${
                     isActive
-                      ? "bg-gradient-to-br from-gold to-gold-dark text-white shadow-lg"
-                      : "bg-gold/10 text-gold group-hover:bg-gold/20 group-hover:scale-110"
+                      ? "bg-gold/15 text-gold"
+                      : "text-white/60 hover:bg-white/5 hover:text-white"
+                  }`}
+                >
+                  <div className={`p-2 rounded-lg ${
+                    isActive
+                      ? "bg-gold text-[#0a0a0a]"
+                      : "bg-white/5"
                   }`}>
                     <Icon className="w-5 h-5" />
                   </div>
-                  <span className={`font-medium text-lg ${isActive ? "text-brown-deep" : "text-brown-warm"}`}>
-                    {item.label}
-                  </span>
+                  <span className="font-medium text-lg">{item.label}</span>
                   {item.href === "/points" && (
-                    <span className="mr-auto flex items-center gap-1 bg-gradient-to-r from-gold to-gold-dark text-white text-sm py-1 px-3 rounded-full shadow-md">
+                    <span className="mr-auto flex items-center gap-1 bg-gold text-[#0a0a0a] text-sm py-1 px-3 rounded-full font-bold">
                       <Star className="w-3 h-3" />
                       {userPoints}
                     </span>
@@ -355,51 +302,49 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
 
             {(isAdmin || isRam) && (
               <>
-                <div className="gold-divider !my-3" />
+                <div className="h-px bg-white/10 my-3" />
                 <Link
                   href="/admin"
                   onClick={() => setIsOpen(false)}
-                  className={`group flex items-center gap-3 px-4 py-4 rounded-xl transition-all duration-300 ${
-                    pathname.startsWith("/admin") ? "glass-card glow-gold" : "hover:glass"
+                  className={`group flex items-center gap-3 px-4 py-4 rounded-xl transition-all ${
+                    pathname.startsWith("/admin")
+                      ? "bg-gold/15 text-gold"
+                      : "text-white/60 hover:bg-white/5 hover:text-white"
                   }`}
                 >
-                  <div className={`p-2 rounded-lg transition-all ${
+                  <div className={`p-2 rounded-lg ${
                     pathname.startsWith("/admin")
-                      ? "bg-gradient-to-br from-gold to-gold-dark text-white"
-                      : "bg-gold/10 text-gold group-hover:bg-gold/20"
+                      ? "bg-gold text-[#0a0a0a]"
+                      : "bg-white/5"
                   }`}>
                     <Settings className="w-5 h-5" />
                   </div>
-                  <span className={`font-medium text-lg ${pathname.startsWith("/admin") ? "text-brown-deep" : "text-brown-warm"}`}>
-                    ניהול
-                  </span>
+                  <span className="font-medium text-lg">ניהול</span>
                 </Link>
               </>
             )}
 
-            <div className="gold-divider !my-3" />
+            <div className="h-px bg-white/10 my-3" />
 
             <button
               onClick={() => {
                 setIsOpen(false);
                 signOut({ callbackUrl: "/" });
               }}
-              className="group flex items-center gap-3 px-4 py-4 rounded-xl transition-all duration-300 hover:glass"
+              className="group flex items-center gap-3 px-4 py-4 rounded-xl transition-all text-white/60 hover:bg-white/5 hover:text-red-400"
             >
-              <div className="p-2 rounded-lg bg-error/10 text-error group-hover:bg-error group-hover:text-white transition-all">
+              <div className="p-2 rounded-lg bg-red-500/10 text-red-400">
                 <LogOut className="w-5 h-5" />
               </div>
-              <span className="font-medium text-lg text-error">התנתק</span>
+              <span className="font-medium text-lg">התנתק</span>
             </button>
           </div>
         </div>
       )}
 
-      {/* Mobile Bottom Navigation - Premium Glass */}
+      {/* Mobile Bottom Navigation - Dark Theme */}
       <nav className="lg:hidden fixed bottom-0 right-0 left-0 safe-area-bottom z-50">
-        {/* Glass Background */}
-        <div className="absolute inset-0 bg-cream-white/80 backdrop-blur-xl" />
-        <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-gold to-transparent" />
+        <div className="absolute inset-0 bg-[#0a0a0a]/95 backdrop-blur-xl border-t border-white/10" />
 
         <div className="relative flex items-center justify-around py-2 px-1">
           {navItems.slice(0, 5).map((item) => {
@@ -410,26 +355,16 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all duration-300 ${
-                  isActive
-                    ? "text-gold"
-                    : "text-brown-soft hover:text-brown-deep active:scale-95"
+                className={`flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all ${
+                  isActive ? "text-gold" : "text-white/50 hover:text-white active:scale-95"
                 }`}
               >
-                <div className={`relative p-2.5 rounded-xl transition-all duration-300 ${
-                  isActive
-                    ? "bg-gradient-to-br from-gold to-gold-dark shadow-lg"
-                    : "hover:bg-gold/10"
+                <div className={`relative p-2.5 rounded-xl transition-all ${
+                  isActive ? "bg-gold shadow-lg shadow-gold/30" : "hover:bg-white/5"
                 }`}>
-                  {/* Glow for active */}
-                  {isActive && (
-                    <div className="absolute inset-0 bg-gold rounded-xl blur-md opacity-50 animate-pulse" />
-                  )}
-                  <Icon className={`relative w-5 h-5 ${isActive ? "text-white stroke-[2.5]" : ""}`} />
+                  <Icon className={`w-5 h-5 ${isActive ? "text-[#0a0a0a]" : ""}`} />
                 </div>
-                <span className={`text-[10px] font-bold transition-colors ${
-                  isActive ? "text-gold-dark" : ""
-                }`}>
+                <span className={`text-[10px] font-bold ${isActive ? "text-gold" : ""}`}>
                   {item.label}
                 </span>
               </Link>
