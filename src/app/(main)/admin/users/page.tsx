@@ -275,8 +275,8 @@ export default function UsersPage() {
 
       {/* Edit Modal */}
       {editingUser && isAdmin && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="bg-[#3b2d1f] border border-white/10 rounded-2xl w-full max-w-md p-6 max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-[100] p-4 pb-24 sm:pb-4">
+          <div className="bg-[#3b2d1f] border border-white/10 rounded-2xl w-full max-w-md p-6 max-h-[85vh] overflow-y-auto">
             <h3 className="text-lg font-bold text-white mb-4">
               עריכת משתמש: {editingUser.name}
             </h3>

@@ -53,11 +53,11 @@ export default function Home() {
               height={50}
               className="drop-shadow-md"
             />
-            <span className="text-xl font-bold text-brown-dark">חשמונאי יומי</span>
+            <span className="text-xl font-bold text-white">חשמונאי יומי</span>
           </div>
           <Link
             href="/login"
-            className="px-5 py-2 bg-brown-medium text-cream rounded-full font-medium hover:bg-brown-dark transition-colors shadow-md"
+            className="px-5 py-2 bg-gold text-[#1a140f] rounded-full font-bold hover:bg-gold-light transition-colors shadow-md"
           >
             כניסה
           </Link>
@@ -77,26 +77,26 @@ export default function Home() {
             />
           </div>
 
-          <h1 className="text-4xl sm:text-5xl font-bold text-brown-dark mb-4">
+          <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">
             רוח חשמונאית
           </h1>
-          <p className="text-xl sm:text-2xl text-brown-medium mb-2">
+          <p className="text-xl sm:text-2xl text-gold mb-2">
             אפליקציית לימוד לחיילי חטיבת חשמונאים
           </p>
-          <p className="text-brown-light mb-8">
+          <p className="text-white/70 mb-8">
             למען שמו באהבה - לעלות ולהתעלות
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <Link
               href="/login"
-              className="px-8 py-4 bg-brown-medium text-cream rounded-xl font-bold text-lg hover:bg-brown-dark transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+              className="px-8 py-4 bg-gradient-to-l from-gold via-gold-light to-gold text-[#1a140f] rounded-xl font-bold text-lg hover:shadow-xl hover:shadow-gold/30 transition-all shadow-lg transform hover:-translate-y-1"
             >
               התחל ללמוד
             </Link>
             <Link
               href="/daily"
-              className="px-8 py-4 bg-white/80 text-brown-dark rounded-xl font-bold text-lg hover:bg-white transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1 border border-cream-dark"
+              className="px-8 py-4 bg-[#3b2d1f] text-white rounded-xl font-bold text-lg hover:bg-[#4a3825] transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1 border border-white/20"
             >
               צפה בלימוד היומי
             </Link>
@@ -129,7 +129,7 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="mt-auto py-6 text-center text-brown-light safe-area-bottom">
+      <footer className="mt-auto py-6 text-center text-white/60 safe-area-bottom">
         <p>חטיבת חשמונאים - גדוד 932</p>
       </footer>
     </div>
@@ -146,10 +146,10 @@ function FeatureCard({
   description: string;
 }) {
   return (
-    <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-4 text-center card-hover border border-cream-dark/50">
-      <div className="text-brown-medium mb-2 flex justify-center">{icon}</div>
-      <h3 className="font-bold text-brown-dark text-sm sm:text-base">{title}</h3>
-      <p className="text-brown-light text-xs sm:text-sm">{description}</p>
+    <div className="bg-[#3b2d1f] backdrop-blur-sm rounded-2xl p-4 text-center border border-white/10 hover:border-gold/30 transition-colors">
+      <div className="text-gold mb-2 flex justify-center">{icon}</div>
+      <h3 className="font-bold text-white text-sm sm:text-base">{title}</h3>
+      <p className="text-white/60 text-xs sm:text-sm">{description}</p>
     </div>
   );
 }

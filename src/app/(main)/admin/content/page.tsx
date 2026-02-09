@@ -357,8 +357,8 @@ export default function ContentPage() {
 
       {/* Add/Edit Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="bg-[#3b2d1f] border border-white/10 rounded-2xl w-full max-w-md p-6 max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-[100] p-4 pb-24 sm:pb-4">
+          <div className="bg-[#3b2d1f] border border-white/10 rounded-2xl w-full max-w-md p-6 max-h-[85vh] overflow-y-auto">
             <h3 className="text-lg font-bold text-white mb-4">
               {editingContent ? "עריכת תוכן" : "הוספת תוכן חדש"}
             </h3>
@@ -475,6 +475,7 @@ export default function ContentPage() {
                                 style={{ width: `${uploadProgress}%` }}
                               />
                             </div>
+                            <p className="text-white/50 text-xs text-center mt-2">אל תסגור את הדפדפן</p>
                           </div>
                         ) : (
                           <div className="text-center">
@@ -488,6 +489,9 @@ export default function ContentPage() {
                     {uploadError && (
                       <p className="text-red-400 text-sm mt-1">{uploadError}</p>
                     )}
+                    <p className="text-amber-400/70 text-xs mt-2">
+                      💡 טיפ: להעלאת סרטונים גדולים, מומלץ להשתמש ב-WiFi יציב
+                    </p>
                   </div>
 
                   {/* Preview */}

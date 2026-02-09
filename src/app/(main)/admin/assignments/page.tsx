@@ -442,8 +442,8 @@ export default function AssignmentsPage() {
 
       {/* Assign RAM Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="bg-[#3b2d1f] border border-white/10 rounded-2xl w-full max-w-md p-6">
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-[100] p-4 pb-24 sm:pb-4">
+          <div className="bg-[#3b2d1f] border border-white/10 rounded-2xl w-full max-w-md p-6 max-h-[85vh] overflow-y-auto">
             <h3 className="text-lg font-bold text-white mb-2">
               שיוך ר״מ לפלוגה
             </h3>
@@ -499,8 +499,8 @@ export default function AssignmentsPage() {
 
       {/* Add Platoon Modal */}
       {showAddPlatoonModal && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="bg-[#3b2d1f] border border-white/10 rounded-2xl w-full max-w-md p-6">
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-[100] p-4 pb-24 sm:pb-4">
+          <div className="bg-[#3b2d1f] border border-white/10 rounded-2xl w-full max-w-md p-6 max-h-[85vh] overflow-y-auto">
             <h3 className="text-lg font-bold text-white mb-4">
               הוספת פלוגה חדשה
             </h3>
@@ -561,8 +561,8 @@ export default function AssignmentsPage() {
 
       {/* Add RAM Modal */}
       {showAddRamModal && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="bg-[#3b2d1f] border border-white/10 rounded-2xl w-full max-w-md p-6">
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-[100] p-4 pb-24 sm:pb-4">
+          <div className="bg-[#3b2d1f] border border-white/10 rounded-2xl w-full max-w-md p-6 max-h-[85vh] overflow-y-auto">
             <h3 className="text-lg font-bold text-white mb-4">
               הוספת ר״מ חדש
             </h3>
