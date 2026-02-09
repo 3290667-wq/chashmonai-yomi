@@ -49,6 +49,10 @@ export default function AssignmentsPage() {
   const [addingPlatoon, setAddingPlatoon] = useState(false);
   const [platoonError, setPlatoonError] = useState("");
   const [deletingPlatoon, setDeletingPlatoon] = useState<string | null>(null);
+  const [showAddRamModal, setShowAddRamModal] = useState(false);
+  const [newRamData, setNewRamData] = useState({ name: "", email: "", password: "" });
+  const [addingRam, setAddingRam] = useState(false);
+  const [ramError, setRamError] = useState("");
 
   const isAdmin = session?.user?.role === "ADMIN";
 
@@ -196,6 +200,65 @@ export default function AssignmentsPage() {
     }
   };
 
+  const handleAddRam = async () => {
+    if (!newRamData.name.trim() || !newRamData.email.trim() || !newRamData.password.trim()) {
+      setRamError("יש למלא את כל השדות");
+      return;
+    }
+
+    if (newRamData.password.length < 6) {
+      setRamError("הסיסמה חייבת להכיל לפחות 6 תווים");
+      return;
+    }
+
+    setAddingRam(true);
+    setRamError("");
+
+    try {
+      // First register the user
+      const registerRes = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: newRamData.name.trim(),
+          email: newRamData.email.trim(),
+          password: newRamData.password,
+        }),
+      });
+
+      const registerData = await registerRes.json();
+
+      if (!registerRes.ok) {
+        setRamError(registerData.error || "שגיאה ביצירת המשתמש");
+        return;
+      }
+
+      // Then update to RAM role
+      const updateRes = await fetch("/api/admin/users", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: registerData.user.id,
+          role: "RAM",
+        }),
+      });
+
+      if (updateRes.ok) {
+        setNewRamData({ name: "", email: "", password: "" });
+        setShowAddRamModal(false);
+        fetchData();
+      } else {
+        const updateData = await updateRes.json();
+        setRamError(updateData.error || "שגיאה בהגדרת תפקיד ר״מ");
+      }
+    } catch (error) {
+      console.error("Failed to add RAM:", error);
+      setRamError("שגיאה ביצירת ר״מ");
+    } finally {
+      setAddingRam(false);
+    }
+  };
+
 
 
   return (
@@ -331,12 +394,22 @@ export default function AssignmentsPage() {
       </div>
 
       {/* Available RAMs */}
-      {availableRams.length > 0 && (
-        <div className="bg-[#3b2d1f] rounded-2xl border border-white/10 overflow-hidden">
-          <div className="p-4 sm:p-5 border-b border-white/10">
+      <div className="bg-[#3b2d1f] rounded-2xl border border-white/10 overflow-hidden">
+        <div className="p-4 sm:p-5 border-b border-white/10 flex items-center justify-between">
+          <div>
             <h2 className="font-bold text-white">ר״מים ללא שיוך</h2>
             <p className="text-sm text-white/60">ר״מים שעדיין לא משויכים לפלוגה</p>
           </div>
+          <button
+            onClick={() => setShowAddRamModal(true)}
+            className="flex items-center gap-1 px-3 py-1.5 bg-violet-500/20 text-violet-400 rounded-lg text-sm font-medium hover:bg-violet-500/30 transition-colors"
+          >
+            <Plus className="w-4 h-4" />
+            הוסף ר״מ
+          </button>
+        </div>
+
+        {availableRams.length > 0 ? (
 
           <div className="divide-y divide-white/10">
             {availableRams.map((ram) => (
@@ -358,8 +431,14 @@ export default function AssignmentsPage() {
               </div>
             ))}
           </div>
-        </div>
-      )}
+        ) : (
+          <div className="py-8 text-center">
+            <UserCog className="w-12 h-12 text-white/20 mx-auto mb-2" />
+            <p className="text-white/50">אין ר״מים זמינים</p>
+            <p className="text-white/40 text-sm mt-1">לחץ על &quot;הוסף ר״מ&quot; ליצירת ר״מ חדש</p>
+          </div>
+        )}
+      </div>
 
       {/* Assign RAM Modal */}
       {showModal && (
@@ -473,6 +552,101 @@ export default function AssignmentsPage() {
                   </>
                 ) : (
                   "הוסף פלוגה"
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Add RAM Modal */}
+      {showAddRamModal && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+          <div className="bg-[#3b2d1f] border border-white/10 rounded-2xl w-full max-w-md p-6">
+            <h3 className="text-lg font-bold text-white mb-4">
+              הוספת ר״מ חדש
+            </h3>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-white/70 mb-2">
+                  שם מלא
+                </label>
+                <input
+                  type="text"
+                  value={newRamData.name}
+                  onChange={(e) => {
+                    setNewRamData({ ...newRamData, name: e.target.value });
+                    setRamError("");
+                  }}
+                  placeholder="הרב ישראל ישראלי"
+                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-violet-500/50"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-white/70 mb-2">
+                  אימייל
+                </label>
+                <input
+                  type="email"
+                  value={newRamData.email}
+                  onChange={(e) => {
+                    setNewRamData({ ...newRamData, email: e.target.value });
+                    setRamError("");
+                  }}
+                  placeholder="rabbi@example.com"
+                  dir="ltr"
+                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-violet-500/50"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-white/70 mb-2">
+                  סיסמה
+                </label>
+                <input
+                  type="password"
+                  value={newRamData.password}
+                  onChange={(e) => {
+                    setNewRamData({ ...newRamData, password: e.target.value });
+                    setRamError("");
+                  }}
+                  placeholder="לפחות 6 תווים"
+                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-violet-500/50"
+                />
+              </div>
+
+              {ramError && (
+                <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-xl">
+                  <p className="text-red-400 text-sm">{ramError}</p>
+                </div>
+              )}
+            </div>
+
+            <div className="flex gap-3 mt-6">
+              <button
+                onClick={() => {
+                  setShowAddRamModal(false);
+                  setNewRamData({ name: "", email: "", password: "" });
+                  setRamError("");
+                }}
+                className="flex-1 py-3 border border-white/20 text-white rounded-xl font-medium hover:bg-white/5 transition-colors"
+              >
+                ביטול
+              </button>
+              <button
+                onClick={handleAddRam}
+                disabled={addingRam}
+                className="flex-1 py-3 bg-violet-500 text-white rounded-xl font-medium hover:bg-violet-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                {addingRam ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    יוצר...
+                  </>
+                ) : (
+                  "צור ר״מ"
                 )}
               </button>
             </div>

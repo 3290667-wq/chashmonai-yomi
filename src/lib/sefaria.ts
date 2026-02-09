@@ -9,7 +9,7 @@ interface SefariaCalendarResponse {
 
 export async function getDailyCalendar(): Promise<SefariaCalendarItem[]> {
   const response = await fetch(`${SEFARIA_API_URL}/calendars`, {
-    next: { revalidate: 3600 },
+    next: { revalidate: 1800 }, // Revalidate every 30 minutes
   });
 
   if (!response.ok) {
@@ -47,12 +47,20 @@ export async function getDailyMishnah(): Promise<{ ref: string; text: SefariaTex
 
 export async function getDailyRambam(): Promise<{ ref: string; text: SefariaText } | null> {
   const calendar = await getDailyCalendar();
-  const rambam = calendar.find(
-    (item) =>
-      item.title.en.includes("Rambam") ||
-      item.title.en.includes("Daily Mitzvah") ||
-      item.category === "Halakhah"
+
+  // First try to find "Rambam (3 Chapters)" which is the standard daily cycle
+  let rambam = calendar.find(
+    (item) => item.title.en.includes("Rambam") && item.title.en.includes("3 Chapters")
   );
+
+  // Fallback to any Rambam entry if 3 chapters not found
+  if (!rambam) {
+    rambam = calendar.find(
+      (item) =>
+        item.title.en.includes("Rambam") ||
+        item.category === "Halakhah"
+    );
+  }
 
   if (!rambam) return null;
 
