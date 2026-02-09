@@ -78,8 +78,6 @@ export default function DailyPage() {
 
   return (
     <div className="relative py-6 space-y-6">
-      {/* Aurora Background */}
-      <div className="aurora-bg" />
 
       {/* Header with Timer */}
       <div className="relative bg-[#1e1e1e] border border-white/10 rounded-2xl overflow-hidden">

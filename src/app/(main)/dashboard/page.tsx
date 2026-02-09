@@ -72,9 +72,6 @@ export default async function DashboardPage() {
 
   return (
     <div className="relative min-h-screen py-6 sm:py-8 space-y-6">
-      {/* Aurora Background */}
-      <div className="aurora-bg" />
-
       {/* Hero Section - Artlist Style */}
       <div className="relative rounded-2xl overflow-hidden bg-[#1e1e1e] border border-white/10">
         {/* Background Image */}

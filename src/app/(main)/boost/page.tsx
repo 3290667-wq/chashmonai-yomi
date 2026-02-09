@@ -107,8 +107,6 @@ export default function BoostPage() {
 
   return (
     <div className="relative py-6 space-y-8">
-      {/* Aurora Background */}
-      <div className="aurora-bg" />
 
       {/* Hero Section - Artlist Academy Style */}
       <div className="relative rounded-2xl overflow-hidden">

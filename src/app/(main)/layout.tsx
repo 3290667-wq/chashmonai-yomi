@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Navbar from "@/components/layout/navbar";
+import Image from "next/image";
 
 export default async function MainLayout({
   children,
@@ -14,9 +15,20 @@ export default async function MainLayout({
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] relative">
-      {/* Aurora Background */}
-      <div className="aurora-bg" />
+    <div className="min-h-screen relative">
+      {/* Desert Background Image */}
+      <div className="fixed inset-0 z-0">
+        <Image
+          src="/desert-bg.png"
+          alt=""
+          fill
+          className="object-cover"
+          priority
+          quality={90}
+        />
+        {/* Dark overlay for readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80" />
+      </div>
 
       <Navbar
         userName={session.user?.name || undefined}
