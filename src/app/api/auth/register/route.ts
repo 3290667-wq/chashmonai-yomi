@@ -31,6 +31,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Validate platoon exists if provided
+    if (platoon) {
+      const existingPlatoon = await prisma.platoon.findUnique({
+        where: { name: platoon },
+      });
+
+      if (!existingPlatoon) {
+        return NextResponse.json(
+          { error: "פלוגה לא קיימת במערכת" },
+          { status: 400 }
+        );
+      }
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await prisma.user.create({

@@ -11,6 +11,8 @@ import {
   Plus,
   X,
   Check,
+  Trash2,
+  Loader2,
 } from "lucide-react";
 
 interface User {
@@ -21,8 +23,14 @@ interface User {
   platoon: string | null;
 }
 
+interface Platoon {
+  id: string;
+  name: string;
+}
+
 interface PlatoonAssignment {
   platoon: string;
+  platoonId: string | null;
   ram: User | null;
   userCount: number;
 }
@@ -32,10 +40,15 @@ export default function AssignmentsPage() {
   const router = useRouter();
   const [assignments, setAssignments] = useState<PlatoonAssignment[]>([]);
   const [availableRams, setAvailableRams] = useState<User[]>([]);
+  const [allPlatoons, setAllPlatoons] = useState<Platoon[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [showAddPlatoonModal, setShowAddPlatoonModal] = useState(false);
   const [selectedPlatoon, setSelectedPlatoon] = useState("");
-
+  const [newPlatoonName, setNewPlatoonName] = useState("");
+  const [addingPlatoon, setAddingPlatoon] = useState(false);
+  const [platoonError, setPlatoonError] = useState("");
+  const [deletingPlatoon, setDeletingPlatoon] = useState<string | null>(null);
 
   const isAdmin = session?.user?.role === "ADMIN";
 
@@ -51,22 +64,29 @@ export default function AssignmentsPage() {
   const fetchData = async () => {
     setLoading(true);
     try {
-      // Fetch users
-      const res = await fetch("/api/admin/users");
-      if (res.ok) {
-        const data = await res.json();
-        const users: User[] = data.users;
-        const platoons: string[] = data.platoons;
+      // Fetch users and platoons in parallel
+      const [usersRes, platoonsRes] = await Promise.all([
+        fetch("/api/admin/users"),
+        fetch("/api/admin/platoons"),
+      ]);
+
+      if (usersRes.ok && platoonsRes.ok) {
+        const usersData = await usersRes.json();
+        const platoonsData = await platoonsRes.json();
+
+        const users: User[] = usersData.users;
+        const platoonsList: Platoon[] = platoonsData.platoons || [];
+
+        setAllPlatoons(platoonsList);
 
         // Get RAMs (assigned and available)
         const rams = users.filter((u: User) => u.role === "RAM");
-        const assignedRamPlatoons = new Set(rams.map((r: User) => r.platoon).filter(Boolean));
 
-        // Build assignments list
-        const assignmentsList: PlatoonAssignment[] = platoons.map((platoon: string) => {
-          const ram = rams.find((r: User) => r.platoon === platoon) || null;
-          const userCount = users.filter((u: User) => u.platoon === platoon).length;
-          return { platoon, ram, userCount };
+        // Build assignments list from the Platoon model
+        const assignmentsList: PlatoonAssignment[] = platoonsList.map((platoon: Platoon) => {
+          const ram = rams.find((r: User) => r.platoon === platoon.name) || null;
+          const userCount = users.filter((u: User) => u.platoon === platoon.name).length;
+          return { platoon: platoon.name, platoonId: platoon.id, ram, userCount };
         });
 
         // Available RAMs (not assigned to any platoon)
@@ -118,6 +138,64 @@ export default function AssignmentsPage() {
     }
   };
 
+  const handleAddPlatoon = async () => {
+    if (!newPlatoonName.trim()) {
+      setPlatoonError("יש להזין שם פלוגה");
+      return;
+    }
+
+    setAddingPlatoon(true);
+    setPlatoonError("");
+
+    try {
+      const res = await fetch("/api/admin/platoons", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: newPlatoonName.trim() }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setNewPlatoonName("");
+        setShowAddPlatoonModal(false);
+        fetchData();
+      } else {
+        setPlatoonError(data.error || "שגיאה בהוספת פלוגה");
+      }
+    } catch (error) {
+      console.error("Failed to add platoon:", error);
+      setPlatoonError("שגיאה בהוספת פלוגה");
+    } finally {
+      setAddingPlatoon(false);
+    }
+  };
+
+  const handleDeletePlatoon = async (platoonId: string, platoonName: string) => {
+    if (!confirm(`האם אתה בטוח שברצונך למחוק את פלוגה "${platoonName}"?`)) return;
+
+    setDeletingPlatoon(platoonId);
+
+    try {
+      const res = await fetch(`/api/admin/platoons?id=${platoonId}`, {
+        method: "DELETE",
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        fetchData();
+      } else {
+        alert(data.error || "שגיאה במחיקת פלוגה");
+      }
+    } catch (error) {
+      console.error("Failed to delete platoon:", error);
+      alert("שגיאה במחיקת פלוגה");
+    } finally {
+      setDeletingPlatoon(null);
+    }
+  };
+
 
 
   return (
@@ -164,6 +242,13 @@ export default function AssignmentsPage() {
             <UserCog className="w-5 h-5 text-white/60" />
             <h2 className="font-bold text-white">פלוגות ושיוכים</h2>
           </div>
+          <button
+            onClick={() => setShowAddPlatoonModal(true)}
+            className="flex items-center gap-1 px-3 py-1.5 bg-gold/20 text-gold rounded-lg text-sm font-medium hover:bg-gold/30 transition-colors"
+          >
+            <Plus className="w-4 h-4" />
+            הוסף פלוגה
+          </button>
         </div>
 
         {loading ? (
@@ -196,33 +281,48 @@ export default function AssignmentsPage() {
                     </div>
                   </div>
 
-                  {assignment.ram ? (
-                    <div className="flex items-center gap-2">
-                      <div className="text-left">
-                        <p className="text-sm font-medium text-white">
-                          {assignment.ram.name}
-                        </p>
-                        <p className="text-xs text-white/50">ר״מ משויך</p>
+                  <div className="flex items-center gap-2">
+                    {assignment.ram ? (
+                      <div className="flex items-center gap-2">
+                        <div className="text-left">
+                          <p className="text-sm font-medium text-white">
+                            {assignment.ram.name}
+                          </p>
+                          <p className="text-xs text-white/50">ר״מ משויך</p>
+                        </div>
+                        <button
+                          onClick={() => handleRemoveRam(assignment.ram!.id)}
+                          className="p-2 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
                       </div>
+                    ) : (
                       <button
-                        onClick={() => handleRemoveRam(assignment.ram!.id)}
-                        className="p-2 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
+                        onClick={() => {
+                          setSelectedPlatoon(assignment.platoon);
+                          setShowModal(true);
+                        }}
+                        className="flex items-center gap-1 px-3 py-1.5 bg-violet-500/20 text-violet-400 rounded-lg text-sm font-medium hover:bg-violet-500/30 transition-colors"
                       >
-                        <X className="w-4 h-4" />
+                        <Plus className="w-4 h-4" />
+                        שייך ר״מ
                       </button>
-                    </div>
-                  ) : (
-                    <button
-                      onClick={() => {
-                        setSelectedPlatoon(assignment.platoon);
-                        setShowModal(true);
-                      }}
-                      className="flex items-center gap-1 px-3 py-1.5 bg-violet-500/20 text-violet-400 rounded-lg text-sm font-medium hover:bg-violet-500/30 transition-colors"
-                    >
-                      <Plus className="w-4 h-4" />
-                      שייך ר״מ
-                    </button>
-                  )}
+                    )}
+                    {assignment.userCount === 0 && assignment.platoonId && (
+                      <button
+                        onClick={() => handleDeletePlatoon(assignment.platoonId!, assignment.platoon)}
+                        disabled={deletingPlatoon === assignment.platoonId}
+                        className="p-2 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors disabled:opacity-50"
+                      >
+                        {deletingPlatoon === assignment.platoonId ? (
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                        ) : (
+                          <Trash2 className="w-4 h-4" />
+                        )}
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             ))}
@@ -314,6 +414,68 @@ export default function AssignmentsPage() {
             >
               סגור
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Add Platoon Modal */}
+      {showAddPlatoonModal && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+          <div className="bg-[#3b2d1f] border border-white/10 rounded-2xl w-full max-w-md p-6">
+            <h3 className="text-lg font-bold text-white mb-4">
+              הוספת פלוגה חדשה
+            </h3>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-white/70 mb-2">
+                  שם הפלוגה
+                </label>
+                <input
+                  type="text"
+                  value={newPlatoonName}
+                  onChange={(e) => {
+                    setNewPlatoonName(e.target.value);
+                    setPlatoonError("");
+                  }}
+                  placeholder="לדוגמה: פלוגה א'"
+                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-gold/50"
+                />
+              </div>
+
+              {platoonError && (
+                <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-xl">
+                  <p className="text-red-400 text-sm">{platoonError}</p>
+                </div>
+              )}
+            </div>
+
+            <div className="flex gap-3 mt-6">
+              <button
+                onClick={() => {
+                  setShowAddPlatoonModal(false);
+                  setNewPlatoonName("");
+                  setPlatoonError("");
+                }}
+                className="flex-1 py-3 border border-white/20 text-white rounded-xl font-medium hover:bg-white/5 transition-colors"
+              >
+                ביטול
+              </button>
+              <button
+                onClick={handleAddPlatoon}
+                disabled={addingPlatoon}
+                className="flex-1 py-3 bg-gold text-[#1a140f] rounded-xl font-medium hover:bg-gold-light transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                {addingPlatoon ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    מוסיף...
+                  </>
+                ) : (
+                  "הוסף פלוגה"
+                )}
+              </button>
+            </div>
           </div>
         </div>
       )}

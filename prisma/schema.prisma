@@ -185,3 +185,9 @@ model DailyProgress {
 
   @@unique([date])
 }
+
+model Platoon {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+}

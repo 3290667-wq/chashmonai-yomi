@@ -1,11 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Eye, EyeOff, Mail, Lock, User, Users, Sparkles, Shield, Star, ArrowLeft } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, User, Users, Sparkles, Shield, Star, ArrowLeft, ChevronDown } from "lucide-react";
+
+interface Platoon {
+  id: string;
+  name: string;
+}
 
 export default function LoginPage() {
   const router = useRouter();
@@ -13,12 +18,32 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [platoons, setPlatoons] = useState<Platoon[]>([]);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     name: "",
     platoon: "",
   });
+
+  // Fetch available platoons
+  useEffect(() => {
+    const fetchPlatoons = async () => {
+      try {
+        const res = await fetch("/api/admin/platoons");
+        if (res.ok) {
+          const data = await res.json();
+          setPlatoons(data.platoons || []);
+        }
+      } catch (error) {
+        console.error("Failed to fetch platoons:", error);
+      }
+    };
+
+    if (isRegister) {
+      fetchPlatoons();
+    }
+  }, [isRegister]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -190,16 +215,25 @@ export default function LoginPage() {
                       />
                     </div>
 
-                    {/* Platoon Input */}
+                    {/* Platoon Select */}
                     <div className="relative">
-                      <Users className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
-                      <input
-                        type="text"
+                      <Users className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40 pointer-events-none z-10" />
+                      <ChevronDown className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40 pointer-events-none" />
+                      <select
                         value={formData.platoon}
                         onChange={(e) => setFormData({ ...formData, platoon: e.target.value })}
-                        placeholder="פלוגה"
-                        className="w-full bg-[#251c14] border border-white/10 rounded-xl pr-12 pl-4 py-4 text-white placeholder:text-white/40 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-all"
-                      />
+                        className="w-full bg-[#251c14] border border-white/10 rounded-xl pr-12 pl-10 py-4 text-white focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-all appearance-none cursor-pointer"
+                      >
+                        <option value="" className="bg-[#251c14]">בחר פלוגה</option>
+                        {platoons.map((platoon) => (
+                          <option key={platoon.id} value={platoon.name} className="bg-[#251c14]">
+                            {platoon.name}
+                          </option>
+                        ))}
+                      </select>
+                      {platoons.length === 0 && (
+                        <p className="text-white/40 text-xs mt-1">אין פלוגות זמינות כרגע</p>
+                      )}
                     </div>
                   </>
                 )}
