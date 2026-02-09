@@ -118,8 +118,8 @@ export default function BoostPage() {
             fill
             className="object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/80 to-[#0a0a0a]/40" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a]/90 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#1a140f] via-[#1a140f]/80 to-[#1a140f]/40" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#1a140f]/90 to-transparent" />
         </div>
 
         {/* Content */}
@@ -187,7 +187,7 @@ export default function BoostPage() {
       {/* Active Video Stats Bar */}
       {isPlaying && (
         <div className="flex flex-wrap items-center gap-3 animate-fade-in">
-          <div className="flex items-center gap-3 px-4 py-3 bg-[#1e1e1e] border border-white/10 rounded-xl">
+          <div className="flex items-center gap-3 px-4 py-3 bg-[#3b2d1f] border border-white/10 rounded-xl">
             <Clock className="w-5 h-5 text-gold" />
             <span className="font-mono text-lg font-bold text-white">{formattedDuration}</span>
             <div
@@ -219,9 +219,9 @@ export default function BoostPage() {
                 className="group cursor-pointer animate-fade-in-up"
                 style={{ animationDelay: `${index * 50}ms` }}
               >
-                <div className="bg-[#1e1e1e] border border-white/10 rounded-xl overflow-hidden transition-all duration-300 hover:border-white/20 hover:translate-y-[-6px] hover:shadow-2xl">
+                <div className="bg-[#3b2d1f] border border-white/10 rounded-xl overflow-hidden transition-all duration-300 hover:border-white/20 hover:translate-y-[-6px] hover:shadow-2xl">
                   {/* Thumbnail */}
-                  <div className="relative aspect-video bg-[#121212] overflow-hidden">
+                  <div className="relative aspect-video bg-[#251c14] overflow-hidden">
                     {thumbnailUrl ? (
                       <Image
                         src={thumbnailUrl}
@@ -230,7 +230,7 @@ export default function BoostPage() {
                         className="object-cover transition-transform duration-500 group-hover:scale-110"
                       />
                     ) : (
-                      <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#1e1e1e] to-[#121212]">
+                      <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#3b2d1f] to-[#251c14]">
                         <div className="w-16 h-16 bg-gold/10 rounded-full flex items-center justify-center">
                           <Video className="w-8 h-8 text-gold/50" />
                         </div>
@@ -240,7 +240,7 @@ export default function BoostPage() {
                     {/* Overlay on hover */}
                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                       <div className="w-16 h-16 bg-gold rounded-full flex items-center justify-center shadow-lg shadow-gold/30 transform scale-90 group-hover:scale-100 transition-transform">
-                        <Play className="w-7 h-7 text-[#0a0a0a] mr-[-2px]" />
+                        <Play className="w-7 h-7 text-[#1a140f] mr-[-2px]" />
                       </div>
                     </div>
 
@@ -250,7 +250,7 @@ export default function BoostPage() {
                     </div>
 
                     {/* Points Badge */}
-                    <div className="absolute top-3 right-3 px-2 py-1 bg-gold/90 text-[#0a0a0a] text-xs font-bold rounded">
+                    <div className="absolute top-3 right-3 px-2 py-1 bg-gold/90 text-[#1a140f] text-xs font-bold rounded">
                       +10 נקודות
                     </div>
                   </div>
@@ -278,7 +278,7 @@ export default function BoostPage() {
           })}
         </div>
       ) : (
-        <div className="bg-[#1e1e1e] border border-white/10 rounded-2xl p-12 text-center">
+        <div className="bg-[#3b2d1f] border border-white/10 rounded-2xl p-12 text-center">
           <div className="w-20 h-20 mx-auto mb-6 bg-gold/10 rounded-full flex items-center justify-center">
             <Video className="w-10 h-10 text-gold/50" />
           </div>
@@ -288,7 +288,7 @@ export default function BoostPage() {
           </p>
           <button
             onClick={() => router.push("/daily")}
-            className="px-6 py-3 bg-gradient-to-l from-gold to-gold-dark text-[#0a0a0a] rounded-xl font-bold shadow-lg shadow-gold/20 hover:shadow-xl transition-all"
+            className="px-6 py-3 bg-gradient-to-l from-gold to-gold-dark text-[#1a140f] rounded-xl font-bold shadow-lg shadow-gold/20 hover:shadow-xl transition-all"
           >
             לימוד יומי
           </button>
@@ -298,7 +298,7 @@ export default function BoostPage() {
       {/* Video Player Modal */}
       {selectedVideo && (
         <div className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4 animate-fade-in">
-          <div className="bg-[#1e1e1e] border border-white/10 rounded-2xl w-full max-w-5xl max-h-[90vh] overflow-hidden">
+          <div className="bg-[#3b2d1f] border border-white/10 rounded-2xl w-full max-w-5xl max-h-[90vh] overflow-hidden">
             {/* Modal Header */}
             <div className="p-5 border-b border-white/10 flex items-center justify-between">
               <div className="flex items-center gap-4">
@@ -356,7 +356,7 @@ export default function BoostPage() {
                       onClick={() => setIsPlaying(true)}
                       className="w-20 h-20 bg-gold hover:bg-gold-light rounded-full flex items-center justify-center shadow-2xl shadow-gold/30 transition-all hover:scale-110 active:scale-95"
                     >
-                      <Play className="w-10 h-10 text-[#0a0a0a] mr-[-4px]" />
+                      <Play className="w-10 h-10 text-[#1a140f] mr-[-4px]" />
                     </button>
                     <p className="text-white/80 mt-5 font-medium">לחץ להפעלה</p>
                   </div>
@@ -383,7 +383,7 @@ export default function BoostPage() {
       )}
 
       {/* Bottom Motivation */}
-      <div className="bg-[#1e1e1e] border border-white/10 rounded-xl p-6 text-center">
+      <div className="bg-[#3b2d1f] border border-white/10 rounded-xl p-6 text-center">
         <p className="text-white font-bold text-lg">
           &ldquo;חזק ואמץ - לעלות ולהתעלות&rdquo;
         </p>

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import bcrypt from "bcryptjs";
 
 // GET - List all users
 export async function GET(request: NextRequest) {
@@ -86,7 +87,7 @@ export async function PATCH(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { userId, role, platoon } = body;
+    const { userId, role, platoon, email, password } = body;
 
     if (!userId) {
       return NextResponse.json({ error: "Missing user ID" }, { status: 400 });
@@ -100,6 +101,33 @@ export async function PATCH(request: NextRequest) {
 
     if (platoon !== undefined) {
       updateData.platoon = platoon || null;
+    }
+
+    // Update email if provided
+    if (email) {
+      // Check if email is already in use by another user
+      const existingUser = await prisma.user.findUnique({
+        where: { email },
+      });
+      if (existingUser && existingUser.id !== userId) {
+        return NextResponse.json(
+          { error: "כתובת האימייל כבר בשימוש" },
+          { status: 400 }
+        );
+      }
+      updateData.email = email;
+    }
+
+    // Update password if provided
+    if (password) {
+      if (password.length < 6) {
+        return NextResponse.json(
+          { error: "הסיסמה חייבת להכיל לפחות 6 תווים" },
+          { status: 400 }
+        );
+      }
+      const hashedPassword = await bcrypt.hash(password, 10);
+      updateData.password = hashedPassword;
     }
 
     const updatedUser = await prisma.user.update({

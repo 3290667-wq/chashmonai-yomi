@@ -52,21 +52,20 @@ interface ZmanItem {
   label: string;
   icon: typeof Sun;
   gradient: string;
-  bgColor: string;
 }
 
 const ZMANIM_LIST: ZmanItem[] = [
-  { key: "alotHaShachar", label: "עלות השחר", icon: Moon, gradient: "from-indigo-400 to-indigo-600", bgColor: "bg-indigo-50" },
-  { key: "misheyakir", label: "משיכיר", icon: Moon, gradient: "from-indigo-300 to-indigo-500", bgColor: "bg-indigo-50" },
-  { key: "sunrise", label: "הנץ החמה", icon: Sunrise, gradient: "from-orange-400 to-rose-500", bgColor: "bg-orange-50" },
-  { key: "sofZmanShma", label: "סוף זמן ק\"ש", icon: Sun, gradient: "from-amber-400 to-amber-600", bgColor: "bg-amber-50" },
-  { key: "sofZmanTfilla", label: "סוף זמן תפילה", icon: Sun, gradient: "from-amber-500 to-orange-600", bgColor: "bg-amber-50" },
-  { key: "chatzot", label: "חצות היום", icon: Sun, gradient: "from-yellow-400 to-orange-500", bgColor: "bg-yellow-50" },
-  { key: "minchaGedola", label: "מנחה גדולה", icon: Sun, gradient: "from-orange-400 to-orange-600", bgColor: "bg-orange-50" },
-  { key: "minchaKetana", label: "מנחה קטנה", icon: Sun, gradient: "from-orange-500 to-rose-500", bgColor: "bg-orange-50" },
-  { key: "plagHaMincha", label: "פלג המנחה", icon: Sunset, gradient: "from-rose-400 to-pink-600", bgColor: "bg-rose-50" },
-  { key: "sunset", label: "שקיעה", icon: Sunset, gradient: "from-rose-500 to-red-600", bgColor: "bg-rose-50" },
-  { key: "tzeit", label: "צאת הכוכבים", icon: Moon, gradient: "from-purple-500 to-violet-700", bgColor: "bg-purple-50" },
+  { key: "alotHaShachar", label: "עלות השחר", icon: Moon, gradient: "from-indigo-400 to-indigo-600" },
+  { key: "misheyakir", label: "משיכיר", icon: Moon, gradient: "from-indigo-300 to-indigo-500" },
+  { key: "sunrise", label: "הנץ החמה", icon: Sunrise, gradient: "from-orange-400 to-rose-500" },
+  { key: "sofZmanShma", label: "סוף זמן ק\"ש", icon: Sun, gradient: "from-amber-400 to-amber-600" },
+  { key: "sofZmanTfilla", label: "סוף זמן תפילה", icon: Sun, gradient: "from-amber-500 to-orange-600" },
+  { key: "chatzot", label: "חצות היום", icon: Sun, gradient: "from-yellow-400 to-orange-500" },
+  { key: "minchaGedola", label: "מנחה גדולה", icon: Sun, gradient: "from-orange-400 to-orange-600" },
+  { key: "minchaKetana", label: "מנחה קטנה", icon: Sun, gradient: "from-orange-500 to-rose-500" },
+  { key: "plagHaMincha", label: "פלג המנחה", icon: Sunset, gradient: "from-rose-400 to-pink-600" },
+  { key: "sunset", label: "שקיעה", icon: Sunset, gradient: "from-rose-500 to-red-600" },
+  { key: "tzeit", label: "צאת הכוכבים", icon: Moon, gradient: "from-purple-500 to-violet-700" },
 ];
 
 export default function ZmanimPage() {
@@ -145,20 +144,20 @@ export default function ZmanimPage() {
   return (
     <div className="py-4 sm:py-6 space-y-5">
       {/* Header */}
-      <div className="bg-gradient-to-l from-brown-dark to-brown-medium rounded-2xl p-5 sm:p-6 text-cream relative overflow-hidden">
+      <div className="bg-gradient-to-l from-gold-dark to-gold rounded-2xl p-5 sm:p-6 text-[#1a140f] relative overflow-hidden">
         {/* Decorative sun */}
-        <div className="absolute left-4 top-4 w-20 h-20 bg-amber-400/20 rounded-full blur-2xl" />
+        <div className="absolute left-4 top-4 w-20 h-20 bg-white/20 rounded-full blur-2xl" />
 
         <div className="relative">
           <div className="flex items-center gap-2 mb-1">
             <Clock className="w-5 h-5" />
             <h1 className="text-2xl font-bold">זמני היום</h1>
           </div>
-          <p className="text-cream/70 text-sm mb-4">{formatDate()}</p>
+          <p className="text-[#1a140f]/70 text-sm mb-4">{formatDate()}</p>
 
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             {/* Current Time */}
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl px-5 py-3">
+            <div className="bg-[#1a140f]/20 backdrop-blur-sm rounded-xl px-5 py-3">
               <span className="text-3xl font-mono font-bold tracking-wider">
                 {formatCurrentTime()}
               </span>
@@ -166,12 +165,12 @@ export default function ZmanimPage() {
 
             {/* Next Zman */}
             {nextZman && (
-              <div className="bg-amber-500/20 backdrop-blur-sm rounded-xl px-4 py-3">
-                <p className="text-cream/70 text-xs mb-1">הזמן הבא</p>
+              <div className="bg-[#1a140f]/20 backdrop-blur-sm rounded-xl px-4 py-3">
+                <p className="text-[#1a140f]/70 text-xs mb-1">הזמן הבא</p>
                 <div className="flex items-center gap-2">
-                  <ChevronLeft className="w-4 h-4 text-amber-300" />
+                  <ChevronLeft className="w-4 h-4" />
                   <span className="font-bold">{nextZman.label}</span>
-                  <span className="font-mono text-amber-200">{nextZman.time}</span>
+                  <span className="font-mono">{nextZman.time}</span>
                 </div>
               </div>
             )}
@@ -180,15 +179,15 @@ export default function ZmanimPage() {
       </div>
 
       {/* Location Selector */}
-      <div className="bg-white rounded-2xl border border-cream-dark/50 p-4 space-y-4">
+      <div className="bg-[#3b2d1f] rounded-2xl border border-white/10 p-4 space-y-4">
         <div className="flex items-center gap-2">
-          <MapPin className="w-4 h-4 text-brown-light" />
-          <span className="text-sm text-brown-medium font-medium">בחר מיקום</span>
+          <MapPin className="w-4 h-4 text-gold" />
+          <span className="text-sm text-white/70 font-medium">בחר מיקום</span>
         </div>
 
         {LOCATION_CATEGORIES.map((category) => (
           <div key={category.name}>
-            <p className="text-xs text-brown-light font-medium mb-2">{category.name}</p>
+            <p className="text-xs text-white/50 font-medium mb-2">{category.name}</p>
             <div className="flex flex-wrap gap-2">
               {category.locations.map((location) => (
                 <button
@@ -196,8 +195,8 @@ export default function ZmanimPage() {
                   onClick={() => setSelectedLocation(location)}
                   className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
                     selectedLocation.id === location.id
-                      ? "bg-brown-medium text-cream shadow-md"
-                      : "bg-cream/70 text-brown-dark hover:bg-cream-dark/50 border border-cream-dark/30"
+                      ? "bg-gold text-[#1a140f] shadow-md"
+                      : "bg-white/5 text-white/80 hover:bg-white/10 border border-white/10"
                   }`}
                 >
                   {location.name}
@@ -209,11 +208,11 @@ export default function ZmanimPage() {
       </div>
 
       {/* Zmanim List */}
-      <div className="bg-white rounded-2xl border border-cream-dark/50 overflow-hidden">
-        <div className="p-4 sm:p-5 border-b border-cream-dark/30">
+      <div className="bg-[#3b2d1f] rounded-2xl border border-white/10 overflow-hidden">
+        <div className="p-4 sm:p-5 border-b border-white/10">
           <div className="flex items-center gap-2">
             <Sun className="w-5 h-5 text-amber-500" />
-            <h2 className="font-bold text-brown-dark text-lg">
+            <h2 className="font-bold text-white text-lg">
               זמני היום ל{selectedLocation.name}
             </h2>
           </div>
@@ -222,8 +221,8 @@ export default function ZmanimPage() {
         <div className="p-4 sm:p-5">
           {loading ? (
             <div className="py-12 flex flex-col items-center justify-center gap-4">
-              <div className="w-12 h-12 border-4 border-sky-light border-t-sky-dark rounded-full animate-spin" />
-              <p className="text-brown-light">טוען זמנים...</p>
+              <div className="w-12 h-12 border-4 border-gold/30 border-t-gold rounded-full animate-spin" />
+              <p className="text-white/50">טוען זמנים...</p>
             </div>
           ) : zmanim ? (
             <div className="space-y-2">
@@ -238,10 +237,10 @@ export default function ZmanimPage() {
                     key={item.key}
                     className={`flex items-center justify-between p-3 sm:p-4 rounded-xl transition-all ${
                       isNext
-                        ? "bg-sky-light/50 border-2 border-sky-medium shadow-sm"
+                        ? "bg-gold/20 border-2 border-gold/50 shadow-sm"
                         : passed
-                          ? "bg-cream/30 opacity-60"
-                          : "bg-cream/50"
+                          ? "bg-white/5 opacity-60"
+                          : "bg-white/5"
                     }`}
                   >
                     <div className="flex items-center gap-3">
@@ -249,11 +248,11 @@ export default function ZmanimPage() {
                         <Icon className="w-5 h-5 text-white" />
                       </div>
                       <div>
-                        <span className={`font-medium ${passed ? "text-brown-light" : "text-brown-dark"}`}>
+                        <span className={`font-medium ${passed ? "text-white/50" : "text-white"}`}>
                           {item.label}
                         </span>
                         {isNext && (
-                          <span className="block text-xs text-sky-dark font-medium">
+                          <span className="block text-xs text-gold font-medium">
                             הזמן הבא
                           </span>
                         )}
@@ -266,10 +265,10 @@ export default function ZmanimPage() {
                       <span
                         className={`font-mono text-lg font-bold ${
                           passed
-                            ? "text-brown-light line-through"
+                            ? "text-white/40 line-through"
                             : isNext
-                              ? "text-sky-dark"
-                              : "text-brown-dark"
+                              ? "text-gold"
+                              : "text-white"
                         }`}
                       >
                         {time}
@@ -281,16 +280,16 @@ export default function ZmanimPage() {
             </div>
           ) : (
             <div className="text-center py-12">
-              <Sun className="w-16 h-16 text-cream-dark mx-auto mb-3" />
-              <p className="text-brown-light">לא ניתן לטעון את הזמנים</p>
+              <Sun className="w-16 h-16 text-white/20 mx-auto mb-3" />
+              <p className="text-white/50">לא ניתן לטעון את הזמנים</p>
             </div>
           )}
         </div>
       </div>
 
       {/* Info Card */}
-      <div className="bg-gradient-to-l from-sky-light/50 to-sky-medium/50 rounded-2xl p-4 text-center">
-        <p className="text-brown-dark text-sm">
+      <div className="bg-gold/10 border border-gold/20 rounded-2xl p-4 text-center">
+        <p className="text-white/70 text-sm">
           הזמנים מחושבים לפי מיקום גאוגרפי ותאריך עברי
         </p>
       </div>

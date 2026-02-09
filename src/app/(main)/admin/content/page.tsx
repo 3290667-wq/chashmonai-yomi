@@ -124,10 +124,6 @@ export default function ContentPage() {
     setSaveError("");
     setSaving(true);
 
-    console.log("[Admin Content] Form submitted");
-    console.log("[Admin Content] Session:", session?.user);
-    console.log("[Admin Content] Form data:", formData);
-
     try {
       const method = editingContent ? "PATCH" : "POST";
       const body = editingContent
@@ -139,21 +135,15 @@ export default function ContentPage() {
         body.platoon = session.user.platoon;
       }
 
-      console.log("[Admin Content] Sending request:", { method, body });
-
       const res = await fetch("/api/admin/content", {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
 
-      console.log("[Admin Content] Response status:", res.status);
-
       const data = await res.json();
-      console.log("[Admin Content] Response data:", data);
 
       if (res.ok && data.success) {
-        console.log("[Admin Content] Success! Content ID:", data.content?.id);
         fetchContents();
         setShowModal(false);
         setEditingContent(null);
@@ -167,12 +157,10 @@ export default function ContentPage() {
         });
       } else {
         const errorMsg = data.error || "שגיאה בשמירת התוכן";
-        console.error("[Admin Content] Save failed:", errorMsg, "Code:", data.code);
         setSaveError(errorMsg);
         alert("שגיאה: " + errorMsg + (data.code ? ` (${data.code})` : ""));
       }
     } catch (error) {
-      console.error("[Admin Content] Request failed:", error);
       setSaveError("שגיאה בשמירת התוכן - נא לנסות שוב");
       alert("שגיאה בשמירת התוכן: " + String(error));
     } finally {
@@ -231,12 +219,12 @@ export default function ContentPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <button onClick={() => router.back()} className="p-2 hover:bg-cream rounded-lg">
-            <ChevronRight className="w-5 h-5 text-brown-medium" />
+          <button onClick={() => router.back()} className="p-2 hover:bg-white/5 rounded-lg">
+            <ChevronRight className="w-5 h-5 text-white/60" />
           </button>
           <div>
-            <h1 className="text-2xl font-bold text-brown-dark">ניהול תוכן</h1>
-            <p className="text-sm text-brown-light">
+            <h1 className="text-2xl font-bold text-white">ניהול תוכן</h1>
+            <p className="text-sm text-white/60">
               העלאה וניהול סרטונים ותכנים
             </p>
           </div>
@@ -244,7 +232,7 @@ export default function ContentPage() {
 
         <button
           onClick={() => openNewModal()}
-          className="flex items-center gap-2 px-4 py-2 bg-brown-medium text-cream rounded-xl font-medium hover:bg-brown-dark transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-gold text-[#1a140f] rounded-xl font-medium hover:bg-gold-light transition-colors"
         >
           <Plus className="w-5 h-5" />
           <span className="hidden sm:inline">תוכן חדש</span>
@@ -252,35 +240,35 @@ export default function ContentPage() {
       </div>
 
       {/* Content List */}
-      <div className="bg-white rounded-2xl border border-cream-dark/50 overflow-hidden">
-        <div className="p-4 sm:p-5 border-b border-cream-dark/30 flex items-center gap-2">
-          <Video className="w-5 h-5 text-brown-medium" />
-          <h2 className="font-bold text-brown-dark">תכנים שהועלו</h2>
+      <div className="bg-[#3b2d1f] rounded-2xl border border-white/10 overflow-hidden">
+        <div className="p-4 sm:p-5 border-b border-white/10 flex items-center gap-2">
+          <Video className="w-5 h-5 text-white/60" />
+          <h2 className="font-bold text-white">תכנים שהועלו</h2>
         </div>
 
         {loading ? (
           <div className="py-12 flex flex-col items-center justify-center gap-4">
-            <div className="w-12 h-12 border-4 border-sky-light border-t-sky-dark rounded-full animate-spin" />
-            <p className="text-brown-light">טוען תכנים...</p>
+            <div className="w-12 h-12 border-4 border-gold/30 border-t-gold rounded-full animate-spin" />
+            <p className="text-white/50">טוען תכנים...</p>
           </div>
         ) : contents.length === 0 ? (
           <div className="py-12 text-center">
-            <Video className="w-16 h-16 text-cream-dark mx-auto mb-3" />
-            <p className="text-brown-light mb-4">עדיין לא הועלו תכנים</p>
+            <Video className="w-16 h-16 text-white/20 mx-auto mb-3" />
+            <p className="text-white/50 mb-4">עדיין לא הועלו תכנים</p>
             <button
               onClick={() => openNewModal()}
-              className="px-4 py-2 bg-sky-light text-sky-dark rounded-xl font-medium hover:bg-sky-medium/30 transition-colors"
+              className="px-4 py-2 bg-gold/20 text-gold rounded-xl font-medium hover:bg-gold/30 transition-colors"
             >
               העלה תוכן ראשון
             </button>
           </div>
         ) : (
-          <div className="divide-y divide-cream-dark/30">
+          <div className="divide-y divide-white/10">
             {contents.map((content) => {
               const typeInfo = getContentTypeInfo(content.type);
               const Icon = typeInfo.icon;
               return (
-                <div key={content.id} className="p-4 hover:bg-cream/30 transition-colors">
+                <div key={content.id} className="p-4 hover:bg-white/5 transition-colors">
                   <div className="flex items-start gap-3">
                     {/* Icon */}
                     <div className={`w-12 h-12 bg-gradient-to-br ${typeInfo.color} rounded-xl flex items-center justify-center flex-shrink-0`}>
@@ -290,24 +278,24 @@ export default function ContentPage() {
                     {/* Content Info */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <p className="font-bold text-brown-dark">{content.title}</p>
-                        <span className="px-2 py-0.5 bg-violet-100 text-violet-700 rounded-full text-xs">
+                        <p className="font-bold text-white">{content.title}</p>
+                        <span className="px-2 py-0.5 bg-violet-500/20 text-violet-400 rounded-full text-xs">
                           {typeInfo.label}
                         </span>
                         {content.platoon && (
-                          <span className="px-2 py-0.5 bg-sky-100 text-sky-700 rounded-full text-xs">
+                          <span className="px-2 py-0.5 bg-sky-500/20 text-sky-400 rounded-full text-xs">
                             {content.platoon}
                           </span>
                         )}
                       </div>
 
                       {content.description && (
-                        <p className="text-brown-light text-sm mt-1 line-clamp-2">
+                        <p className="text-white/60 text-sm mt-1 line-clamp-2">
                           {content.description}
                         </p>
                       )}
 
-                      <div className="flex items-center gap-3 mt-2 text-xs text-brown-light">
+                      <div className="flex items-center gap-3 mt-2 text-xs text-white/50">
                         <span>
                           נוצר ע״י: {content.createdBy?.name || "לא ידוע"}
                         </span>
@@ -324,20 +312,20 @@ export default function ContentPage() {
                           href={content.videoUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="p-2 text-brown-light hover:text-sky-dark hover:bg-sky-light/50 rounded-lg transition-colors"
+                          className="p-2 text-white/40 hover:text-sky-400 hover:bg-sky-500/10 rounded-lg transition-colors"
                         >
                           <ExternalLink className="w-4 h-4" />
                         </a>
                       )}
                       <button
                         onClick={() => openEditModal(content)}
-                        className="p-2 text-brown-light hover:text-brown-dark hover:bg-cream rounded-lg transition-colors"
+                        className="p-2 text-white/40 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
                       >
                         <Edit2 className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => handleDelete(content.id)}
-                        className="p-2 text-brown-light hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                        className="p-2 text-white/40 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -352,15 +340,15 @@ export default function ContentPage() {
 
       {/* Add/Edit Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl w-full max-w-md p-6 max-h-[90vh] overflow-y-auto">
-            <h3 className="text-lg font-bold text-brown-dark mb-4">
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+          <div className="bg-[#3b2d1f] border border-white/10 rounded-2xl w-full max-w-md p-6 max-h-[90vh] overflow-y-auto">
+            <h3 className="text-lg font-bold text-white mb-4">
               {editingContent ? "עריכת תוכן" : "הוספת תוכן חדש"}
             </h3>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-brown-medium mb-1">
+                <label className="block text-sm font-medium text-white/70 mb-1">
                   כותרת
                 </label>
                 <input
@@ -371,12 +359,12 @@ export default function ContentPage() {
                   }
                   required
                   placeholder="הכנס כותרת"
-                  className="w-full px-4 py-3 bg-cream/50 border border-cream-dark rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-medium text-brown-dark placeholder:text-brown-light/50"
+                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-gold/50"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-brown-medium mb-1">
+                <label className="block text-sm font-medium text-white/70 mb-1">
                   תיאור
                 </label>
                 <textarea
@@ -386,12 +374,12 @@ export default function ContentPage() {
                   }
                   placeholder="תיאור קצר של התוכן"
                   rows={3}
-                  className="w-full px-4 py-3 bg-cream/50 border border-cream-dark rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-medium resize-none text-brown-dark placeholder:text-brown-light/50"
+                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-gold/50 resize-none"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-brown-medium mb-1">
+                <label className="block text-sm font-medium text-white/70 mb-1">
                   סוג תוכן
                 </label>
                 <select
@@ -399,7 +387,7 @@ export default function ContentPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, type: e.target.value })
                   }
-                  className="w-full px-4 py-3 bg-cream/50 border border-cream-dark rounded-xl text-brown-dark"
+                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white"
                 >
                   {CONTENT_TYPES.map((type) => (
                     <option key={type.value} value={type.value}>
@@ -414,7 +402,7 @@ export default function ContentPage() {
                 <div className="space-y-3">
                   {/* URL Input - Primary option */}
                   <div>
-                    <label className="block text-sm font-medium text-brown-medium mb-1">
+                    <label className="block text-sm font-medium text-white/70 mb-1">
                       קישור לסרטון (YouTube / Vimeo / קישור ישיר)
                     </label>
                     <input
@@ -425,23 +413,23 @@ export default function ContentPage() {
                       }
                       placeholder="https://youtube.com/watch?v=..."
                       dir="ltr"
-                      className="w-full px-4 py-3 bg-cream/50 border border-cream-dark rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-medium text-brown-dark placeholder:text-brown-light/50"
+                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-gold/50"
                     />
-                    <p className="text-brown-light text-xs mt-1">
+                    <p className="text-white/50 text-xs mt-1">
                       ניתן להדביק קישור מיוטיוב, Vimeo או קישור ישיר לקובץ וידאו
                     </p>
                   </div>
 
                   {/* Divider */}
                   <div className="flex items-center gap-3">
-                    <div className="flex-1 h-px bg-cream-dark"></div>
-                    <span className="text-brown-light text-sm">או</span>
-                    <div className="flex-1 h-px bg-cream-dark"></div>
+                    <div className="flex-1 h-px bg-white/10"></div>
+                    <span className="text-white/50 text-sm">או</span>
+                    <div className="flex-1 h-px bg-white/10"></div>
                   </div>
 
                   {/* File Upload */}
                   <div>
-                    <label className="block text-sm font-medium text-brown-medium mb-1">
+                    <label className="block text-sm font-medium text-white/70 mb-1">
                       העלאת סרטון מהמכשיר
                     </label>
                     <div className="relative">
@@ -455,35 +443,35 @@ export default function ContentPage() {
                       />
                       <label
                         htmlFor="video-upload"
-                        className={`flex items-center justify-center gap-2 w-full px-4 py-3 border-2 border-dashed border-cream-dark rounded-xl cursor-pointer hover:border-sky-medium hover:bg-sky-light/20 transition-colors ${uploading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        className={`flex items-center justify-center gap-2 w-full px-4 py-3 border-2 border-dashed border-white/20 rounded-xl cursor-pointer hover:border-gold/50 hover:bg-gold/5 transition-colors ${uploading ? 'opacity-50 cursor-not-allowed' : ''}`}
                       >
                         {uploading ? (
                           <>
-                            <Loader2 className="w-5 h-5 animate-spin text-sky-dark" />
-                            <span className="text-brown-medium">מעלה סרטון...</span>
+                            <Loader2 className="w-5 h-5 animate-spin text-gold" />
+                            <span className="text-white/70">מעלה סרטון...</span>
                           </>
                         ) : (
                           <div className="text-center">
-                            <Upload className="w-6 h-6 text-brown-light mx-auto mb-1" />
-                            <span className="text-brown-medium block">לחץ להעלאת סרטון</span>
-                            <span className="text-brown-light text-xs">עד 300MB</span>
+                            <Upload className="w-6 h-6 text-white/50 mx-auto mb-1" />
+                            <span className="text-white/70 block">לחץ להעלאת סרטון</span>
+                            <span className="text-white/50 text-xs">עד 500MB</span>
                           </div>
                         )}
                       </label>
                     </div>
                     {uploadError && (
-                      <p className="text-red-500 text-sm mt-1">{uploadError}</p>
+                      <p className="text-red-400 text-sm mt-1">{uploadError}</p>
                     )}
                   </div>
 
                   {/* Preview */}
                   {formData.videoUrl && (
-                    <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl">
-                      <p className="text-emerald-700 text-sm font-medium flex items-center gap-2">
+                    <div className="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl">
+                      <p className="text-emerald-400 text-sm font-medium flex items-center gap-2">
                         <Video className="w-4 h-4" />
                         קישור לסרטון נוסף
                       </p>
-                      <p className="text-emerald-600 text-xs mt-1 truncate" dir="ltr">
+                      <p className="text-emerald-300 text-xs mt-1 truncate" dir="ltr">
                         {formData.videoUrl}
                       </p>
                     </div>
@@ -494,7 +482,7 @@ export default function ContentPage() {
               {/* Content textarea - for text-based content types */}
               {(formData.type === "CHASSIDUT" || formData.type === "MUSAR" || formData.type === "THOUGHT" || formData.type === "ARTICLE") && (
                 <div>
-                  <label className="block text-sm font-medium text-brown-medium mb-1">
+                  <label className="block text-sm font-medium text-white/70 mb-1">
                     תוכן
                   </label>
                   <textarea
@@ -504,14 +492,14 @@ export default function ContentPage() {
                     }
                     placeholder="הכנס את התוכן כאן..."
                     rows={6}
-                    className="w-full px-4 py-3 bg-cream/50 border border-cream-dark rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-medium resize-none text-brown-dark placeholder:text-brown-light/50"
+                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-gold/50 resize-none"
                   />
                 </div>
               )}
 
               {isAdmin && (
                 <div>
-                  <label className="block text-sm font-medium text-brown-medium mb-1">
+                  <label className="block text-sm font-medium text-white/70 mb-1">
                     פלוגה (ריק = לכולם)
                   </label>
                   <input
@@ -521,14 +509,14 @@ export default function ContentPage() {
                       setFormData({ ...formData, platoon: e.target.value })
                     }
                     placeholder="השאר ריק להצגה לכל הפלוגות"
-                    className="w-full px-4 py-3 bg-cream/50 border border-cream-dark rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-medium text-brown-dark placeholder:text-brown-light/50"
+                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-gold/50"
                   />
                 </div>
               )}
 
               {saveError && (
-                <div className="p-3 bg-red-50 border border-red-200 rounded-xl">
-                  <p className="text-red-700 text-sm">{saveError}</p>
+                <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-xl">
+                  <p className="text-red-400 text-sm">{saveError}</p>
                 </div>
               )}
 
@@ -539,14 +527,14 @@ export default function ContentPage() {
                     setShowModal(false);
                     setEditingContent(null);
                   }}
-                  className="flex-1 py-3 border border-cream-dark text-brown-dark rounded-xl font-medium hover:bg-cream transition-colors"
+                  className="flex-1 py-3 border border-white/20 text-white rounded-xl font-medium hover:bg-white/5 transition-colors"
                 >
                   ביטול
                 </button>
                 <button
                   type="submit"
                   disabled={saving}
-                  className="flex-1 py-3 bg-brown-medium text-cream rounded-xl font-medium hover:bg-brown-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="flex-1 py-3 bg-gold text-[#1a140f] rounded-xl font-medium hover:bg-gold-light transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   {saving ? (
                     <>

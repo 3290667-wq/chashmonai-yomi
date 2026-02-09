@@ -80,7 +80,7 @@ export default function DailyPage() {
     <div className="relative py-6 space-y-6">
 
       {/* Header with Timer */}
-      <div className="relative bg-[#1e1e1e] border border-white/10 rounded-2xl overflow-hidden">
+      <div className="relative bg-[#3b2d1f] border border-white/10 rounded-2xl overflow-hidden">
         {/* Gold top line */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-gold to-transparent" />
 
@@ -96,17 +96,6 @@ export default function DailyPage() {
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
-            {/* Timer */}
-            <div className="flex items-center gap-3 px-4 py-3 bg-[#121212] border border-white/10 rounded-xl">
-              <Clock className="w-5 h-5 text-gold" />
-              <span className="font-mono text-lg font-bold text-white">{formattedDuration}</span>
-              <div
-                className={`w-2.5 h-2.5 rounded-full ${
-                  isEngaged ? "bg-emerald-400 animate-pulse" : "bg-red-400"
-                }`}
-              />
-            </div>
-
             {/* Points */}
             <div className="flex items-center gap-3 px-4 py-3 bg-gold/10 border border-gold/30 rounded-xl">
               <Award className="w-5 h-5 text-gold" />
@@ -120,7 +109,7 @@ export default function DailyPage() {
       {/* Learning Sections */}
       <div className="space-y-4">
         {/* Mishnah Section */}
-        <div className="bg-[#1e1e1e] border border-white/10 rounded-xl overflow-hidden">
+        <div className="bg-[#3b2d1f] border border-white/10 rounded-xl overflow-hidden">
           <button
             onClick={() => toggleSection("mishnah")}
             className="w-full text-right p-5 flex items-center justify-between hover:bg-white/5 transition-colors"
@@ -166,7 +155,7 @@ export default function DailyPage() {
         </div>
 
         {/* Rambam Section */}
-        <div className="bg-[#1e1e1e] border border-white/10 rounded-xl overflow-hidden">
+        <div className="bg-[#3b2d1f] border border-white/10 rounded-xl overflow-hidden">
           <button
             onClick={() => toggleSection("rambam")}
             className="w-full text-right p-5 flex items-center justify-between hover:bg-white/5 transition-colors"
@@ -213,7 +202,7 @@ export default function DailyPage() {
 
         {/* Daily Video Section */}
         {content?.dailyVideo && (
-          <div className="bg-[#1e1e1e] border border-white/10 rounded-xl overflow-hidden">
+          <div className="bg-[#3b2d1f] border border-white/10 rounded-xl overflow-hidden">
             <button
               onClick={() => toggleSection("video")}
               className="w-full text-right p-5 flex items-center justify-between hover:bg-white/5 transition-colors"
@@ -243,15 +232,34 @@ export default function DailyPage() {
                     <p className="text-white/60 mb-4">{content.dailyVideo.description}</p>
                   )}
                   {content.dailyVideo.videoUrl && (
-                    <a
-                      href={content.dailyVideo.videoUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-3 w-full py-4 bg-gradient-to-l from-rose-500 to-rose-600 text-white rounded-xl font-bold hover:shadow-lg transition-all"
-                    >
-                      <Play className="w-5 h-5" />
-                      צפה בסרטון
-                    </a>
+                    <div className="space-y-4">
+                      {/* Embedded Video Player */}
+                      <div className="aspect-video bg-black rounded-xl overflow-hidden">
+                        {content.dailyVideo.videoUrl.includes('youtube.com') || content.dailyVideo.videoUrl.includes('youtu.be') ? (
+                          <iframe
+                            src={`https://www.youtube.com/embed/${content.dailyVideo.videoUrl.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]+)/)?.[1] || ''}`}
+                            className="w-full h-full"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                          />
+                        ) : content.dailyVideo.videoUrl.includes('vimeo.com') ? (
+                          <iframe
+                            src={`https://player.vimeo.com/video/${content.dailyVideo.videoUrl.match(/vimeo\.com\/(\d+)/)?.[1] || ''}`}
+                            className="w-full h-full"
+                            allow="autoplay; fullscreen; picture-in-picture"
+                            allowFullScreen
+                          />
+                        ) : (
+                          <video
+                            src={content.dailyVideo.videoUrl}
+                            controls
+                            className="w-full h-full"
+                          >
+                            הדפדפן שלך לא תומך בתגית וידאו.
+                          </video>
+                        )}
+                      </div>
+                    </div>
                   )}
                 </div>
               </div>
@@ -260,7 +268,7 @@ export default function DailyPage() {
         )}
 
         {/* Chassidut Section */}
-        <div className="bg-[#1e1e1e] border border-white/10 rounded-xl overflow-hidden">
+        <div className="bg-[#3b2d1f] border border-white/10 rounded-xl overflow-hidden">
           <button
             onClick={() => toggleSection("chassidut")}
             className="w-full text-right p-5 flex items-center justify-between hover:bg-white/5 transition-colors"
@@ -307,7 +315,7 @@ export default function DailyPage() {
         </div>
 
         {/* Musar Section */}
-        <div className="bg-[#1e1e1e] border border-white/10 rounded-xl overflow-hidden">
+        <div className="bg-[#3b2d1f] border border-white/10 rounded-xl overflow-hidden">
           <button
             onClick={() => toggleSection("musar")}
             className="w-full text-right p-5 flex items-center justify-between hover:bg-white/5 transition-colors"

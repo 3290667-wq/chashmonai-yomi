@@ -27,7 +27,7 @@ export default async function MainLayout({
           quality={90}
         />
         {/* Dark overlay for readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#1a140f]/80 via-[#251c14]/70 to-[#1a140f]/90" />
       </div>
 
       <Navbar

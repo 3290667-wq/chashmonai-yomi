@@ -76,7 +76,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex relative overflow-hidden bg-[#0a0a0a]">
+    <div className="min-h-screen flex relative overflow-hidden bg-[#1a140f]">
       {/* Background Image - Left Side */}
       <div className="hidden lg:block lg:w-1/2 relative">
         <Image
@@ -87,7 +87,7 @@ export default function LoginPage() {
           priority
         />
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#0a0a0a]/50 to-[#0a0a0a]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#1a140f]/50 to-[#1a140f]" />
 
         {/* Content Over Image */}
         <div className="absolute inset-0 flex flex-col justify-end p-12">
@@ -125,13 +125,13 @@ export default function LoginPage() {
             fill
             className="object-cover opacity-30"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/80 via-[#0a0a0a]/90 to-[#0a0a0a]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#1a140f]/80 via-[#1a140f]/90 to-[#1a140f]" />
         </div>
 
         {/* Header */}
         <header className="safe-area-top p-6 relative z-10">
           <Link href="/" className="flex items-center gap-3 w-fit group">
-            <div className="w-10 h-10 rounded-xl bg-[#1e1e1e] border border-white/10 flex items-center justify-center group-hover:border-gold/50 transition-colors">
+            <div className="w-10 h-10 rounded-xl bg-[#3b2d1f] border border-white/10 flex items-center justify-center group-hover:border-gold/50 transition-colors">
               <ArrowLeft className="w-5 h-5 text-white/70 group-hover:text-gold transition-colors" />
             </div>
             <div className="lg:hidden flex items-center gap-2">
@@ -155,7 +155,7 @@ export default function LoginPage() {
               <div className="relative w-20 h-20 mx-auto mb-6 lg:hidden">
                 <div className="absolute inset-0 bg-gold/20 rounded-full blur-xl" />
                 <Image
-                  src="/shield-emblem.png"
+                  src="/רוח חשמונאית.png"
                   alt="רוח חשמונאית"
                   fill
                   className="object-contain relative z-10"
@@ -172,7 +172,7 @@ export default function LoginPage() {
 
             {/* Form Card */}
             <div
-              className="bg-[#1e1e1e] border border-white/10 rounded-2xl p-8 animate-fade-in-up"
+              className="bg-[#3b2d1f] border border-white/10 rounded-2xl p-8 animate-fade-in-up"
               style={{ animationDelay: "100ms" }}
             >
               <form onSubmit={handleSubmit} className="space-y-5">
@@ -186,7 +186,7 @@ export default function LoginPage() {
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder="שם מלא"
-                        className="w-full bg-[#121212] border border-white/10 rounded-xl pr-12 pl-4 py-4 text-white placeholder:text-white/40 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-all"
+                        className="w-full bg-[#251c14] border border-white/10 rounded-xl pr-12 pl-4 py-4 text-white placeholder:text-white/40 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-all"
                       />
                     </div>
 
@@ -198,7 +198,7 @@ export default function LoginPage() {
                         value={formData.platoon}
                         onChange={(e) => setFormData({ ...formData, platoon: e.target.value })}
                         placeholder="פלוגה"
-                        className="w-full bg-[#121212] border border-white/10 rounded-xl pr-12 pl-4 py-4 text-white placeholder:text-white/40 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-all"
+                        className="w-full bg-[#251c14] border border-white/10 rounded-xl pr-12 pl-4 py-4 text-white placeholder:text-white/40 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-all"
                       />
                     </div>
                   </>
@@ -213,7 +213,7 @@ export default function LoginPage() {
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     placeholder="אימייל"
                     required
-                    className="w-full bg-[#121212] border border-white/10 rounded-xl pr-12 pl-4 py-4 text-white placeholder:text-white/40 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-all"
+                    className="w-full bg-[#251c14] border border-white/10 rounded-xl pr-12 pl-4 py-4 text-white placeholder:text-white/40 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-all"
                   />
                 </div>
 
@@ -226,7 +226,7 @@ export default function LoginPage() {
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                     placeholder="סיסמה"
                     required
-                    className="w-full bg-[#121212] border border-white/10 rounded-xl pr-12 pl-12 py-4 text-white placeholder:text-white/40 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-all"
+                    className="w-full bg-[#251c14] border border-white/10 rounded-xl pr-12 pl-12 py-4 text-white placeholder:text-white/40 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-all"
                   />
                   <button
                     type="button"
@@ -248,7 +248,7 @@ export default function LoginPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-gradient-to-l from-gold via-gold-light to-gold text-[#0a0a0a] font-bold text-lg py-4 rounded-xl shadow-lg shadow-gold/20 hover:shadow-xl hover:shadow-gold/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="w-full bg-gradient-to-l from-gold via-gold-light to-gold text-[#1a140f] font-bold text-lg py-4 rounded-xl shadow-lg shadow-gold/20 hover:shadow-xl hover:shadow-gold/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   {loading ? (
                     <>

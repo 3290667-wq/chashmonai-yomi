@@ -4,13 +4,13 @@
 :root {
   /* Artlist Dark Theme - Chashmonaim Edition */
 
-  /* Core Dark Colors */
-  --bg-primary: #0a0a0a;
-  --bg-secondary: #121212;
-  --bg-tertiary: #1a1a1a;
-  --bg-card: #1e1e1e;
-  --bg-card-hover: #252525;
-  --bg-elevated: #2a2a2a;
+  /* Core Brown Colors - Matching Logo */
+  --bg-primary: #1a140f;
+  --bg-secondary: #251c14;
+  --bg-tertiary: #302419;
+  --bg-card: #3b2d1f;
+  --bg-card-hover: #4a3825;
+  --bg-elevated: #5a452c;
 
   /* Chashmonaim Brand Colors - Gold & Olive */
   --gold-primary: #C9A227;

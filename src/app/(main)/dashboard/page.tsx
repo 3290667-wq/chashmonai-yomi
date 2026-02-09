@@ -27,6 +27,7 @@ export default async function DashboardPage() {
       icon: BookOpen,
       gradient: "from-gold to-gold-dark",
       color: "text-gold",
+      bgImage: "/hero-banner.png",
     },
     {
       href: "/zmanim",
@@ -35,6 +36,7 @@ export default async function DashboardPage() {
       icon: Clock,
       gradient: "from-violet-500 to-purple-600",
       color: "text-violet-400",
+      bgImage: "/desert-bg.png",
     },
     {
       href: "/boost",
@@ -43,6 +45,7 @@ export default async function DashboardPage() {
       icon: Play,
       gradient: "from-emerald-500 to-green-600",
       color: "text-emerald-400",
+      bgImage: "/main-bg.png",
     },
     {
       href: "/points",
@@ -51,6 +54,7 @@ export default async function DashboardPage() {
       icon: Award,
       gradient: "from-rose-500 to-pink-600",
       color: "text-rose-400",
+      bgImage: "/dashboard-bg.png",
     },
   ];
 
@@ -73,7 +77,7 @@ export default async function DashboardPage() {
   return (
     <div className="relative min-h-screen py-6 sm:py-8 space-y-6">
       {/* Hero Section - Artlist Style */}
-      <div className="relative rounded-2xl overflow-hidden bg-[#1e1e1e] border border-white/10">
+      <div className="relative rounded-2xl overflow-hidden bg-[#3b2d1f] border border-white/10">
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
@@ -82,24 +86,13 @@ export default async function DashboardPage() {
             fill
             className="object-cover opacity-50"
           />
-          <div className="absolute inset-0 bg-gradient-to-l from-[#0a0a0a] via-[#0a0a0a]/80 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-l from-[#1a140f] via-[#1a140f]/80 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#1a140f] via-transparent to-transparent" />
         </div>
 
         {/* Content */}
         <div className="relative z-10 p-6 sm:p-10">
           <div className="flex flex-col sm:flex-row sm:items-center gap-6">
-            {/* Logo */}
-            <div className="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0">
-              <div className="absolute inset-0 bg-gold/30 rounded-full blur-xl" />
-              <Image
-                src="/shield-emblem.png"
-                alt="סמל רוח חשמונאית"
-                fill
-                className="object-contain drop-shadow-2xl relative z-10"
-              />
-            </div>
-
             {/* Text */}
             <div className="flex-1">
               <p className="text-gold text-sm mb-1 font-semibold tracking-wide flex items-center gap-2">
@@ -151,19 +144,33 @@ export default async function DashboardPage() {
               className="group animate-fade-in-up"
               style={{ animationDelay: `${index * 50}ms` }}
             >
-              <div className="relative bg-[#1e1e1e] border border-white/10 rounded-xl p-5 h-full transition-all duration-300 hover:border-white/20 hover:bg-[#252525] hover:translate-y-[-4px] hover:shadow-xl">
-                {/* Icon */}
-                <div className={`w-12 h-12 bg-gradient-to-br ${link.gradient} rounded-xl flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform`}>
-                  <Icon className="w-6 h-6 text-white" />
+              <div className="relative bg-[#3b2d1f] border border-white/10 rounded-xl overflow-hidden h-full transition-all duration-300 hover:border-white/20 hover:translate-y-[-4px] hover:shadow-xl">
+                {/* Background Image */}
+                <div className="absolute inset-0">
+                  <Image
+                    src={link.bgImage}
+                    alt=""
+                    fill
+                    className="object-cover opacity-30 group-hover:opacity-40 transition-opacity"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#1a140f] via-[#1a140f]/60 to-transparent" />
                 </div>
 
-                {/* Text */}
-                <h3 className="font-bold text-white text-lg mb-1">{link.title}</h3>
-                <p className="text-white/50 text-sm">{link.description}</p>
+                {/* Content */}
+                <div className="relative z-10 p-5">
+                  {/* Icon */}
+                  <div className={`w-12 h-12 bg-gradient-to-br ${link.gradient} rounded-xl flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform`}>
+                    <Icon className="w-6 h-6 text-white" />
+                  </div>
 
-                {/* Arrow */}
-                <div className="absolute bottom-5 left-5 opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all">
-                  <ChevronLeft className={`w-5 h-5 ${link.color}`} />
+                  {/* Text */}
+                  <h3 className="font-bold text-white text-lg mb-1">{link.title}</h3>
+                  <p className="text-white/50 text-sm">{link.description}</p>
+
+                  {/* Arrow */}
+                  <div className="absolute bottom-5 left-5 opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all">
+                    <ChevronLeft className={`w-5 h-5 ${link.color}`} />
+                  </div>
                 </div>
               </div>
             </Link>
@@ -172,7 +179,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* Stats Section */}
-      <div className="bg-[#1e1e1e] border border-white/10 rounded-2xl p-6">
+      <div className="bg-[#3b2d1f] border border-white/10 rounded-2xl p-6">
         <div className="flex items-center gap-4 mb-6">
           <div className="w-12 h-12 bg-gradient-to-br from-gold to-gold-dark rounded-xl flex items-center justify-center shadow-lg">
             <TrendingUp className="w-6 h-6 text-white" />
@@ -189,7 +196,7 @@ export default async function DashboardPage() {
             return (
               <div
                 key={index}
-                className="bg-[#121212] border border-white/5 rounded-xl p-4 text-center hover:border-white/10 transition-all"
+                className="bg-[#251c14] border border-white/5 rounded-xl p-4 text-center hover:border-white/10 transition-all"
               >
                 <div className={`w-10 h-10 mx-auto mb-3 rounded-lg flex items-center justify-center bg-white/5 ${stat.color}`}>
                   <Icon className="w-5 h-5" />
@@ -203,7 +210,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* Daily Learning Preview */}
-      <div className="bg-[#1e1e1e] border border-white/10 rounded-2xl overflow-hidden">
+      <div className="bg-[#3b2d1f] border border-white/10 rounded-2xl overflow-hidden">
         <div className="flex items-center justify-between p-6 border-b border-white/10">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 bg-gradient-to-br from-gold to-gold-dark rounded-xl flex items-center justify-center shadow-lg">
@@ -226,7 +233,7 @@ export default async function DashboardPage() {
         <div className="p-6 grid sm:grid-cols-2 gap-4">
           {/* Mishna Card */}
           <Link href="/daily" className="block group">
-            <div className="bg-[#121212] border border-white/5 rounded-xl p-5 hover:border-gold/30 transition-all">
+            <div className="bg-[#251c14] border border-white/5 rounded-xl p-5 hover:border-gold/30 transition-all">
               <div className="flex items-center gap-4 mb-4">
                 <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-amber-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
                   <BookOpen className="w-6 h-6 text-white" />
@@ -245,7 +252,7 @@ export default async function DashboardPage() {
 
           {/* Rambam Card */}
           <Link href="/daily" className="block group">
-            <div className="bg-[#121212] border border-white/5 rounded-xl p-5 hover:border-violet-500/30 transition-all">
+            <div className="bg-[#251c14] border border-white/5 rounded-xl p-5 hover:border-violet-500/30 transition-all">
               <div className="flex items-center gap-4 mb-4">
                 <div className="w-12 h-12 bg-gradient-to-br from-violet-400 to-violet-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
                   <BookOpen className="w-6 h-6 text-white" />
@@ -269,15 +276,11 @@ export default async function DashboardPage() {
         {/* Background */}
         <div className="absolute inset-0">
           <Image src="/dashboard-bg.png" alt="" fill className="object-cover opacity-40" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/90 to-[#0a0a0a]/70" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#1a140f] via-[#1a140f]/90 to-[#1a140f]/70" />
         </div>
 
         {/* Content */}
         <div className="relative z-10 p-8 sm:p-10 text-center">
-          <div className="relative w-16 h-16 mx-auto mb-6">
-            <div className="absolute inset-0 bg-gold rounded-full blur-xl opacity-50" />
-            <Image src="/shield-emblem.png" alt="רוח חשמונאית" fill className="object-contain relative z-10" />
-          </div>
           <p className="text-white font-bold text-2xl sm:text-3xl font-hebrew leading-relaxed">
             &ldquo;לעלות ולהתעלות&rdquo;
           </p>
