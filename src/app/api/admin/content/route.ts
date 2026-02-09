@@ -179,7 +179,7 @@ export async function PATCH(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { id, type, title, description, content: contentText, videoUrl, platoon } = body;
+    const { id, type, title, description, content: contentText, videoUrl, imageUrl } = body;
 
     if (!id || !title) {
       return NextResponse.json(
@@ -196,6 +196,7 @@ export async function PATCH(request: NextRequest) {
         description,
         content: contentText,
         videoUrl,
+        imageUrl,
       },
     });
 

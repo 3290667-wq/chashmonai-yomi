@@ -88,6 +88,7 @@ export async function GET(request: NextRequest) {
         description: c.description,
         content: c.content,
         videoUrl: c.videoUrl,
+        imageUrl: c.imageUrl,
         createdAt: c.createdAt,
       }));
 

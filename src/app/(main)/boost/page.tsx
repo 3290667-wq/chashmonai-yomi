@@ -12,6 +12,7 @@ interface VideoContent {
   title: string;
   description: string | null;
   videoUrl: string | null;
+  imageUrl: string | null;
   createdAt: string;
 }
 
@@ -54,11 +55,20 @@ export default function BoostPage() {
     return match ? match[1] : null;
   };
 
-  const getThumbnailUrl = (url: string): string | null => {
-    const youtubeId = getYoutubeId(url);
-    if (youtubeId) {
-      return `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`;
+  const getThumbnailUrl = (video: VideoContent): string | null => {
+    // First priority: custom uploaded thumbnail
+    if (video.imageUrl) {
+      return video.imageUrl;
     }
+
+    // Second priority: YouTube thumbnail
+    if (video.videoUrl) {
+      const youtubeId = getYoutubeId(video.videoUrl);
+      if (youtubeId) {
+        return `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`;
+      }
+    }
+
     return null;
   };
 
@@ -209,8 +219,9 @@ export default function BoostPage() {
       {videos.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {videos.map((video, index) => {
-            const thumbnailUrl = video.videoUrl ? getThumbnailUrl(video.videoUrl) : null;
+            const thumbnailUrl = getThumbnailUrl(video);
             const isYoutube = video.videoUrl ? !!getYoutubeId(video.videoUrl) : false;
+            const hasCustomThumbnail = !!video.imageUrl;
 
             return (
               <div
@@ -343,9 +354,9 @@ export default function BoostPage() {
               ) : (
                 <div className="absolute inset-0">
                   {/* Thumbnail */}
-                  {selectedVideo.videoUrl && getThumbnailUrl(selectedVideo.videoUrl) && (
+                  {getThumbnailUrl(selectedVideo) && (
                     <Image
-                      src={getThumbnailUrl(selectedVideo.videoUrl)!}
+                      src={getThumbnailUrl(selectedVideo)!}
                       alt={selectedVideo.title}
                       fill
                       className="object-cover"

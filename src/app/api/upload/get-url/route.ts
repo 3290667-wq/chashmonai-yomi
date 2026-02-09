@@ -16,21 +16,38 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       body,
       request,
       onBeforeGenerateToken: async (pathname) => {
-        // Validate file type
-        const allowedExtensions = [".mp4", ".webm", ".mov", ".avi"];
+        // Validate file type - extended for mobile compatibility
+        const videoExtensions = [".mp4", ".webm", ".mov", ".avi", ".m4v", ".3gp", ".3g2", ".mpeg", ".mpg", ".ogg"];
+        const imageExtensions = [".jpg", ".jpeg", ".png", ".webp", ".gif"];
         const ext = pathname.substring(pathname.lastIndexOf(".")).toLowerCase();
-        if (!allowedExtensions.includes(ext)) {
-          throw new Error("סוג קובץ לא נתמך. יש להעלות קובץ וידאו (MP4, WebM, MOV, AVI)");
+
+        const isVideo = videoExtensions.includes(ext);
+        const isImage = imageExtensions.includes(ext);
+
+        if (!isVideo && !isImage) {
+          throw new Error(`סוג קובץ לא נתמך (${ext}). יש להעלות קובץ וידאו או תמונה`);
         }
 
+        const allowedContentTypes = isImage
+          ? ["image/jpeg", "image/png", "image/webp", "image/gif"]
+          : [
+              "video/mp4",
+              "video/webm",
+              "video/quicktime",
+              "video/x-msvideo",
+              "video/3gpp",
+              "video/3gpp2",
+              "video/x-m4v",
+              "video/mpeg",
+              "video/ogg",
+              "application/octet-stream",
+            ];
+
+        const maxSize = isImage ? 5 * 1024 * 1024 : 500 * 1024 * 1024; // 5MB for images, 500MB for videos
+
         return {
-          allowedContentTypes: [
-            "video/mp4",
-            "video/webm",
-            "video/quicktime",
-            "video/x-msvideo",
-          ],
-          maximumSizeInBytes: 500 * 1024 * 1024, // 500MB
+          allowedContentTypes,
+          maximumSizeInBytes: maxSize,
           tokenPayload: JSON.stringify({
             userId: session.user.id,
           }),

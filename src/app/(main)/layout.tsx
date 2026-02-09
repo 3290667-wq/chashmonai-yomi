@@ -37,7 +37,7 @@ export default async function MainLayout({
       />
 
       {/* Main content with padding for navbar */}
-      <main className="relative z-10 pt-16 pb-20 lg:pb-6 lg:pr-72 px-4 lg:px-8">
+      <main className="relative z-10 pt-20 pb-24 lg:pb-6 lg:pr-72 px-4 lg:px-8" style={{ paddingTop: 'calc(5rem + env(safe-area-inset-top, 0px))' }}>
         <div className="max-w-4xl mx-auto">
           {children}
         </div>

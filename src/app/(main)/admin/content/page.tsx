@@ -26,6 +26,7 @@ interface Content {
   content: string | null;
   type: string;
   videoUrl: string | null;
+  imageUrl: string | null;
   platoon: string | null;
   createdAt: string;
   createdBy: {
@@ -54,13 +55,17 @@ export default function ContentPage() {
     content: "",
     type: "VIDEO",
     videoUrl: "",
+    imageUrl: "",
     platoon: "",
   });
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadError, setUploadError] = useState("");
+  const [uploadingThumbnail, setUploadingThumbnail] = useState(false);
+  const [thumbnailError, setThumbnailError] = useState("");
   const [saving, setSaving] = useState(false);
   const inputFileRef = useRef<HTMLInputElement>(null);
+  const thumbnailInputRef = useRef<HTMLInputElement>(null);
 
   const isAdmin = session?.user?.role === "ADMIN";
   const isRam = session?.user?.role === "RAM";
@@ -69,10 +74,26 @@ export default function ContentPage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Validate file type
-    const allowedTypes = ["video/mp4", "video/webm", "video/quicktime", "video/x-msvideo"];
-    if (!allowedTypes.includes(file.type)) {
-      setUploadError("סוג קובץ לא נתמך. יש להעלות קובץ וידאו (MP4, WebM, MOV, AVI)");
+    // Extended MIME types for mobile compatibility
+    const allowedTypes = [
+      "video/mp4",
+      "video/webm",
+      "video/quicktime",
+      "video/x-msvideo",
+      "video/3gpp",      // Android
+      "video/3gpp2",     // Android
+      "video/x-m4v",     // iOS
+      "video/mpeg",
+      "video/ogg",
+    ];
+
+    // Check by extension if MIME type is empty or generic
+    const fileName = file.name.toLowerCase();
+    const allowedExtensions = [".mp4", ".webm", ".mov", ".avi", ".m4v", ".3gp", ".3g2", ".mpeg", ".mpg", ".ogg"];
+    const hasValidExtension = allowedExtensions.some(ext => fileName.endsWith(ext));
+
+    if (!allowedTypes.includes(file.type) && !hasValidExtension) {
+      setUploadError(`סוג קובץ לא נתמך (${file.type || 'לא ידוע'}). יש להעלות קובץ וידאו`);
       return;
     }
 
@@ -86,26 +107,89 @@ export default function ContentPage() {
     setUploadProgress(0);
     setUploadError("");
 
+    // Retry logic with exponential backoff
+    const maxRetries = 3;
+    let lastError: Error | null = null;
+
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        console.log(`Upload attempt ${attempt}/${maxRetries} for file: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)}MB)`);
+
+        // Use client-side upload to bypass serverless function limits
+        const blob = await upload(file.name, file, {
+          access: "public",
+          handleUploadUrl: "/api/upload/get-url",
+          onUploadProgress: (progress) => {
+            setUploadProgress(Math.round(progress.percentage));
+          },
+        });
+
+        console.log("Upload successful:", blob.url);
+        setFormData(prev => ({ ...prev, videoUrl: blob.url }));
+        setUploadProgress(100);
+        lastError = null;
+        break; // Success - exit retry loop
+
+      } catch (error) {
+        console.error(`Upload attempt ${attempt} failed:`, error);
+        lastError = error instanceof Error ? error : new Error(String(error));
+
+        if (attempt < maxRetries) {
+          // Wait before retry (exponential backoff: 2s, 4s, 8s...)
+          const waitTime = Math.pow(2, attempt) * 1000;
+          setUploadError(`ניסיון ${attempt} נכשל, מנסה שוב...`);
+          await new Promise(resolve => setTimeout(resolve, waitTime));
+          setUploadProgress(0);
+        }
+      }
+    }
+
+    if (lastError) {
+      const errorMsg = lastError.message || "שגיאה בהעלאת הקובץ";
+      setUploadError(`העלאה נכשלה לאחר ${maxRetries} ניסיונות: ${errorMsg}`);
+      console.error("Final upload error:", lastError);
+    }
+
+    setUploading(false);
+    if (inputFileRef.current) {
+      inputFileRef.current.value = "";
+    }
+  };
+
+  const handleThumbnailUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate image type
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+    if (!allowedTypes.includes(file.type)) {
+      setThumbnailError("יש להעלות קובץ תמונה (JPG, PNG, WebP)");
+      return;
+    }
+
+    // Max 5MB for thumbnails
+    if (file.size > 5 * 1024 * 1024) {
+      setThumbnailError("התמונה גדולה מדי. גודל מקסימלי: 5MB");
+      return;
+    }
+
+    setUploadingThumbnail(true);
+    setThumbnailError("");
+
     try {
-      // Use client-side upload to bypass serverless function limits
       const blob = await upload(file.name, file, {
         access: "public",
         handleUploadUrl: "/api/upload/get-url",
-        onUploadProgress: (progress) => {
-          setUploadProgress(Math.round(progress.percentage));
-        },
       });
 
-      setFormData(prev => ({ ...prev, videoUrl: blob.url }));
-      setUploadProgress(100);
+      setFormData(prev => ({ ...prev, imageUrl: blob.url }));
     } catch (error) {
-      console.error("Upload error:", error);
-      const errorMessage = error instanceof Error ? error.message : "שגיאה בהעלאת הקובץ";
-      setUploadError(errorMessage);
+      console.error("Thumbnail upload error:", error);
+      setThumbnailError("שגיאה בהעלאת התמונה");
     } finally {
-      setUploading(false);
-      if (inputFileRef.current) {
-        inputFileRef.current.value = "";
+      setUploadingThumbnail(false);
+      if (thumbnailInputRef.current) {
+        thumbnailInputRef.current.value = "";
       }
     }
   };
@@ -209,6 +293,7 @@ export default function ContentPage() {
       content: content.content || "",
       type: content.type,
       videoUrl: content.videoUrl || "",
+      imageUrl: (content as Content & { imageUrl?: string }).imageUrl || "",
       platoon: content.platoon || "",
     });
     setShowModal(true);
@@ -222,6 +307,7 @@ export default function ContentPage() {
       content: "",
       type: contentType || "VIDEO",
       videoUrl: "",
+      imageUrl: "",
       platoon: isRam && !isAdmin ? session?.user?.platoon || "" : "",
     });
     setShowModal(true);
@@ -506,6 +592,52 @@ export default function ContentPage() {
                       </p>
                     </div>
                   )}
+
+                  {/* Thumbnail Upload */}
+                  <div>
+                    <label className="block text-sm font-medium text-white/70 mb-1">
+                      תמונה ממוזערת (אופציונלי)
+                    </label>
+                    <div className="relative">
+                      <input
+                        ref={thumbnailInputRef}
+                        type="file"
+                        accept="image/*"
+                        onChange={handleThumbnailUpload}
+                        disabled={uploadingThumbnail}
+                        className="hidden"
+                        id="thumbnail-upload"
+                      />
+                      <label
+                        htmlFor="thumbnail-upload"
+                        className={`flex items-center justify-center gap-2 w-full px-4 py-3 border-2 border-dashed border-white/20 rounded-xl cursor-pointer hover:border-violet-500/50 hover:bg-violet-500/5 transition-colors ${uploadingThumbnail ? 'opacity-50 cursor-not-allowed' : ''}`}
+                      >
+                        {uploadingThumbnail ? (
+                          <div className="flex items-center gap-2">
+                            <Loader2 className="w-5 h-5 animate-spin text-violet-400" />
+                            <span className="text-white/70">מעלה תמונה...</span>
+                          </div>
+                        ) : formData.imageUrl ? (
+                          <div className="flex items-center gap-2 text-emerald-400">
+                            <img src={formData.imageUrl} alt="תמונה ממוזערת" className="w-12 h-12 object-cover rounded" />
+                            <span className="text-sm">תמונה נבחרה - לחץ להחלפה</span>
+                          </div>
+                        ) : (
+                          <div className="text-center">
+                            <Upload className="w-5 h-5 text-white/50 mx-auto mb-1" />
+                            <span className="text-white/70 text-sm block">העלה תמונה ממוזערת</span>
+                            <span className="text-white/50 text-xs">JPG, PNG, WebP - עד 5MB</span>
+                          </div>
+                        )}
+                      </label>
+                    </div>
+                    {thumbnailError && (
+                      <p className="text-red-400 text-sm mt-1">{thumbnailError}</p>
+                    )}
+                    <p className="text-white/40 text-xs mt-1">
+                      תמונה זו תוצג במקום הסרטון ברשימת הסרטונים
+                    </p>
+                  </div>
                 </div>
               )}
 
