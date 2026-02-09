@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { upload } from "@vercel/blob/client";
 import {
   Video,
   Plus,
@@ -56,8 +57,10 @@ export default function ContentPage() {
     platoon: "",
   });
   const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadError, setUploadError] = useState("");
   const [saving, setSaving] = useState(false);
+  const inputFileRef = useRef<HTMLInputElement>(null);
 
   const isAdmin = session?.user?.role === "ADMIN";
   const isRam = session?.user?.role === "RAM";
@@ -66,30 +69,44 @@ export default function ContentPage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    // Validate file type
+    const allowedTypes = ["video/mp4", "video/webm", "video/quicktime", "video/x-msvideo"];
+    if (!allowedTypes.includes(file.type)) {
+      setUploadError("סוג קובץ לא נתמך. יש להעלות קובץ וידאו (MP4, WebM, MOV, AVI)");
+      return;
+    }
+
+    // Validate file size (500MB)
+    if (file.size > 500 * 1024 * 1024) {
+      setUploadError("הקובץ גדול מדי. גודל מקסימלי: 500MB");
+      return;
+    }
+
     setUploading(true);
+    setUploadProgress(0);
     setUploadError("");
 
     try {
-      const formDataUpload = new FormData();
-      formDataUpload.append("file", file);
-
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: formDataUpload,
+      // Use client-side upload to bypass serverless function limits
+      const blob = await upload(file.name, file, {
+        access: "public",
+        handleUploadUrl: "/api/upload/get-url",
+        onUploadProgress: (progress) => {
+          setUploadProgress(Math.round(progress.percentage));
+        },
       });
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        setUploadError(data.error || "שגיאה בהעלאה");
-        return;
-      }
-
-      setFormData(prev => ({ ...prev, videoUrl: data.url }));
+      setFormData(prev => ({ ...prev, videoUrl: blob.url }));
+      setUploadProgress(100);
     } catch (error) {
-      setUploadError("שגיאה בהעלאת הקובץ");
+      console.error("Upload error:", error);
+      const errorMessage = error instanceof Error ? error.message : "שגיאה בהעלאת הקובץ";
+      setUploadError(errorMessage);
     } finally {
       setUploading(false);
+      if (inputFileRef.current) {
+        inputFileRef.current.value = "";
+      }
     }
   };
 
@@ -434,6 +451,7 @@ export default function ContentPage() {
                     </label>
                     <div className="relative">
                       <input
+                        ref={inputFileRef}
                         type="file"
                         accept="video/*"
                         onChange={handleFileUpload}
@@ -446,15 +464,23 @@ export default function ContentPage() {
                         className={`flex items-center justify-center gap-2 w-full px-4 py-3 border-2 border-dashed border-white/20 rounded-xl cursor-pointer hover:border-gold/50 hover:bg-gold/5 transition-colors ${uploading ? 'opacity-50 cursor-not-allowed' : ''}`}
                       >
                         {uploading ? (
-                          <>
-                            <Loader2 className="w-5 h-5 animate-spin text-gold" />
-                            <span className="text-white/70">מעלה סרטון...</span>
-                          </>
+                          <div className="w-full">
+                            <div className="flex items-center justify-center gap-2 mb-2">
+                              <Loader2 className="w-5 h-5 animate-spin text-gold" />
+                              <span className="text-white/70">מעלה סרטון... {uploadProgress}%</span>
+                            </div>
+                            <div className="w-full bg-white/10 rounded-full h-2">
+                              <div
+                                className="bg-gold h-2 rounded-full transition-all duration-300"
+                                style={{ width: `${uploadProgress}%` }}
+                              />
+                            </div>
+                          </div>
                         ) : (
                           <div className="text-center">
                             <Upload className="w-6 h-6 text-white/50 mx-auto mb-1" />
                             <span className="text-white/70 block">לחץ להעלאת סרטון</span>
-                            <span className="text-white/50 text-xs">עד 500MB</span>
+                            <span className="text-white/50 text-xs">עד 500MB - העלאה ישירה</span>
                           </div>
                         )}
                       </label>
