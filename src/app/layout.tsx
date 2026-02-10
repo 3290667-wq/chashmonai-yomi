@@ -3,6 +3,7 @@ import "./globals.css";
 import Providers from "@/components/providers";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://chashmonai-yomi.vercel.app"),
   title: "חשמונאי יומי",
   description: "אפליקציית לימוד לחיילי חטיבת חשמונאים",
   manifest: "/manifest.json",
@@ -29,7 +30,7 @@ export const metadata: Metadata = {
     siteName: "חשמונאי יומי",
     images: [
       {
-        url: "/og-image.png",
+        url: "https://chashmonai-yomi.vercel.app/og-image.png",
         width: 1200,
         height: 630,
         alt: "חשמונאי יומי - רוח חשמונאית",
@@ -42,7 +43,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "חשמונאי יומי",
     description: "אפליקציית לימוד לחיילי חטיבת חשמונאים - לעלות ולהתעלות",
-    images: ["/og-image.png"],
+    images: ["https://chashmonai-yomi.vercel.app/og-image.png"],
   },
 };
 
