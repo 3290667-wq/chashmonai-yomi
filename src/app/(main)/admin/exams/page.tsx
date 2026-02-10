@@ -115,23 +115,32 @@ export default function AdminExamsPage() {
         ? { ...formData, id: editingExam.id, questions }
         : { ...formData, questions };
 
+      console.log("[Exams] Sending:", JSON.stringify(body, null, 2));
+
       const res = await fetch("/api/admin/exams", {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
 
-      const data = await res.json();
+      let data;
+      try {
+        data = await res.json();
+      } catch {
+        data = { error: "שגיאה בקריאת התשובה מהשרת" };
+      }
+
+      console.log("[Exams] Response:", res.status, data);
 
       if (res.ok && data.success) {
         fetchExams();
         closeModal();
       } else {
-        alert(data.error || "שגיאה בשמירת המבחן");
+        alert(data.error || `שגיאה בשמירת המבחן (${res.status})`);
       }
     } catch (error) {
       console.error("Failed to save exam:", error);
-      alert("שגיאה בשמירת המבחן");
+      alert("שגיאה בשמירת המבחן - בדוק את החיבור לאינטרנט");
     } finally {
       setSaving(false);
     }

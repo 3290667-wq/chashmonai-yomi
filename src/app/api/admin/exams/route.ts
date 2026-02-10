@@ -45,8 +45,20 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const body = await request.json();
+    let body;
+    try {
+      body = await request.json();
+    } catch (parseError) {
+      console.error("Failed to parse request body:", parseError);
+      return NextResponse.json(
+        { error: "שגיאה בקריאת הנתונים" },
+        { status: 400 }
+      );
+    }
+
     const { title, description, pointsReward, questions } = body;
+
+    console.log("[Exams API] Creating exam:", { title, questionsCount: questions?.length, userId: session.user.id });
 
     if (!title || !questions || questions.length === 0) {
       return NextResponse.json(
@@ -104,8 +116,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ exam, success: true });
   } catch (error) {
     console.error("Error creating exam:", error);
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
-      { error: "Failed to create exam" },
+      { error: `שגיאה ביצירת המבחן: ${errorMessage}` },
       { status: 500 }
     );
   }
