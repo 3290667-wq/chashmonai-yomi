@@ -14,6 +14,7 @@ import {
   TrendingUp,
   Award,
   Gift,
+  ClipboardList,
 } from "lucide-react";
 
 interface AdminStats {
@@ -94,6 +95,14 @@ export default function AdminPage() {
       icon: BookOpen,
       href: "/admin/content",
       color: "from-amber-400 to-amber-600",
+      adminOnly: false,
+    },
+    {
+      label: "ניהול מבחנים",
+      description: "יצירה וניהול מבחנים",
+      icon: ClipboardList,
+      href: "/admin/exams",
+      color: "from-indigo-400 to-indigo-600",
       adminOnly: false,
     },
     {

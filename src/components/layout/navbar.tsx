@@ -20,6 +20,7 @@ import {
   Star,
   Shield,
   Flame,
+  ClipboardList,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -27,6 +28,7 @@ const navItems = [
   { href: "/dashboard", label: "ראשי", icon: Home },
   { href: "/daily", label: "לימוד יומי", icon: BookOpen },
   { href: "/boost", label: "שיעורי וידיאו", icon: Play },
+  { href: "/exams", label: "מבחנים", icon: ClipboardList },
   { href: "/chat", label: "שאל את הר\"מ", icon: MessageCircle },
   { href: "/zmanim", label: "זמנים", icon: Clock },
   { href: "/points", label: "נקודות", icon: Award },

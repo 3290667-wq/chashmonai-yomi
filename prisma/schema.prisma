@@ -69,6 +69,8 @@ model User {
   redemptions       PointsRedemption[]
   createdContent    Content[]
   createdBoosts     DailyBoost[]
+  createdExams      Exam[]
+  examAttempts      ExamAttempt[]
 }
 
 model Account {
@@ -214,4 +216,55 @@ model AppSettings {
   appName               String   @default("חשמונאי יומי")
   appSlogan             String   @default("לעלות ולהתעלות")
   updatedAt             DateTime @updatedAt
+}
+
+model Exam {
+  id          String         @id @default(cuid())
+  title       String
+  description String?
+  pointsReward Int           @default(10)
+  isActive    Boolean        @default(true)
+  createdById String
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  createdBy   User           @relation(fields: [createdById], references: [id])
+  questions   ExamQuestion[]
+  attempts    ExamAttempt[]
+
+  @@index([isActive])
+  @@index([createdById])
+}
+
+model ExamQuestion {
+  id            String   @id @default(cuid())
+  examId        String
+  questionText  String
+  optionA       String
+  optionB       String
+  optionC       String
+  optionD       String
+  correctAnswer String   // "A", "B", "C", or "D"
+  order         Int      @default(0)
+
+  exam Exam @relation(fields: [examId], references: [id], onDelete: Cascade)
+
+  @@index([examId])
+}
+
+model ExamAttempt {
+  id          String   @id @default(cuid())
+  examId      String
+  userId      String
+  score       Int      // Number of correct answers
+  totalQuestions Int
+  pointsEarned Int
+  answers     String   @db.Text // JSON string of user's answers
+  completedAt DateTime @default(now())
+
+  exam Exam @relation(fields: [examId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([examId])
+  @@index([userId])
 }
