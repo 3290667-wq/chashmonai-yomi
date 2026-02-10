@@ -60,11 +60,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Upload to Vercel Blob
-    // Token from environment or fallback to direct value
-    const token = process.env.BLOB_READ_WRITE_TOKEN || "vercel_blob_rw_chsdfTY4A2gxjY0U_U58DBpPokTkoUX12ujUld5tz4Qi01D";
-    console.log("Token source:", process.env.BLOB_READ_WRITE_TOKEN ? "env" : "fallback");
-    console.log("[Upload API] File:", file.name, "Size:", file.size, "Type:", file.type);
+    // Upload to Vercel Blob - token must be in environment variable
+    if (!process.env.BLOB_READ_WRITE_TOKEN) {
+      console.error("[Upload API] BLOB_READ_WRITE_TOKEN not configured");
+      return NextResponse.json(
+        { error: "שגיאת הגדרות שרת - נא לפנות למנהל" },
+        { status: 500 }
+      );
+    }
 
     // Ensure we have a valid content type for the upload
     const contentType = file.type || 'video/mp4';
@@ -72,7 +75,7 @@ export async function POST(request: NextRequest) {
     const blob = await put(file.name, file, {
       access: "public",
       addRandomSuffix: true,
-      token: token,
+      token: process.env.BLOB_READ_WRITE_TOKEN,
       contentType: contentType,
     });
 
@@ -82,13 +85,10 @@ export async function POST(request: NextRequest) {
       size: file.size,
     });
   } catch (error) {
-    console.error("Upload error:", error);
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    console.error("Error message:", errorMessage);
-    console.error("Error stack:", error instanceof Error ? error.stack : "No stack");
+    console.error("[Upload API] Error:", error instanceof Error ? error.message : error);
 
     return NextResponse.json(
-      { error: `שגיאה בהעלאת הקובץ: ${errorMessage}` },
+      { error: "שגיאה בהעלאת הקובץ. נסה שוב." },
       { status: 500 }
     );
   }

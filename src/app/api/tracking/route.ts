@@ -159,47 +159,46 @@ export async function POST(request: NextRequest) {
           points: { increment: finalPoints },
         },
       });
-      console.log("[Tracking API] Points added:", finalPoints, "to user:", session.user.id);
-    } else {
-      console.log("[Tracking API] No points earned - verified:", verified, "duration:", duration);
     }
 
-    // Update streak if this is the first session today
+    // Update streak if this is the first session today - using transaction to prevent race conditions
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const existingSessionToday = await prisma.learningSession.findFirst({
-      where: {
-        userId: session.user.id,
-        startTime: { gte: today },
-        id: { not: learningSession.id },
-      },
-    });
-
-    if (!existingSessionToday) {
-      const user = await prisma.user.findUnique({
-        where: { id: session.user.id },
-        select: { lastLoginDate: true, streak: true },
+    await prisma.$transaction(async (tx) => {
+      const existingSessionToday = await tx.learningSession.findFirst({
+        where: {
+          userId: session.user.id,
+          startTime: { gte: today },
+          id: { not: learningSession.id },
+        },
       });
 
-      if (user) {
-        const yesterday = new Date(today);
-        yesterday.setDate(yesterday.getDate() - 1);
-
-        const isConsecutive =
-          user.lastLoginDate &&
-          user.lastLoginDate >= yesterday &&
-          user.lastLoginDate < today;
-
-        await prisma.user.update({
+      if (!existingSessionToday) {
+        const user = await tx.user.findUnique({
           where: { id: session.user.id },
-          data: {
-            lastLoginDate: new Date(),
-            streak: isConsecutive ? { increment: 1 } : 1,
-          },
+          select: { lastLoginDate: true, streak: true },
         });
+
+        if (user) {
+          const yesterday = new Date(today);
+          yesterday.setDate(yesterday.getDate() - 1);
+
+          const isConsecutive =
+            user.lastLoginDate &&
+            user.lastLoginDate >= yesterday &&
+            user.lastLoginDate < today;
+
+          await tx.user.update({
+            where: { id: session.user.id },
+            data: {
+              lastLoginDate: new Date(),
+              streak: isConsecutive ? { increment: 1 } : 1,
+            },
+          });
+        }
       }
-    }
+    });
 
     return NextResponse.json({
       success: true,

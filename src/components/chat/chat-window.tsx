@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { ArrowRight, User } from "lucide-react";
+import { ArrowRight, User, AlertCircle, RefreshCw } from "lucide-react";
 import MessageList, { Message } from "./message-list";
 import MessageInput from "./message-input";
 
@@ -27,21 +27,29 @@ export default function ChatWindow({
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchMessages = useCallback(async () => {
     try {
       const res = await fetch(`/api/chat?recipientId=${contact.id}`);
+      if (!res.ok) {
+        throw new Error("Failed to fetch");
+      }
       const data = await res.json();
 
       if (data.messages) {
         setMessages(data.messages);
+        setError(null);
       }
-    } catch (error) {
-      console.error("Failed to fetch messages:", error);
+    } catch (err) {
+      console.error("Failed to fetch messages:", err);
+      if (messages.length === 0) {
+        setError("לא ניתן לטעון את ההודעות. בדוק את החיבור לאינטרנט.");
+      }
     } finally {
       setLoading(false);
     }
-  }, [contact.id]);
+  }, [contact.id, messages.length]);
 
   useEffect(() => {
     fetchMessages();
@@ -148,11 +156,29 @@ export default function ChatWindow({
       </div>
 
       {/* Messages */}
-      <MessageList
-        messages={messages}
-        currentUserId={currentUserId}
-        loading={loading}
-      />
+      {error && !loading ? (
+        <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
+          <AlertCircle size={48} className="text-red-400 mb-4" />
+          <p className="text-red-400 mb-4">{error}</p>
+          <button
+            onClick={() => {
+              setLoading(true);
+              setError(null);
+              fetchMessages();
+            }}
+            className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
+          >
+            <RefreshCw size={16} />
+            נסה שוב
+          </button>
+        </div>
+      ) : (
+        <MessageList
+          messages={messages}
+          currentUserId={currentUserId}
+          loading={loading}
+        />
+      )}
 
       {/* Input */}
       <MessageInput

@@ -7,21 +7,15 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const session = await auth();
 
     if (!session?.user || !["ADMIN", "RAM"].includes(session.user.role)) {
-      console.log("[Upload get-url] Unauthorized:", session?.user?.role);
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    console.log("[Upload get-url] User:", session.user.id, "Role:", session.user.role);
-
     const body = (await request.json()) as HandleUploadBody;
-    console.log("[Upload get-url] Request body type:", body.type);
 
     const jsonResponse = await handleUpload({
       body,
       request,
       onBeforeGenerateToken: async (pathname) => {
-        console.log("[Upload get-url] onBeforeGenerateToken:", pathname);
-
         // Validate file type - extended for mobile compatibility
         const videoExtensions = [".mp4", ".webm", ".mov", ".avi", ".m4v", ".3gp", ".3g2", ".mpeg", ".mpg", ".ogg"];
         const imageExtensions = [".jpg", ".jpeg", ".png", ".webp", ".gif"];
@@ -30,10 +24,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         const isVideo = videoExtensions.includes(ext);
         const isImage = imageExtensions.includes(ext);
 
-        console.log("[Upload get-url] Extension:", ext, "isVideo:", isVideo, "isImage:", isImage);
-
         if (!isVideo && !isImage) {
-          console.log("[Upload get-url] Invalid file type");
           throw new Error(`סוג קובץ לא נתמך (${ext}). יש להעלות קובץ וידאו או תמונה`);
         }
 
@@ -62,16 +53,15 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           }),
         };
       },
-      onUploadCompleted: async ({ blob, tokenPayload }) => {
-        console.log("Upload completed:", blob.url);
-        console.log("Token payload:", tokenPayload);
+      onUploadCompleted: async () => {
+        // Upload completed successfully
       },
     });
 
     return NextResponse.json(jsonResponse);
   } catch (error) {
-    console.error("Upload error:", error);
-    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error("[Upload get-url] Error:", error instanceof Error ? error.message : error);
+    const errorMessage = error instanceof Error ? error.message : "שגיאה בהעלאה";
     return NextResponse.json(
       { error: errorMessage },
       { status: 500 }
