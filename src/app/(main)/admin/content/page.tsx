@@ -138,7 +138,9 @@ export default function ContentPage() {
     }
 
     // Use XMLHttpRequest for reliable progress tracking (especially on mobile)
-    // This is more stable than the Vercel blob client
+    // Track max progress to prevent display jumping backwards
+    let maxProgress = 0;
+
     const uploadWithXHR = (): Promise<string> => {
       return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
@@ -148,8 +150,21 @@ export default function ContentPage() {
         xhr.upload.addEventListener("progress", (event) => {
           if (event.lengthComputable) {
             const progress = Math.round((event.loaded / event.total) * 100);
-            setUploadProgress(progress);
-            console.log(`[Upload] XHR Progress: ${progress}%`);
+            // Only update if progress increased (prevent jumping back)
+            if (progress > maxProgress) {
+              maxProgress = progress;
+              setUploadProgress(progress);
+              console.log(`[Upload] XHR Progress: ${progress}%`);
+            }
+          }
+        });
+
+        // When upload is complete (100%), show processing message
+        xhr.upload.addEventListener("load", () => {
+          console.log("[Upload] Upload complete, waiting for server response...");
+          // Keep at 99% while server is processing
+          if (maxProgress >= 95) {
+            setUploadProgress(99);
           }
         });
 
@@ -158,6 +173,7 @@ export default function ContentPage() {
             try {
               const response = JSON.parse(xhr.responseText);
               if (response.url) {
+                setUploadProgress(100);
                 resolve(response.url);
               } else if (response.error) {
                 reject(new Error(response.error));
@@ -178,15 +194,23 @@ export default function ContentPage() {
         });
 
         xhr.addEventListener("error", () => {
-          reject(new Error("שגיאת רשת - וודא חיבור יציב"));
+          console.error("[Upload] XHR Error event fired");
+          reject(new Error("שגיאת רשת - וודא חיבור WiFi יציב ונסה שוב"));
         });
 
         xhr.addEventListener("timeout", () => {
-          reject(new Error("הזמן הקצוב פג - הקובץ גדול מדי"));
+          console.error("[Upload] XHR Timeout event fired");
+          reject(new Error("הזמן הקצוב פג - נסה עם קובץ קטן יותר"));
         });
 
         xhr.addEventListener("abort", () => {
+          console.error("[Upload] XHR Abort event fired");
           reject(new Error("ההעלאה בוטלה"));
+        });
+
+        // Add readystatechange for debugging
+        xhr.addEventListener("readystatechange", () => {
+          console.log(`[Upload] XHR state: ${xhr.readyState}, status: ${xhr.status}`);
         });
 
         xhr.open("POST", "/api/upload");
@@ -212,10 +236,24 @@ export default function ContentPage() {
     try {
       console.log(`[Upload] Starting upload for: ${file.name}`);
       console.log(`[Upload] File size: ${(file.size / 1024 / 1024).toFixed(2)}MB, Type: ${file.type || 'unknown'}`);
-      console.log(`[Upload] Device: ${isMobile ? 'Mobile (using XHR)' : 'Desktop (using Vercel Blob)'}`);
+      console.log(`[Upload] Device: ${isMobile ? 'Mobile' : 'Desktop'}`);
 
-      // Use XHR for mobile (more stable), Vercel blob for desktop
-      const url = isMobile ? await uploadWithXHR() : await uploadWithVercelBlob();
+      // Try Vercel Blob first (better chunking support), fall back to XHR
+      let url: string;
+      try {
+        console.log("[Upload] Trying Vercel Blob client...");
+        url = await uploadWithVercelBlob();
+      } catch (blobError) {
+        console.error("[Upload] Vercel Blob failed, trying XHR:", blobError);
+        // Fall back to XHR for mobile
+        if (isMobile) {
+          maxProgress = 0; // Reset max progress for retry
+          setUploadProgress(0);
+          url = await uploadWithXHR();
+        } else {
+          throw blobError;
+        }
+      }
 
       console.log("[Upload] Success! URL:", url);
       setFormData(prev => ({ ...prev, videoUrl: url }));

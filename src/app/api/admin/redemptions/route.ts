@@ -20,9 +20,18 @@ export async function GET(request: NextRequest) {
       where.status = status;
     }
 
-    // RAMs can only see their platoon's redemptions
-    if (session.user.role === "RAM" && session.user.platoon) {
-      where.user = { platoon: session.user.platoon };
+    // RAMs can only see their platoon's redemptions (if they have a platoon)
+    // If RAM has no platoon assigned, show no redemptions with a note
+    if (session.user.role === "RAM") {
+      if (session.user.platoon) {
+        where.user = { platoon: session.user.platoon };
+      } else {
+        // RAM without platoon can't see any redemptions
+        return NextResponse.json({
+          redemptions: [],
+          note: "לא משויך לפלוגה - לא ניתן להציג סליקות"
+        });
+      }
     }
 
     const redemptions = await prisma.pointsRedemption.findMany({

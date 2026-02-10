@@ -210,22 +210,47 @@ export default function SettingsPage() {
   const handleSave = async () => {
     setSaving(true);
     try {
+      // Validate values before sending
+      const settingsToSave = {
+        pointsPerMinute: isNaN(settings.pointsPerMinute) ? 0.2 : settings.pointsPerMinute,
+        minLearningMinutes: isNaN(settings.minLearningMinutes) ? 5 : settings.minLearningMinutes,
+        streakBonusPoints: isNaN(settings.streakBonusPoints) ? 5 : settings.streakBonusPoints,
+        completionBonusPoints: isNaN(settings.completionBonusPoints) ? 10 : settings.completionBonusPoints,
+        appName: settings.appName || "חשמונאי יומי",
+        appSlogan: settings.appSlogan || "לעלות ולהתעלות",
+      };
+
+      console.log("[Settings Page] Saving:", settingsToSave);
+
       const res = await fetch("/api/admin/settings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(settings),
+        body: JSON.stringify(settingsToSave),
       });
 
-      if (res.ok) {
+      const data = await res.json();
+      console.log("[Settings Page] Response:", data);
+
+      if (res.ok && data.success) {
+        // Update local state with saved values from server
+        if (data.settings) {
+          setSettings({
+            pointsPerMinute: data.settings.pointsPerMinute,
+            minLearningMinutes: data.settings.minLearningMinutes,
+            streakBonusPoints: data.settings.streakBonusPoints,
+            completionBonusPoints: data.settings.completionBonusPoints,
+            appName: data.settings.appName,
+            appSlogan: data.settings.appSlogan,
+          });
+        }
         setSaved(true);
         setTimeout(() => setSaved(false), 3000);
       } else {
-        const data = await res.json();
         alert(data.error || "שגיאה בשמירת ההגדרות");
       }
     } catch (error) {
       console.error("Failed to save settings:", error);
-      alert("שגיאה בשמירת ההגדרות");
+      alert("שגיאה בשמירת ההגדרות: " + String(error));
     } finally {
       setSaving(false);
     }

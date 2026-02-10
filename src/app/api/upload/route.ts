@@ -6,6 +6,10 @@ import { put } from "@vercel/blob";
 export const runtime = "nodejs";
 export const maxDuration = 300; // 5 minutes max for upload
 
+// Increase body size limit for video uploads (100MB in bytes)
+export const fetchCache = "force-no-store";
+export const dynamic = "force-dynamic";
+
 export async function POST(request: NextRequest) {
   try {
     const session = await auth();

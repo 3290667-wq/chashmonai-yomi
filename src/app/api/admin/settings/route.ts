@@ -45,6 +45,8 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
+    console.log("[Settings API] Received:", JSON.stringify(body));
+
     const {
       pointsPerMinute,
       minLearningMinutes,
@@ -54,28 +56,54 @@ export async function POST(request: NextRequest) {
       appSlogan,
     } = body;
 
+    // Validate and convert numbers, using defaults for invalid values
+    const validPointsPerMinute = typeof pointsPerMinute === 'number' && !isNaN(pointsPerMinute)
+      ? pointsPerMinute
+      : DEFAULT_SETTINGS.pointsPerMinute;
+
+    const validMinLearningMinutes = typeof minLearningMinutes === 'number' && !isNaN(minLearningMinutes)
+      ? Math.floor(minLearningMinutes)
+      : DEFAULT_SETTINGS.minLearningMinutes;
+
+    const validStreakBonusPoints = typeof streakBonusPoints === 'number' && !isNaN(streakBonusPoints)
+      ? Math.floor(streakBonusPoints)
+      : DEFAULT_SETTINGS.streakBonusPoints;
+
+    const validCompletionBonusPoints = typeof completionBonusPoints === 'number' && !isNaN(completionBonusPoints)
+      ? Math.floor(completionBonusPoints)
+      : DEFAULT_SETTINGS.completionBonusPoints;
+
+    console.log("[Settings API] Validated values:", {
+      validPointsPerMinute,
+      validMinLearningMinutes,
+      validStreakBonusPoints,
+      validCompletionBonusPoints,
+    });
+
     const settings = await prisma.appSettings.upsert({
       where: { id: "app-settings" },
       update: {
-        pointsPerMinute: pointsPerMinute ?? DEFAULT_SETTINGS.pointsPerMinute,
-        minLearningMinutes: minLearningMinutes ?? DEFAULT_SETTINGS.minLearningMinutes,
-        streakBonusPoints: streakBonusPoints ?? DEFAULT_SETTINGS.streakBonusPoints,
-        completionBonusPoints: completionBonusPoints ?? DEFAULT_SETTINGS.completionBonusPoints,
-        appName: appName ?? DEFAULT_SETTINGS.appName,
-        appSlogan: appSlogan ?? DEFAULT_SETTINGS.appSlogan,
+        pointsPerMinute: validPointsPerMinute,
+        minLearningMinutes: validMinLearningMinutes,
+        streakBonusPoints: validStreakBonusPoints,
+        completionBonusPoints: validCompletionBonusPoints,
+        appName: appName || DEFAULT_SETTINGS.appName,
+        appSlogan: appSlogan || DEFAULT_SETTINGS.appSlogan,
       },
       create: {
         id: "app-settings",
-        pointsPerMinute: pointsPerMinute ?? DEFAULT_SETTINGS.pointsPerMinute,
-        minLearningMinutes: minLearningMinutes ?? DEFAULT_SETTINGS.minLearningMinutes,
-        streakBonusPoints: streakBonusPoints ?? DEFAULT_SETTINGS.streakBonusPoints,
-        completionBonusPoints: completionBonusPoints ?? DEFAULT_SETTINGS.completionBonusPoints,
-        appName: appName ?? DEFAULT_SETTINGS.appName,
-        appSlogan: appSlogan ?? DEFAULT_SETTINGS.appSlogan,
+        pointsPerMinute: validPointsPerMinute,
+        minLearningMinutes: validMinLearningMinutes,
+        streakBonusPoints: validStreakBonusPoints,
+        completionBonusPoints: validCompletionBonusPoints,
+        appName: appName || DEFAULT_SETTINGS.appName,
+        appSlogan: appSlogan || DEFAULT_SETTINGS.appSlogan,
       },
     });
 
-    return NextResponse.json({ settings });
+    console.log("[Settings API] Saved settings:", settings);
+
+    return NextResponse.json({ settings, success: true });
   } catch (error) {
     console.error("Failed to save settings:", error);
     return NextResponse.json({ error: "Failed to save settings" }, { status: 500 });
