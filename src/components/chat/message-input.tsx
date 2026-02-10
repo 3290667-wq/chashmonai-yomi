@@ -46,7 +46,10 @@ export default function MessageInput({
   };
 
   return (
-    <div className="border-t border-card-border bg-card p-4">
+    <div
+      className="border-t border-card-border bg-card p-4"
+      style={{ paddingBottom: 'calc(1rem + env(safe-area-inset-bottom, 0px) + 70px)' }}
+    >
       <div className="flex items-end gap-3">
         <div className="flex-1 relative">
           <textarea

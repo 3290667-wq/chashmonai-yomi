@@ -13,6 +13,7 @@ import {
   Shield,
   TrendingUp,
   Award,
+  Gift,
 } from "lucide-react";
 
 interface AdminStats {
@@ -93,6 +94,14 @@ export default function AdminPage() {
       icon: BookOpen,
       href: "/admin/content",
       color: "from-amber-400 to-amber-600",
+      adminOnly: false,
+    },
+    {
+      label: "אישור סליקות",
+      description: "אישור סליקת נקודות לפרסים",
+      icon: Gift,
+      href: "/admin/redemptions",
+      color: "from-rose-400 to-rose-600",
       adminOnly: false,
     },
     {

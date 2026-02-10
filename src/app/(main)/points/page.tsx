@@ -50,10 +50,28 @@ interface HistoryItem {
   startTime: string;
 }
 
+interface Prize {
+  id: string;
+  name: string;
+  description: string | null;
+  pointsCost: number;
+  imageUrl: string | null;
+}
+
+interface PrizeData {
+  prizes: Prize[];
+  currentPoints: number;
+  nextPrize: Prize | null;
+  pointsToNextPrize: number;
+  progressToNextPrize: number;
+  availablePrizes: Prize[];
+}
+
 export default function PointsPage() {
   const [pointsData, setPointsData] = useState<PointsData | null>(null);
   const [redemptions, setRedemptions] = useState<Redemption[]>([]);
   const [history, setHistory] = useState<HistoryItem[]>([]);
+  const [prizeData, setPrizeData] = useState<PrizeData | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<"overview" | "redeem" | "history">("overview");
   const [redeemAmount, setRedeemAmount] = useState("");
@@ -66,16 +84,18 @@ export default function PointsPage() {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const [pointsRes, redemptionsRes, historyRes] = await Promise.all([
+      const [pointsRes, redemptionsRes, historyRes, prizesRes] = await Promise.all([
         fetch("/api/points"),
         fetch("/api/points/redeem"),
         fetch("/api/points/history"),
+        fetch("/api/prizes"),
       ]);
 
-      const [pointsJson, redemptionsJson, historyJson] = await Promise.all([
+      const [pointsJson, redemptionsJson, historyJson, prizesJson] = await Promise.all([
         pointsRes.json(),
         redemptionsRes.json(),
         historyRes.json(),
+        prizesRes.json(),
       ]);
 
       if (pointsJson.currentPoints !== undefined) {
@@ -86,6 +106,9 @@ export default function PointsPage() {
       }
       if (historyJson.sessions) {
         setHistory(historyJson.sessions);
+      }
+      if (prizesJson.prizes) {
+        setPrizeData(prizesJson);
       }
     } catch (error) {
       console.error("Failed to fetch data:", error);
@@ -241,6 +264,56 @@ export default function PointsPage() {
               <p className="text-xs text-white/50">דקות לימוד</p>
             </div>
           </div>
+
+          {/* Prize Progress */}
+          {prizeData && (prizeData.nextPrize || prizeData.availablePrizes.length > 0) && (
+            <div className="mt-6 p-4 bg-gradient-to-l from-gold/20 to-gold/10 border border-gold/30 rounded-xl">
+              {prizeData.availablePrizes.length > 0 ? (
+                <div className="text-center">
+                  <div className="flex items-center justify-center gap-2 mb-2">
+                    <Gift className="w-6 h-6 text-gold" />
+                    <span className="text-lg font-bold text-white">
+                      יש לך {pointsData?.currentPoints || 0} נקודות
+                    </span>
+                  </div>
+                  <p className="text-gold text-lg">
+                    אתה יכול לממש אותן ל:
+                    <span className="font-bold mr-1">
+                      {prizeData.availablePrizes[prizeData.availablePrizes.length - 1].name}
+                    </span>
+                  </p>
+                  <p className="text-white/50 text-sm mt-1">
+                    ועוד {prizeData.availablePrizes.length - 1} פרסים זמינים
+                  </p>
+                </div>
+              ) : prizeData.nextPrize ? (
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <Gift className="w-5 h-5 text-gold" />
+                      <span className="text-white font-medium">הפרס הבא:</span>
+                      <span className="text-gold font-bold">{prizeData.nextPrize.name}</span>
+                    </div>
+                    <span className="text-white/70 text-sm">
+                      {prizeData.nextPrize.pointsCost} נקודות
+                    </span>
+                  </div>
+
+                  {/* Progress bar */}
+                  <div className="relative h-3 bg-white/10 rounded-full overflow-hidden mb-2">
+                    <div
+                      className="absolute inset-y-0 left-0 bg-gradient-to-r from-gold-dark to-gold rounded-full transition-all duration-500"
+                      style={{ width: `${prizeData.progressToNextPrize}%` }}
+                    />
+                  </div>
+
+                  <p className="text-center text-gold">
+                    נשאר לך <span className="font-bold">{prizeData.pointsToNextPrize}</span> נקודות
+                  </p>
+                </div>
+              ) : null}
+            </div>
+          )}
         </div>
 
         <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-gold to-transparent" />

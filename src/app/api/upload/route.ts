@@ -2,6 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { put } from "@vercel/blob";
 
+// Configure route to handle large file uploads
+export const runtime = "nodejs";
+export const maxDuration = 300; // 5 minutes max for upload
+
 export async function POST(request: NextRequest) {
   try {
     const session = await auth();
@@ -17,11 +21,28 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
-    // Validate file type
-    const allowedTypes = ["video/mp4", "video/webm", "video/quicktime", "video/x-msvideo"];
-    if (!allowedTypes.includes(file.type)) {
+    // Validate file type - extended for mobile compatibility
+    const allowedTypes = [
+      "video/mp4",
+      "video/webm",
+      "video/quicktime",
+      "video/x-msvideo",
+      "video/3gpp",
+      "video/3gpp2",
+      "video/x-m4v",
+      "video/mpeg",
+      "video/ogg",
+      "application/octet-stream", // Some mobile browsers send this
+    ];
+
+    // Also check by file extension for mobile compatibility
+    const fileName = file.name.toLowerCase();
+    const allowedExtensions = [".mp4", ".webm", ".mov", ".avi", ".m4v", ".3gp", ".3g2", ".mpeg", ".mpg", ".ogg"];
+    const hasValidExtension = allowedExtensions.some(ext => fileName.endsWith(ext));
+
+    if (!allowedTypes.includes(file.type) && !hasValidExtension) {
       return NextResponse.json(
-        { error: "סוג קובץ לא נתמך. יש להעלות קובץ וידאו (MP4, WebM, MOV, AVI)" },
+        { error: `סוג קובץ לא נתמך (${file.type || 'לא ידוע'}). יש להעלות קובץ וידאו` },
         { status: 400 }
       );
     }
@@ -39,11 +60,16 @@ export async function POST(request: NextRequest) {
     // Token from environment or fallback to direct value
     const token = process.env.BLOB_READ_WRITE_TOKEN || "vercel_blob_rw_chsdfTY4A2gxjY0U_U58DBpPokTkoUX12ujUld5tz4Qi01D";
     console.log("Token source:", process.env.BLOB_READ_WRITE_TOKEN ? "env" : "fallback");
+    console.log("[Upload API] File:", file.name, "Size:", file.size, "Type:", file.type);
+
+    // Ensure we have a valid content type for the upload
+    const contentType = file.type || 'video/mp4';
 
     const blob = await put(file.name, file, {
       access: "public",
       addRandomSuffix: true,
       token: token,
+      contentType: contentType,
     });
 
     return NextResponse.json({

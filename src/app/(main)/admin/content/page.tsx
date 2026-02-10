@@ -4,6 +4,11 @@ import { useState, useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { upload } from "@vercel/blob/client";
+
+// Type for Wake Lock API
+interface WakeLockSentinel {
+  release(): Promise<void>;
+}
 import {
   Video,
   Plus,
@@ -70,6 +75,9 @@ export default function ContentPage() {
   const isAdmin = session?.user?.role === "ADMIN";
   const isRam = session?.user?.role === "RAM";
 
+  // Detect if user is on mobile
+  const isMobile = typeof navigator !== 'undefined' && /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -85,6 +93,7 @@ export default function ContentPage() {
       "video/x-m4v",     // iOS
       "video/mpeg",
       "video/ogg",
+      "application/octet-stream", // Some mobile browsers send this
     ];
 
     // Check by extension if MIME type is empty or generic
@@ -97,57 +106,135 @@ export default function ContentPage() {
       return;
     }
 
-    // Validate file size (500MB)
-    if (file.size > 500 * 1024 * 1024) {
-      setUploadError("הקובץ גדול מדי. גודל מקסימלי: 500MB");
+    // More strict size limit for mobile (100MB) vs desktop (500MB)
+    const maxSizeMB = isMobile ? 100 : 500;
+    if (file.size > maxSizeMB * 1024 * 1024) {
+      setUploadError(`הקובץ גדול מדי. גודל מקסימלי במובייל: ${maxSizeMB}MB`);
       return;
+    }
+
+    // Warn mobile users about keeping screen on
+    if (isMobile && file.size > 20 * 1024 * 1024) {
+      const proceed = confirm(`הקובץ גדול (${(file.size / 1024 / 1024).toFixed(1)}MB).\n\nחשוב:\n• אל תכבה את המסך\n• אל תעבור לאפליקציה אחרת\n• וודא חיבור WiFi יציב\n\nלהמשיך?`);
+      if (!proceed) {
+        if (inputFileRef.current) inputFileRef.current.value = "";
+        return;
+      }
     }
 
     setUploading(true);
     setUploadProgress(0);
     setUploadError("");
 
-    // Retry logic with exponential backoff
-    const maxRetries = 3;
-    let lastError: Error | null = null;
-
-    for (let attempt = 1; attempt <= maxRetries; attempt++) {
-      try {
-        console.log(`Upload attempt ${attempt}/${maxRetries} for file: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)}MB)`);
-
-        // Use client-side upload to bypass serverless function limits
-        const blob = await upload(file.name, file, {
-          access: "public",
-          handleUploadUrl: "/api/upload/get-url",
-          onUploadProgress: (progress) => {
-            setUploadProgress(Math.round(progress.percentage));
-          },
-        });
-
-        console.log("Upload successful:", blob.url);
-        setFormData(prev => ({ ...prev, videoUrl: blob.url }));
-        setUploadProgress(100);
-        lastError = null;
-        break; // Success - exit retry loop
-
-      } catch (error) {
-        console.error(`Upload attempt ${attempt} failed:`, error);
-        lastError = error instanceof Error ? error : new Error(String(error));
-
-        if (attempt < maxRetries) {
-          // Wait before retry (exponential backoff: 2s, 4s, 8s...)
-          const waitTime = Math.pow(2, attempt) * 1000;
-          setUploadError(`ניסיון ${attempt} נכשל, מנסה שוב...`);
-          await new Promise(resolve => setTimeout(resolve, waitTime));
-          setUploadProgress(0);
-        }
+    // Request wake lock to prevent screen from sleeping (if supported)
+    let wakeLock: WakeLockSentinel | null = null;
+    try {
+      if ('wakeLock' in navigator) {
+        wakeLock = await (navigator as { wakeLock: { request: (type: string) => Promise<WakeLockSentinel> } }).wakeLock.request('screen');
+        console.log("Wake lock acquired for upload");
       }
+    } catch (wakeLockError) {
+      console.log("Wake lock not available:", wakeLockError);
     }
 
-    if (lastError) {
-      const errorMsg = lastError.message || "שגיאה בהעלאת הקובץ";
-      setUploadError(`העלאה נכשלה לאחר ${maxRetries} ניסיונות: ${errorMsg}`);
-      console.error("Final upload error:", lastError);
+    // Use XMLHttpRequest for reliable progress tracking (especially on mobile)
+    // This is more stable than the Vercel blob client
+    const uploadWithXHR = (): Promise<string> => {
+      return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        const formData = new FormData();
+        formData.append("file", file);
+
+        xhr.upload.addEventListener("progress", (event) => {
+          if (event.lengthComputable) {
+            const progress = Math.round((event.loaded / event.total) * 100);
+            setUploadProgress(progress);
+            console.log(`[Upload] XHR Progress: ${progress}%`);
+          }
+        });
+
+        xhr.addEventListener("load", () => {
+          if (xhr.status >= 200 && xhr.status < 300) {
+            try {
+              const response = JSON.parse(xhr.responseText);
+              if (response.url) {
+                resolve(response.url);
+              } else if (response.error) {
+                reject(new Error(response.error));
+              } else {
+                reject(new Error("תגובה לא תקינה מהשרת"));
+              }
+            } catch {
+              reject(new Error("שגיאה בפענוח תגובת השרת"));
+            }
+          } else {
+            try {
+              const response = JSON.parse(xhr.responseText);
+              reject(new Error(response.error || `שגיאת שרת: ${xhr.status}`));
+            } catch {
+              reject(new Error(`שגיאת שרת: ${xhr.status}`));
+            }
+          }
+        });
+
+        xhr.addEventListener("error", () => {
+          reject(new Error("שגיאת רשת - וודא חיבור יציב"));
+        });
+
+        xhr.addEventListener("timeout", () => {
+          reject(new Error("הזמן הקצוב פג - הקובץ גדול מדי"));
+        });
+
+        xhr.addEventListener("abort", () => {
+          reject(new Error("ההעלאה בוטלה"));
+        });
+
+        xhr.open("POST", "/api/upload");
+        xhr.timeout = 600000; // 10 minutes timeout
+        xhr.send(formData);
+      });
+    };
+
+    // Use Vercel blob client for desktop (more features), XHR for mobile (more stable)
+    const uploadWithVercelBlob = async (): Promise<string> => {
+      const blob = await upload(file.name, file, {
+        access: "public",
+        handleUploadUrl: "/api/upload/get-url",
+        onUploadProgress: (progress) => {
+          const currentProgress = Math.round(progress.percentage);
+          setUploadProgress(currentProgress);
+          console.log(`[Upload] Vercel Progress: ${currentProgress}%`);
+        },
+      });
+      return blob.url;
+    };
+
+    try {
+      console.log(`[Upload] Starting upload for: ${file.name}`);
+      console.log(`[Upload] File size: ${(file.size / 1024 / 1024).toFixed(2)}MB, Type: ${file.type || 'unknown'}`);
+      console.log(`[Upload] Device: ${isMobile ? 'Mobile (using XHR)' : 'Desktop (using Vercel Blob)'}`);
+
+      // Use XHR for mobile (more stable), Vercel blob for desktop
+      const url = isMobile ? await uploadWithXHR() : await uploadWithVercelBlob();
+
+      console.log("[Upload] Success! URL:", url);
+      setFormData(prev => ({ ...prev, videoUrl: url }));
+      setUploadProgress(100);
+
+    } catch (error) {
+      console.error("[Upload] Failed:", error);
+      const errorMsg = error instanceof Error ? error.message : "שגיאה בהעלאת הקובץ";
+      setUploadError(`${errorMsg}. ${isMobile ? 'נסה להעלות מהמחשב או להשתמש בקישור YouTube.' : ''}`);
+    }
+
+    // Release wake lock
+    if (wakeLock) {
+      try {
+        await wakeLock.release();
+        console.log("Wake lock released");
+      } catch {
+        // Ignore
+      }
     }
 
     setUploading(false);
@@ -576,9 +663,20 @@ export default function ContentPage() {
                     {uploadError && (
                       <p className="text-red-400 text-sm mt-1">{uploadError}</p>
                     )}
-                    <p className="text-amber-400/70 text-xs mt-2">
-                      💡 טיפ: להעלאת סרטונים גדולים, מומלץ להשתמש ב-WiFi יציב
-                    </p>
+                    {isMobile ? (
+                      <div className="mt-2 p-2 bg-amber-500/10 border border-amber-500/20 rounded-lg">
+                        <p className="text-amber-400 text-xs font-medium mb-1">📱 העלאה ממובייל:</p>
+                        <ul className="text-amber-400/70 text-xs space-y-1 list-disc list-inside">
+                          <li>מקסימום 100MB (או השתמש בקישור YouTube)</li>
+                          <li>וודא חיבור WiFi יציב</li>
+                          <li>אל תכבה את המסך או תעבור לאפליקציה אחרת</li>
+                        </ul>
+                      </div>
+                    ) : (
+                      <p className="text-amber-400/70 text-xs mt-2">
+                        💡 טיפ: להעלאת סרטונים גדולים, מומלץ להשתמש ב-WiFi יציב
+                      </p>
+                    )}
                   </div>
 
                   {/* Preview */}

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useEngagement } from "@/hooks/use-engagement";
-import { BookOpen, Clock, Award, ChevronDown, ChevronUp, CheckCircle2, Sparkles, Heart, Video, Play, Loader2 } from "lucide-react";
+import { BookOpen, ChevronDown, ChevronUp, CheckCircle2, Sparkles, Heart, Video, Loader2, Award } from "lucide-react";
 
 interface AdminContent {
   id: string;
@@ -31,15 +31,51 @@ interface DailyContent {
   dailyVideo: AdminContent | null;
 }
 
+// Helper to get today's date key
+const getTodayKey = () => {
+  const today = new Date();
+  return `daily-completed-${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+};
+
 export default function DailyPage() {
   const [content, setContent] = useState<DailyContent | null>(null);
   const [loading, setLoading] = useState(true);
   const [expandedSection, setExpandedSection] = useState<string | null>("mishnah");
   const [completed, setCompleted] = useState(false);
+  const [pointsEarned, setPointsEarned] = useState(0);
+  const [completing, setCompleting] = useState(false);
 
-  const { formattedDuration, isEngaged, estimatedPoints } = useEngagement({
+  // Pause tracking when video section is expanded (video time doesn't count for points)
+  const isWatchingVideo = expandedSection === "video";
+
+  // Track engagement in the background (no visible timer)
+  const { duration } = useEngagement({
     contentType: "DAILY",
+    paused: isWatchingVideo, // Don't count video watching time
+    autoSaveInterval: 30000, // Auto-save every 30 seconds
+    onSessionEnd: (data) => {
+      console.log("[DailyPage] Session ended:", data);
+    },
   });
+
+  // Load completion state from localStorage
+  useEffect(() => {
+    const todayKey = getTodayKey();
+    const savedCompletion = localStorage.getItem(todayKey);
+    if (savedCompletion) {
+      const data = JSON.parse(savedCompletion);
+      setCompleted(true);
+      setPointsEarned(data.pointsEarned || 0);
+    }
+
+    // Clean up old completion keys (older than today)
+    const allKeys = Object.keys(localStorage);
+    allKeys.forEach((key) => {
+      if (key.startsWith("daily-completed-") && key !== todayKey) {
+        localStorage.removeItem(key);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     fetchDailyContent();
@@ -62,7 +98,51 @@ export default function DailyPage() {
   };
 
   const handleComplete = async () => {
-    setCompleted(true);
+    if (completing || completed) return;
+    setCompleting(true);
+
+    try {
+      // Manually save a completion bonus
+      const bonusPoints = 5; // Bonus for completing daily learning
+      const durationMinutes = Math.floor(duration / 60000);
+      const basePoints = Math.floor(durationMinutes / 5); // 1 point per 5 minutes
+
+      const res = await fetch("/api/tracking", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contentType: "DAILY",
+          duration: duration,
+          verified: true,
+          pointsEarned: basePoints + bonusPoints,
+          contentRef: "daily-completion",
+        }),
+      });
+
+      const data = await res.json();
+      console.log("[DailyPage] Completion saved:", data);
+
+      if (data.success) {
+        const earnedPoints = data.pointsEarned || basePoints + bonusPoints;
+        setPointsEarned(earnedPoints);
+        setCompleted(true);
+
+        // Save completion state to localStorage for today
+        const todayKey = getTodayKey();
+        localStorage.setItem(todayKey, JSON.stringify({
+          completed: true,
+          pointsEarned: earnedPoints,
+          completedAt: new Date().toISOString(),
+        }));
+      } else {
+        alert("שגיאה בשמירת הלימוד");
+      }
+    } catch (error) {
+      console.error("Failed to save completion:", error);
+      alert("שגיאה בשמירת הלימוד");
+    } finally {
+      setCompleting(false);
+    }
   };
 
   if (loading) {
@@ -79,28 +159,19 @@ export default function DailyPage() {
   return (
     <div className="relative py-6 space-y-6">
 
-      {/* Header with Timer */}
+      {/* Header */}
       <div className="relative bg-[#3b2d1f] border border-white/10 rounded-2xl overflow-hidden">
         {/* Gold top line */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-gold to-transparent" />
 
         <div className="p-6">
-          <div className="flex items-center gap-3 mb-4">
+          <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-gradient-to-br from-gold to-gold-dark rounded-xl flex items-center justify-center shadow-lg">
               <BookOpen className="w-6 h-6 text-white" />
             </div>
             <div>
               <h1 className="text-2xl font-bold text-white">לימוד יומי</h1>
               <p className="text-white/50 text-sm">משנה יומית ורמב״ם - לעלות ולהתעלות</p>
-            </div>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-3">
-            {/* Points */}
-            <div className="flex items-center gap-3 px-4 py-3 bg-gold/10 border border-gold/30 rounded-xl">
-              <Award className="w-5 h-5 text-gold" />
-              <span className="font-bold text-lg text-white">+{estimatedPoints}</span>
-              <span className="text-white/50 text-sm">נקודות</span>
             </div>
           </div>
         </div>
@@ -369,16 +440,30 @@ export default function DailyPage() {
             <CheckCircle2 className="w-12 h-12 text-emerald-400 mx-auto mb-2" />
             <p className="font-bold text-white text-lg">כל הכבוד!</p>
             <p className="text-emerald-400 text-sm">סיימת את הלימוד היומי</p>
+            {pointsEarned > 0 && (
+              <div className="mt-3 flex items-center justify-center gap-2 text-gold">
+                <Award className="w-5 h-5" />
+                <span className="font-bold">+{pointsEarned} נקודות נוספו!</span>
+              </div>
+            )}
           </div>
         ) : (
           <button
             onClick={handleComplete}
-            className="w-full py-4 bg-gradient-to-l from-gold to-gold-dark text-[#0a0a0a] rounded-xl font-bold text-lg shadow-lg shadow-gold/20 hover:shadow-xl hover:shadow-gold/30 transition-all active:scale-[0.98]"
+            disabled={completing}
+            className="w-full py-4 bg-gradient-to-l from-gold to-gold-dark text-[#0a0a0a] rounded-xl font-bold text-lg shadow-lg shadow-gold/20 hover:shadow-xl hover:shadow-gold/30 transition-all active:scale-[0.98] disabled:opacity-70"
           >
-            <span className="flex items-center justify-center gap-2">
-              <CheckCircle2 className="w-5 h-5" />
-              סיימתי את הלימוד היומי
-            </span>
+            {completing ? (
+              <span className="flex items-center justify-center gap-2">
+                <Loader2 className="w-5 h-5 animate-spin" />
+                שומר...
+              </span>
+            ) : (
+              <span className="flex items-center justify-center gap-2">
+                <CheckCircle2 className="w-5 h-5" />
+                סיימתי את הלימוד היומי
+              </span>
+            )}
           </button>
         )}
       </div>

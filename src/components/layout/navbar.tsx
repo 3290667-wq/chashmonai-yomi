@@ -199,7 +199,7 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
       </aside>
 
       {/* Mobile Header - Dark Theme */}
-      <header className="lg:hidden fixed top-0 right-0 left-0 h-16 px-4 flex items-center justify-between z-50 safe-area-top">
+      <header className="lg:hidden fixed top-0 right-0 left-0 px-4 flex items-center justify-between z-50" style={{ paddingTop: 'calc(0.75rem + env(safe-area-inset-top, 0px))', paddingBottom: '0.75rem', minHeight: 'calc(4rem + env(safe-area-inset-top, 0px))' }}>
         <div className="absolute inset-0 bg-[#0a0a0a]/95 backdrop-blur-xl border-b border-white/10" />
 
         <Link href="/dashboard" className="relative flex items-center gap-3 group">

@@ -22,6 +22,19 @@ enum ContentType {
   CHASSIDUT
   MUSAR
   THOUGHT
+  DAILY
+}
+
+model Prize {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  pointsCost  Int
+  imageUrl    String?
+  isActive    Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 enum RedemptionStatus {
@@ -190,4 +203,15 @@ model Platoon {
   id        String   @id @default(cuid())
   name      String   @unique
   createdAt DateTime @default(now())
+}
+
+model AppSettings {
+  id                    String   @id @default("app-settings")
+  pointsPerMinute       Float    @default(0.2)
+  minLearningMinutes    Int      @default(5)
+  streakBonusPoints     Int      @default(5)
+  completionBonusPoints Int      @default(10)
+  appName               String   @default("חשמונאי יומי")
+  appSlogan             String   @default("לעלות ולהתעלות")
+  updatedAt             DateTime @updatedAt
 }

@@ -1,7 +1,7 @@
 import type { EngagementEvent } from "@/types";
 
 const ENGAGEMENT_TIMEOUT = 30000; // 30 seconds without activity = not engaged
-const MIN_SESSION_DURATION = 120000; // 2 minutes minimum for valid session
+const MIN_SESSION_DURATION = 60000; // 1 minute minimum for valid session (reduced from 2)
 const POINTS_PER_5_MINUTES = 1;
 
 export class EngagementTracker {
@@ -12,6 +12,11 @@ export class EngagementTracker {
   private onEngagementUpdate?: (engaged: boolean, duration: number) => void;
   private checkInterval?: ReturnType<typeof setInterval>;
 
+  // Track actual engaged time (pauses when not engaged)
+  private engagedStartTime: number = Date.now();
+  private totalEngagedTime: number = 0;
+  private wasEngaged: boolean = true;
+
   constructor(onUpdate?: (engaged: boolean, duration: number) => void) {
     this.onEngagementUpdate = onUpdate;
   }
@@ -19,6 +24,9 @@ export class EngagementTracker {
   start(): void {
     this.startTime = Date.now();
     this.lastActivityTime = Date.now();
+    this.engagedStartTime = Date.now();
+    this.totalEngagedTime = 0;
+    this.wasEngaged = true;
     this.events = [];
     this.setupListeners();
     this.startEngagementCheck();
@@ -30,12 +38,15 @@ export class EngagementTracker {
       clearInterval(this.checkInterval);
     }
 
-    const duration = Date.now() - this.startTime;
-    const verified = this.isSessionVerified(duration);
+    // Calculate final engaged duration
+    const engagedDuration = this.getActiveEngagedDuration();
+    const verified = this.isSessionVerified(engagedDuration);
+
+    console.log("[Tracker] Stopped. Total engaged time:", Math.floor(engagedDuration / 1000), "s, Verified:", verified);
 
     return {
       events: this.events,
-      duration,
+      duration: engagedDuration, // Return engaged duration, not total time
       verified,
     };
   }
@@ -46,8 +57,10 @@ export class EngagementTracker {
     document.addEventListener("visibilitychange", this.handleVisibility);
     document.addEventListener("mousemove", this.handleActivity);
     document.addEventListener("scroll", this.handleScroll);
-    document.addEventListener("touchstart", this.handleActivity);
+    document.addEventListener("touchstart", this.handleTouch, { passive: true });
+    document.addEventListener("touchmove", this.handleTouch, { passive: true });
     document.addEventListener("keydown", this.handleActivity);
+    document.addEventListener("click", this.handleActivity);
   }
 
   private removeListeners(): void {
@@ -56,8 +69,10 @@ export class EngagementTracker {
     document.removeEventListener("visibilitychange", this.handleVisibility);
     document.removeEventListener("mousemove", this.handleActivity);
     document.removeEventListener("scroll", this.handleScroll);
-    document.removeEventListener("touchstart", this.handleActivity);
+    document.removeEventListener("touchstart", this.handleTouch);
+    document.removeEventListener("touchmove", this.handleTouch);
     document.removeEventListener("keydown", this.handleActivity);
+    document.removeEventListener("click", this.handleActivity);
   }
 
   private handleVisibility = (): void => {
@@ -72,6 +87,11 @@ export class EngagementTracker {
   private handleActivity = (): void => {
     this.lastActivityTime = Date.now();
     this.recordEvent("mouse");
+  };
+
+  private handleTouch = (): void => {
+    this.lastActivityTime = Date.now();
+    this.recordEvent("touch");
   };
 
   private handleScroll = (): void => {
@@ -94,9 +114,34 @@ export class EngagementTracker {
   private startEngagementCheck(): void {
     this.checkInterval = setInterval(() => {
       const isEngaged = this.isCurrentlyEngaged();
-      const duration = this.getEngagedDuration();
+
+      // Track engaged time: when engagement state changes
+      if (isEngaged !== this.wasEngaged) {
+        if (isEngaged) {
+          // Just became engaged - start timing
+          this.engagedStartTime = Date.now();
+          console.log("[Tracker] Resumed - was paused for", Date.now() - this.engagedStartTime, "ms");
+        } else {
+          // Just became disengaged - add elapsed time to total
+          this.totalEngagedTime += Date.now() - this.engagedStartTime;
+          console.log("[Tracker] Paused - total engaged time:", Math.floor(this.totalEngagedTime / 1000), "s");
+        }
+        this.wasEngaged = isEngaged;
+      }
+
+      const duration = this.getActiveEngagedDuration();
       this.onEngagementUpdate?.(isEngaged, duration);
-    }, 5000);
+    }, 1000); // Check every second for smoother timer
+  }
+
+  // Get the actual engaged duration (pauses when not engaged)
+  private getActiveEngagedDuration(): number {
+    if (this.wasEngaged && this.isCurrentlyEngaged()) {
+      // Currently engaged - add current session time
+      return this.totalEngagedTime + (Date.now() - this.engagedStartTime);
+    }
+    // Not engaged - return only the accumulated time
+    return this.totalEngagedTime;
   }
 
   private isCurrentlyEngaged(): boolean {
@@ -132,23 +177,35 @@ export class EngagementTracker {
   }
 
   private isSessionVerified(duration: number): boolean {
-    // Must have minimum duration
-    if (duration < MIN_SESSION_DURATION) return false;
+    // Must have minimum duration (1 minute)
+    if (duration < MIN_SESSION_DURATION) {
+      console.log("[Tracking] Session too short:", duration, "ms (min:", MIN_SESSION_DURATION, ")");
+      return false;
+    }
 
-    // Must have regular activity
+    // Must have at least some activity
     const activityEvents = this.events.filter(
       (e) => e.type === "mouse" || e.type === "scroll" || e.type === "touch"
     );
 
-    // At least 1 activity event per minute
-    const expectedEvents = Math.floor(duration / 60000);
-    if (activityEvents.length < expectedEvents) return false;
+    // At least 1 activity event for the whole session (very lenient)
+    // This allows reading without constantly moving
+    if (activityEvents.length < 1) {
+      console.log("[Tracking] No activity events recorded");
+      return false;
+    }
 
-    // Check for suspicious patterns (all events at same time)
-    const eventTimes = activityEvents.map((e) => e.timestamp);
-    const uniqueTimes = new Set(eventTimes.map((t) => Math.floor(t / 10000)));
-    if (uniqueTimes.size < expectedEvents / 2) return false;
+    // For sessions longer than 5 minutes, require at least 1 event per 2 minutes
+    const durationMinutes = duration / 60000;
+    if (durationMinutes > 5) {
+      const minEvents = Math.floor(durationMinutes / 2);
+      if (activityEvents.length < minEvents) {
+        console.log("[Tracking] Not enough activity for long session:", activityEvents.length, "events, need", minEvents);
+        return false;
+      }
+    }
 
+    console.log("[Tracking] Session verified! Duration:", Math.floor(durationMinutes), "min, Events:", activityEvents.length);
     return true;
   }
 }
