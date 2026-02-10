@@ -7,15 +7,21 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const session = await auth();
 
     if (!session?.user || !["ADMIN", "RAM"].includes(session.user.role)) {
+      console.log("[Upload get-url] Unauthorized:", session?.user?.role);
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    console.log("[Upload get-url] User:", session.user.id, "Role:", session.user.role);
+
     const body = (await request.json()) as HandleUploadBody;
+    console.log("[Upload get-url] Request body type:", body.type);
 
     const jsonResponse = await handleUpload({
       body,
       request,
       onBeforeGenerateToken: async (pathname) => {
+        console.log("[Upload get-url] onBeforeGenerateToken:", pathname);
+
         // Validate file type - extended for mobile compatibility
         const videoExtensions = [".mp4", ".webm", ".mov", ".avi", ".m4v", ".3gp", ".3g2", ".mpeg", ".mpg", ".ogg"];
         const imageExtensions = [".jpg", ".jpeg", ".png", ".webp", ".gif"];
@@ -24,7 +30,10 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         const isVideo = videoExtensions.includes(ext);
         const isImage = imageExtensions.includes(ext);
 
+        console.log("[Upload get-url] Extension:", ext, "isVideo:", isVideo, "isImage:", isImage);
+
         if (!isVideo && !isImage) {
+          console.log("[Upload get-url] Invalid file type");
           throw new Error(`סוג קובץ לא נתמך (${ext}). יש להעלות קובץ וידאו או תמונה`);
         }
 

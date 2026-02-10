@@ -238,20 +238,29 @@ export default function ContentPage() {
       console.log(`[Upload] File size: ${(file.size / 1024 / 1024).toFixed(2)}MB, Type: ${file.type || 'unknown'}`);
       console.log(`[Upload] Device: ${isMobile ? 'Mobile' : 'Desktop'}`);
 
-      // Try Vercel Blob first (better chunking support), fall back to XHR
+      // Use Vercel Blob for all uploads (XHR limited to 4.5MB on Vercel serverless)
+      // For very small files on mobile, use XHR as backup
       let url: string;
-      try {
-        console.log("[Upload] Trying Vercel Blob client...");
-        url = await uploadWithVercelBlob();
-      } catch (blobError) {
-        console.error("[Upload] Vercel Blob failed, trying XHR:", blobError);
-        // Fall back to XHR for mobile
-        if (isMobile) {
-          maxProgress = 0; // Reset max progress for retry
-          setUploadProgress(0);
-          url = await uploadWithXHR();
-        } else {
-          throw blobError;
+      const useXHROnly = isMobile && file.size < 4 * 1024 * 1024; // 4MB threshold
+
+      if (useXHROnly) {
+        console.log("[Upload] Small file on mobile, using XHR...");
+        url = await uploadWithXHR();
+      } else {
+        try {
+          console.log("[Upload] Using Vercel Blob client...");
+          url = await uploadWithVercelBlob();
+        } catch (blobError) {
+          console.error("[Upload] Vercel Blob failed:", blobError);
+          // Only try XHR fallback for small files
+          if (file.size < 4 * 1024 * 1024) {
+            console.log("[Upload] Trying XHR fallback for small file...");
+            maxProgress = 0;
+            setUploadProgress(0);
+            url = await uploadWithXHR();
+          } else {
+            throw new Error("שגיאה בהעלאה. נסה קובץ קטן יותר או השתמש בקישור YouTube.");
+          }
         }
       }
 
@@ -665,7 +674,7 @@ export default function ContentPage() {
                       <input
                         ref={inputFileRef}
                         type="file"
-                        accept="video/*"
+                        accept="video/mp4,video/quicktime,video/x-m4v,video/webm,video/3gpp,video/*"
                         onChange={handleFileUpload}
                         disabled={uploading}
                         className="hidden"
