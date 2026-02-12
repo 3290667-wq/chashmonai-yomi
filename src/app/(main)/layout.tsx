@@ -19,7 +19,7 @@ export default async function MainLayout({
       {/* Desert Background Image */}
       <div className="fixed inset-0 z-0">
         <Image
-          src="/desert-bg.png"
+          src="/landscape-desert.png"
           alt=""
           fill
           className="object-cover"

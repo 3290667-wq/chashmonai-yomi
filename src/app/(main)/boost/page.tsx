@@ -123,7 +123,7 @@ export default function BoostPage() {
         {/* Background */}
         <div className="absolute inset-0">
           <Image
-            src="/main-bg.png"
+            src="/landscape-mountains.png"
             alt=""
             fill
             className="object-cover"

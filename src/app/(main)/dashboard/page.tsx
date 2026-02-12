@@ -27,7 +27,7 @@ export default async function DashboardPage() {
       icon: BookOpen,
       gradient: "from-gold to-gold-dark",
       color: "text-gold",
-      bgImage: "/hero-banner.png",
+      bgImage: "/soldiers-studying.png",
     },
     {
       href: "/zmanim",
@@ -36,7 +36,7 @@ export default async function DashboardPage() {
       icon: Clock,
       gradient: "from-violet-500 to-purple-600",
       color: "text-violet-400",
-      bgImage: "/desert-bg.png",
+      bgImage: "/soldiers-praying.png",
     },
     {
       href: "/boost",
@@ -45,7 +45,7 @@ export default async function DashboardPage() {
       icon: Play,
       gradient: "from-emerald-500 to-green-600",
       color: "text-emerald-400",
-      bgImage: "/main-bg.png",
+      bgImage: "/masada-sunset.png",
     },
     {
       href: "/points",
@@ -54,7 +54,7 @@ export default async function DashboardPage() {
       icon: Award,
       gradient: "from-rose-500 to-pink-600",
       color: "text-rose-400",
-      bgImage: "/dashboard-bg.png",
+      bgImage: "/soldiers-praying.png",
     },
   ];
 
@@ -81,7 +81,7 @@ export default async function DashboardPage() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
-            src="/hero-banner.png"
+            src="/landscape-hero.png"
             alt=""
             fill
             className="object-cover opacity-50"
@@ -275,7 +275,7 @@ export default async function DashboardPage() {
       <div className="relative rounded-2xl overflow-hidden">
         {/* Background */}
         <div className="absolute inset-0">
-          <Image src="/dashboard-bg.png" alt="" fill className="object-cover opacity-40" />
+          <Image src="/landscape-mountains.png" alt="" fill className="object-cover opacity-40" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#1a140f] via-[#1a140f]/90 to-[#1a140f]/70" />
         </div>
 

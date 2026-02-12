@@ -219,7 +219,7 @@ export default function PointsPage() {
       <div className="relative rounded-2xl overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src="/hero-banner.png"
+            src="/landscape-hero.png"
             alt=""
             fill
             className="object-cover opacity-40"
