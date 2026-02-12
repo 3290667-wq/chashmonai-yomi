@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import {
   Award,
@@ -216,7 +217,12 @@ export default function PointsPage() {
   return (
     <div className="py-4 sm:py-6 space-y-6">
       {/* Hero Section */}
-      <div className="relative rounded-2xl overflow-hidden">
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="relative rounded-2xl overflow-hidden liquid-glass"
+      >
         <div className="absolute inset-0">
           <Image
             src="/bbba.png"
@@ -224,8 +230,8 @@ export default function PointsPage() {
             fill
             className="object-cover opacity-40"
           />
-          <div className="absolute inset-0 bg-gradient-to-l from-[#1a140f] via-[#1a140f]/80 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#1a140f] via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-l from-white via-white/80 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
         </div>
 
         <div className="relative z-10 p-6 sm:p-8">
@@ -234,7 +240,7 @@ export default function PointsPage() {
               <Award className="w-7 h-7 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-white">הנקודות שלי</h1>
+              <h1 className="text-2xl sm:text-3xl font-bold text-slate-800">הנקודות שלי</h1>
               <p className="text-slate-500">צבירה ופדיון נקודות</p>
             </div>
           </div>
@@ -317,19 +323,29 @@ export default function PointsPage() {
         </div>
 
         <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-gold to-transparent" />
-      </div>
+      </motion.div>
 
       {/* Tabs */}
-      <div className="flex gap-2 overflow-x-auto pb-1">
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.2 }}
+        className="flex gap-2 overflow-x-auto pb-1"
+      >
         {[
           { id: "overview", label: "סקירה", icon: TrendingUp },
           { id: "redeem", label: "סליקה", icon: Gift },
           { id: "history", label: "היסטוריה", icon: History },
-        ].map((tab) => {
+        ].map((tab, index) => {
           const Icon = tab.icon;
           return (
-            <button
+            <motion.button
               key={tab.id}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.3, delay: 0.1 * index }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
               className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all ${
                 activeTab === tab.id
@@ -339,17 +355,30 @@ export default function PointsPage() {
             >
               <Icon className="w-4 h-4" />
               {tab.label}
-            </button>
+            </motion.button>
           );
         })}
-      </div>
+      </motion.div>
 
       {/* Overview Tab */}
+      <AnimatePresence mode="wait">
       {activeTab === "overview" && (
-        <div className="space-y-4">
+        <motion.div
+          key="overview"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: 20 }}
+          transition={{ duration: 0.3 }}
+          className="space-y-4"
+        >
           {/* Today & Week Stats */}
           <div className="grid sm:grid-cols-2 gap-4">
-            <div className="bg-white rounded-2xl border border-sky-200 p-5">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.1 }}
+              className="bg-white rounded-2xl border border-sky-200 p-5 card-interactive shine-effect"
+            >
               <div className="flex items-center gap-2 mb-4">
                 <Calendar className="w-5 h-5 text-violet-400" />
                 <h2 className="font-bold text-slate-800">היום</h2>
@@ -368,9 +397,14 @@ export default function PointsPage() {
                   <p className="text-xs text-slate-500">נקודות</p>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="bg-white rounded-2xl border border-sky-200 p-5">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.2 }}
+              className="bg-white rounded-2xl border border-sky-200 p-5 card-interactive shine-effect"
+            >
               <div className="flex items-center gap-2 mb-4">
                 <TrendingUp className="w-5 h-5 text-emerald-400" />
                 <h2 className="font-bold text-slate-800">השבוע</h2>
@@ -389,11 +423,16 @@ export default function PointsPage() {
                   <p className="text-xs text-slate-500">נקודות</p>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* How Points Work */}
-          <div className="bg-white rounded-2xl border border-sky-200 overflow-hidden">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.3 }}
+            className="bg-white rounded-2xl border border-sky-200 overflow-hidden card-interactive"
+          >
             <div className="p-4 sm:p-5 border-b border-sky-200">
               <h2 className="font-bold text-slate-800 text-lg">איך צוברים נקודות?</h2>
             </div>
@@ -428,15 +467,27 @@ export default function PointsPage() {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       )}
 
       {/* Redeem Tab */}
       {activeTab === "redeem" && (
-        <div className="space-y-4">
+        <motion.div
+          key="redeem"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: 20 }}
+          transition={{ duration: 0.3 }}
+          className="space-y-4"
+        >
           {/* Redeem Form */}
-          <div className="bg-white rounded-2xl border border-sky-200 overflow-hidden">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
+            className="bg-white rounded-2xl border border-sky-200 overflow-hidden card-interactive"
+          >
             <div className="p-4 sm:p-5 border-b border-sky-200">
               <div className="flex items-center gap-2">
                 <Gift className="w-5 h-5 text-emerald-400" />
@@ -502,10 +553,15 @@ export default function PointsPage() {
                 </button>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Redemption History */}
-          <div className="bg-white rounded-2xl border border-sky-200 overflow-hidden">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.2 }}
+            className="bg-white rounded-2xl border border-sky-200 overflow-hidden card-interactive"
+          >
             <div className="p-4 sm:p-5 border-b border-sky-200">
               <h2 className="font-bold text-slate-800">בקשות סליקה</h2>
             </div>
@@ -546,13 +602,20 @@ export default function PointsPage() {
                 ))}
               </div>
             )}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       )}
 
       {/* History Tab */}
       {activeTab === "history" && (
-        <div className="bg-white rounded-2xl border border-sky-200 overflow-hidden">
+        <motion.div
+          key="history"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: 20 }}
+          transition={{ duration: 0.3 }}
+          className="bg-white rounded-2xl border border-sky-200 overflow-hidden card-interactive"
+        >
           <div className="p-4 sm:p-5 border-b border-sky-200">
             <div className="flex items-center gap-2">
               <History className="w-5 h-5 text-slate-600" />
@@ -595,8 +658,9 @@ export default function PointsPage() {
               ))}
             </div>
           )}
-        </div>
+        </motion.div>
       )}
+      </AnimatePresence>
     </div>
   );
 }

@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Home,
   BookOpen,
@@ -66,19 +67,23 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
         {/* Logo Header */}
         <div className="relative p-6 border-b border-sky-200">
           <Link href="/dashboard" className="flex items-center gap-4 group">
-            <div className="relative">
+            <motion.div
+              whileHover={{ scale: 1.1, rotate: 5 }}
+              transition={{ type: "spring", stiffness: 300 }}
+              className="relative"
+            >
               <div className="absolute inset-0 bg-gold/30 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity" />
               <Image
                 src="/רוח חשמונאית.png"
                 alt="רוח חשמונאית"
                 width={48}
                 height={48}
-                className="relative drop-shadow-lg group-hover:scale-105 transition-transform"
+                className="relative drop-shadow-lg"
               />
-            </div>
+            </motion.div>
             <div>
               <h1 className="font-bold text-slate-800 text-lg">חשמונאי יומי</h1>
-              <p className="text-xs text-gold font-medium">לעלות ולהתעלות</p>
+              <p className="text-xs text-gradient-animated font-medium">לעלות ולהתעלות</p>
             </div>
           </Link>
         </div>
@@ -263,8 +268,15 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
       </header>
 
       {/* Mobile Dropdown Menu - Dark Theme */}
+      <AnimatePresence>
       {isOpen && (
-        <div className="lg:hidden fixed inset-0 top-16 z-40 animate-fade-in overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3 }}
+          className="lg:hidden fixed inset-0 top-16 z-40 overflow-hidden"
+        >
           <div className="absolute inset-0 bg-sky-50/98 backdrop-blur-xl" />
 
           <div className="relative flex flex-col p-5 gap-1 overflow-y-auto max-h-[calc(100vh-4rem)]">
@@ -383,8 +395,9 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
               <span className="font-medium text-lg">התנתק</span>
             </button>
           </div>
-        </div>
+        </motion.div>
       )}
+      </AnimatePresence>
 
       {/* Mobile Bottom Navigation - Dark Theme */}
       <nav className="lg:hidden fixed bottom-0 right-0 left-0 safe-area-bottom z-50">

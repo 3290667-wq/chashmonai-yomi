@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Play, Video, ChevronRight, Clock, Award, Loader2, X, Eye, PlayCircle, BookOpen, Users } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEngagement } from "@/hooks/use-engagement";
@@ -119,17 +120,22 @@ export default function BoostPage() {
     <div className="relative py-6 space-y-8">
 
       {/* Hero Section - Artlist Academy Style */}
-      <div className="relative rounded-2xl overflow-hidden">
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="relative rounded-2xl overflow-hidden liquid-glass"
+      >
         {/* Background */}
         <div className="absolute inset-0">
           <Image
             src="/bbba.png"
             alt=""
             fill
-            className="object-cover"
+            className="object-cover opacity-40"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#1a140f] via-[#1a140f]/80 to-[#1a140f]/40" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#1a140f]/90 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-white via-white/80 to-white/40" />
+          <div className="absolute inset-0 bg-gradient-to-r from-white/90 to-transparent" />
         </div>
 
         {/* Content */}
@@ -144,12 +150,12 @@ export default function BoostPage() {
               </span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+            <h1 className="text-3xl sm:text-4xl font-bold text-slate-800 mb-4">
               שיעורי וידיאו
-              <span className="text-gold"> מיוחדים</span>
+              <span className="text-gradient-animated"> מיוחדים</span>
             </h1>
 
-            <p className="text-slate-600 text-lg mb-6 leading-relaxed">
+            <p className="text-slate-500 text-lg mb-6 leading-relaxed">
               שיעורים מרתקים בתורה, הלכה ומחשבת ישראל.
               <br className="hidden sm:block" />
               צפה ולמד בקצב שלך, וצבור נקודות.
@@ -158,31 +164,31 @@ export default function BoostPage() {
             {/* Stats */}
             <div className="flex flex-wrap gap-6">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-sky-100 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-sky-100 flex items-center justify-center icon-pop">
                   <PlayCircle className="w-5 h-5 text-gold" />
                 </div>
                 <div>
-                  <p className="text-white font-bold">{videos.length}</p>
+                  <p className="text-slate-800 font-bold">{videos.length}</p>
                   <p className="text-slate-500 text-sm">סרטונים</p>
                 </div>
               </div>
 
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-sky-100 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-sky-100 flex items-center justify-center icon-pop">
                   <BookOpen className="w-5 h-5 text-emerald-400" />
                 </div>
                 <div>
-                  <p className="text-white font-bold">תורה</p>
+                  <p className="text-slate-800 font-bold">תורה</p>
                   <p className="text-slate-500 text-sm">נושאים</p>
                 </div>
               </div>
 
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-sky-100 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-sky-100 flex items-center justify-center icon-pop">
                   <Users className="w-5 h-5 text-violet-400" />
                 </div>
                 <div>
-                  <p className="text-white font-bold">רוח חשמונאית</p>
+                  <p className="text-slate-800 font-bold">רוח חשמונאית</p>
                   <p className="text-slate-500 text-sm">יוצר</p>
                 </div>
               </div>
@@ -192,11 +198,17 @@ export default function BoostPage() {
 
         {/* Gold line */}
         <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-gold to-transparent" />
-      </div>
+      </motion.div>
 
       {/* Active Video Stats Bar */}
+      <AnimatePresence>
       {isPlaying && (
-        <div className="flex flex-wrap items-center gap-3 animate-fade-in">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          className="flex flex-wrap items-center gap-3"
+        >
           <div className="flex items-center gap-3 px-4 py-3 bg-white border border-sky-200 rounded-xl">
             <Clock className="w-5 h-5 text-gold" />
             <span className="font-mono text-lg font-bold text-slate-800">{formattedDuration}</span>
@@ -207,30 +219,39 @@ export default function BoostPage() {
             />
           </div>
 
-          <div className="flex items-center gap-3 px-4 py-3 bg-gold/10 border border-gold/30 rounded-xl">
+          <div className="flex items-center gap-3 px-4 py-3 bg-gold/10 border border-gold/30 rounded-xl glow-gold">
             <Award className="w-5 h-5 text-gold" />
             <span className="font-bold text-lg text-slate-800">+{estimatedPoints}</span>
             <span className="text-slate-500 text-sm">נקודות</span>
           </div>
-        </div>
+        </motion.div>
       )}
+      </AnimatePresence>
 
       {/* Video Grid - Artlist Academy Style */}
       {videos.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3, delay: 0.2 }}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
+        >
           {videos.map((video, index) => {
             const thumbnailUrl = getThumbnailUrl(video);
             const isYoutube = video.videoUrl ? !!getYoutubeId(video.videoUrl) : false;
             const hasCustomThumbnail = !!video.imageUrl;
 
             return (
-              <div
+              <motion.div
                 key={video.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.1 * index }}
+                whileHover={{ y: -8 }}
                 onClick={() => openVideo(video)}
-                className="group cursor-pointer animate-fade-in-up"
-                style={{ animationDelay: `${index * 50}ms` }}
+                className="group cursor-pointer"
               >
-                <div className="bg-white border border-sky-200 rounded-xl overflow-hidden transition-all duration-300 hover:border-sky-300 hover:translate-y-[-6px] hover:shadow-2xl">
+                <div className="bg-white border border-sky-200 rounded-xl overflow-hidden transition-all duration-300 hover:border-gold/30 hover:shadow-2xl card-tilt shine-effect">
                   {/* Thumbnail */}
                   <div className="relative aspect-video bg-sky-100 overflow-hidden">
                     {thumbnailUrl ? (
@@ -284,10 +305,10 @@ export default function BoostPage() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
       ) : (
         <div className="bg-white border border-sky-200 rounded-2xl p-12 text-center">
           <div className="w-20 h-20 mx-auto mb-6 bg-gold/10 rounded-full flex items-center justify-center">
@@ -307,9 +328,21 @@ export default function BoostPage() {
       )}
 
       {/* Video Player Modal */}
+      <AnimatePresence>
       {selectedVideo && (
-        <div className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4 animate-fade-in">
-          <div className="bg-white border border-sky-200 rounded-2xl w-full max-w-5xl max-h-[90vh] overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4"
+        >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            transition={{ type: "spring", duration: 0.4 }}
+            className="bg-white border border-sky-200 rounded-2xl w-full max-w-5xl max-h-[90vh] overflow-hidden"
+          >
             {/* Modal Header */}
             <div className="p-5 border-b border-sky-200 flex items-center justify-between">
               <div className="flex items-center gap-4">
@@ -389,17 +422,23 @@ export default function BoostPage() {
                 </a>
               </div>
             )}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       )}
+      </AnimatePresence>
 
       {/* Bottom Motivation */}
-      <div className="bg-white border border-sky-200 rounded-xl p-6 text-center">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.5 }}
+        className="bg-white border border-sky-200 rounded-xl p-6 text-center glow-gold animate-float"
+      >
         <p className="text-slate-800 font-bold text-lg">
           &ldquo;חזק ואמץ - לעלות ולהתעלות&rdquo;
         </p>
-        <p className="text-gold text-sm mt-2 font-medium">רוח חשמונאית</p>
-      </div>
+        <p className="text-gradient-animated text-sm mt-2 font-medium">רוח חשמונאית</p>
+      </motion.div>
     </div>
   );
 }
