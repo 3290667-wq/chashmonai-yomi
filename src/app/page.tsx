@@ -87,7 +87,7 @@ export default function Home() {
             למען שמו באהבה - לעלות ולהתעלות
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
             <Link
               href="/login"
               className="px-8 py-4 bg-gradient-to-l from-gold via-gold-light to-gold text-[#1a140f] rounded-xl font-bold text-lg hover:shadow-xl hover:shadow-gold/30 transition-all shadow-lg transform hover:-translate-y-1"
@@ -101,6 +101,14 @@ export default function Home() {
               צפה בלימוד היומי
             </Link>
           </div>
+
+          <Link
+            href="/tutorial"
+            className="inline-flex items-center gap-2 text-gold hover:text-gold-light transition-colors mb-8"
+          >
+            <span className="text-lg">איך משתמשים באפליקציה?</span>
+            <span className="animate-bounce-soft">&#x2190;</span>
+          </Link>
         </div>
 
         {/* Features */}

@@ -21,6 +21,7 @@ import {
   Shield,
   Flame,
   ClipboardList,
+  HelpCircle,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -135,6 +136,26 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
               </Link>
             );
           })}
+
+                    {/* Tutorial Link */}
+          <div className="h-px bg-white/10 my-4" />
+          <Link
+            href="/tutorial"
+            className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
+              pathname === "/tutorial"
+                ? "bg-gold/15 text-gold"
+                : "text-white/60 hover:bg-white/5 hover:text-white"
+            }`}
+          >
+            <div className={`p-2 rounded-lg transition-all ${
+              pathname === "/tutorial"
+                ? "bg-gold text-[#0a0a0a]"
+                : "bg-white/5 text-white/60 group-hover:bg-white/10 group-hover:text-white"
+            }`}>
+              <HelpCircle className="w-4 h-4" />
+            </div>
+            <span className="font-medium">מדריך שימוש</span>
+          </Link>
 
           {(isAdmin || isRam) && (
             <>
@@ -301,6 +322,27 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
                 </Link>
               );
             })}
+
+                        {/* Tutorial Link - Mobile */}
+            <div className="h-px bg-white/10 my-3" />
+            <Link
+              href="/tutorial"
+              onClick={() => setIsOpen(false)}
+              className={`group flex items-center gap-3 px-4 py-4 rounded-xl transition-all ${
+                pathname === "/tutorial"
+                  ? "bg-gold/15 text-gold"
+                  : "text-white/60 hover:bg-white/5 hover:text-white"
+              }`}
+            >
+              <div className={`p-2 rounded-lg ${
+                pathname === "/tutorial"
+                  ? "bg-gold text-[#0a0a0a]"
+                  : "bg-white/5"
+              }`}>
+                <HelpCircle className="w-5 h-5" />
+              </div>
+              <span className="font-medium text-lg">מדריך שימוש</span>
+            </Link>
 
             {(isAdmin || isRam) && (
               <>
