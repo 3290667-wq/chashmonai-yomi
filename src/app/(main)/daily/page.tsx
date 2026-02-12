@@ -177,7 +177,7 @@ export default function DailyPage() {
             </div>
             <div>
               <h1 className="text-2xl font-bold text-slate-800">לימוד יומי</h1>
-              <p className="text-slate-500 text-sm">משנה יומית ורמב״ם - לעלות ולהתעלות</p>
+              <p className="text-slate-700 text-sm">משנה יומית ורמב״ם - לעלות ולהתעלות</p>
             </div>
           </div>
         </div>
@@ -208,11 +208,11 @@ export default function DailyPage() {
               <div>
                 <h2 className="font-bold text-slate-800 text-lg">משנה יומית</h2>
                 {content?.mishnah && (
-                  <p className="text-sm text-slate-500 mt-0.5">{content.mishnah.heRef}</p>
+                  <p className="text-sm text-slate-700 mt-0.5">{content.mishnah.heRef}</p>
                 )}
               </div>
             </div>
-            <div className={`p-2 rounded-lg transition-colors ${expandedSection === "mishnah" ? "bg-gold/20 text-gold" : "bg-sky-50 text-slate-500"}`}>
+            <div className={`p-2 rounded-lg transition-colors ${expandedSection === "mishnah" ? "bg-gold/20 text-gold" : "bg-sky-50 text-slate-700"}`}>
               {expandedSection === "mishnah" ? (
                 <ChevronUp className="w-5 h-5" />
               ) : (
@@ -243,7 +243,7 @@ export default function DailyPage() {
                   ))}
                 </div>
               ) : (
-                <p className="text-slate-500 py-4">לא נמצא לימוד להיום</p>
+                <p className="text-slate-700 py-4">לא נמצא לימוד להיום</p>
               )}
             </div>
             </motion.div>
@@ -269,11 +269,11 @@ export default function DailyPage() {
               <div>
                 <h2 className="font-bold text-slate-800 text-lg">רמב״ם יומי</h2>
                 {content?.rambam && (
-                  <p className="text-sm text-slate-500 mt-0.5">{content.rambam.heRef}</p>
+                  <p className="text-sm text-slate-700 mt-0.5">{content.rambam.heRef}</p>
                 )}
               </div>
             </div>
-            <div className={`p-2 rounded-lg transition-colors ${expandedSection === "rambam" ? "bg-violet-500/20 text-violet-400" : "bg-sky-50 text-slate-500"}`}>
+            <div className={`p-2 rounded-lg transition-colors ${expandedSection === "rambam" ? "bg-violet-500/20 text-violet-400" : "bg-sky-50 text-slate-700"}`}>
               {expandedSection === "rambam" ? (
                 <ChevronUp className="w-5 h-5" />
               ) : (
@@ -304,7 +304,7 @@ export default function DailyPage() {
                   ))}
                 </div>
               ) : (
-                <p className="text-slate-500 py-4">לא נמצא לימוד להיום</p>
+                <p className="text-slate-700 py-4">לא נמצא לימוד להיום</p>
               )}
             </div>
             </motion.div>
@@ -330,10 +330,10 @@ export default function DailyPage() {
                 </div>
                 <div>
                   <h2 className="font-bold text-slate-800 text-lg">סרטון חיזוק יומי</h2>
-                  <p className="text-sm text-slate-500 mt-0.5">{content.dailyVideo.title}</p>
+                  <p className="text-sm text-slate-700 mt-0.5">{content.dailyVideo.title}</p>
                 </div>
               </div>
-              <div className={`p-2 rounded-lg transition-colors ${expandedSection === "video" ? "bg-rose-500/20 text-rose-400" : "bg-sky-50 text-slate-500"}`}>
+              <div className={`p-2 rounded-lg transition-colors ${expandedSection === "video" ? "bg-rose-500/20 text-rose-400" : "bg-sky-50 text-slate-700"}`}>
                 {expandedSection === "video" ? (
                   <ChevronUp className="w-5 h-5" />
                 ) : (
@@ -412,11 +412,11 @@ export default function DailyPage() {
               <div>
                 <h2 className="font-bold text-slate-800 text-lg">חסידות יומית</h2>
                 {content?.chassidut && (
-                  <p className="text-sm text-slate-500 mt-0.5">{content.chassidut.title}</p>
+                  <p className="text-sm text-slate-700 mt-0.5">{content.chassidut.title}</p>
                 )}
               </div>
             </div>
-            <div className={`p-2 rounded-lg transition-colors ${expandedSection === "chassidut" ? "bg-gold/20 text-gold" : "bg-sky-50 text-slate-500"}`}>
+            <div className={`p-2 rounded-lg transition-colors ${expandedSection === "chassidut" ? "bg-gold/20 text-gold" : "bg-sky-50 text-slate-700"}`}>
               {expandedSection === "chassidut" ? (
                 <ChevronUp className="w-5 h-5" />
               ) : (
@@ -447,7 +447,7 @@ export default function DailyPage() {
               ) : (
                 <div className="pt-5 text-center py-8">
                   <Sparkles className="w-12 h-12 text-gold/30 mx-auto mb-3" />
-                  <p className="text-slate-500">לא הועלה תוכן חסידות להיום</p>
+                  <p className="text-slate-700">לא הועלה תוכן חסידות להיום</p>
                 </div>
               )}
             </div>
@@ -474,11 +474,11 @@ export default function DailyPage() {
               <div>
                 <h2 className="font-bold text-slate-800 text-lg">מוסר יומי</h2>
                 {content?.musar && (
-                  <p className="text-sm text-slate-500 mt-0.5">{content.musar.title}</p>
+                  <p className="text-sm text-slate-700 mt-0.5">{content.musar.title}</p>
                 )}
               </div>
             </div>
-            <div className={`p-2 rounded-lg transition-colors ${expandedSection === "musar" ? "bg-emerald-500/20 text-emerald-400" : "bg-sky-50 text-slate-500"}`}>
+            <div className={`p-2 rounded-lg transition-colors ${expandedSection === "musar" ? "bg-emerald-500/20 text-emerald-400" : "bg-sky-50 text-slate-700"}`}>
               {expandedSection === "musar" ? (
                 <ChevronUp className="w-5 h-5" />
               ) : (
@@ -509,7 +509,7 @@ export default function DailyPage() {
               ) : (
                 <div className="pt-5 text-center py-8">
                   <Heart className="w-12 h-12 text-emerald-500/30 mx-auto mb-3" />
-                  <p className="text-slate-500">לא הועלה תוכן מוסר להיום</p>
+                  <p className="text-slate-700">לא הועלה תוכן מוסר להיום</p>
                 </div>
               )}
             </div>

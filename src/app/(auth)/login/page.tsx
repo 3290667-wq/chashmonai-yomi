@@ -205,20 +205,20 @@ export default function LoginPage() {
                   <>
                     {/* Name Input */}
                     <div className="relative">
-                      <User className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                      <User className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-600" />
                       <input
                         type="text"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder="שם מלא"
-                        className="w-full bg-sky-100 border border-sky-200 rounded-xl pr-12 pl-4 py-4 text-slate-800 placeholder:text-slate-400 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-all"
+                        className="w-full bg-sky-100 border border-sky-200 rounded-xl pr-12 pl-4 py-4 text-slate-800 placeholder:text-slate-600 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-all"
                       />
                     </div>
 
                     {/* Platoon Select */}
                     <div className="relative">
-                      <Users className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none z-10" />
-                      <ChevronDown className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
+                      <Users className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-600 pointer-events-none z-10" />
+                      <ChevronDown className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-600 pointer-events-none" />
                       <select
                         value={formData.platoon}
                         onChange={(e) => setFormData({ ...formData, platoon: e.target.value })}
@@ -232,7 +232,7 @@ export default function LoginPage() {
                         ))}
                       </select>
                       {platoons.length === 0 && (
-                        <p className="text-slate-400 text-xs mt-1">אין פלוגות זמינות כרגע</p>
+                        <p className="text-slate-600 text-xs mt-1">אין פלוגות זמינות כרגע</p>
                       )}
                     </div>
                   </>
@@ -240,32 +240,32 @@ export default function LoginPage() {
 
                 {/* Email Input */}
                 <div className="relative">
-                  <Mail className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                  <Mail className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-600" />
                   <input
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     placeholder="אימייל"
                     required
-                    className="w-full bg-sky-100 border border-sky-200 rounded-xl pr-12 pl-4 py-4 text-slate-800 placeholder:text-slate-400 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-all"
+                    className="w-full bg-sky-100 border border-sky-200 rounded-xl pr-12 pl-4 py-4 text-slate-800 placeholder:text-slate-600 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-all"
                   />
                 </div>
 
                 {/* Password Input */}
                 <div className="relative">
-                  <Lock className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                  <Lock className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-600" />
                   <input
                     type={showPassword ? "text" : "password"}
                     value={formData.password}
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                     placeholder="סיסמה"
                     required
-                    className="w-full bg-sky-100 border border-sky-200 rounded-xl pr-12 pl-12 py-4 text-slate-800 placeholder:text-slate-400 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-all"
+                    className="w-full bg-sky-100 border border-sky-200 rounded-xl pr-12 pl-12 py-4 text-slate-800 placeholder:text-slate-600 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-all"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-600 hover:text-white transition-colors"
                   >
                     {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>
@@ -304,7 +304,7 @@ export default function LoginPage() {
               {/* Divider */}
               <div className="flex items-center gap-4 my-6">
                 <div className="flex-1 h-px bg-sky-100" />
-                <span className="text-slate-400 text-sm">או</span>
+                <span className="text-slate-600 text-sm">או</span>
                 <div className="flex-1 h-px bg-sky-100" />
               </div>
 

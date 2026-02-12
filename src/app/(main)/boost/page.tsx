@@ -155,7 +155,7 @@ export default function BoostPage() {
               <span className="text-gradient-animated"> מיוחדים</span>
             </h1>
 
-            <p className="text-slate-500 text-lg mb-6 leading-relaxed">
+            <p className="text-slate-700 text-lg mb-6 leading-relaxed">
               שיעורים מרתקים בתורה, הלכה ומחשבת ישראל.
               <br className="hidden sm:block" />
               צפה ולמד בקצב שלך, וצבור נקודות.
@@ -169,7 +169,7 @@ export default function BoostPage() {
                 </div>
                 <div>
                   <p className="text-slate-800 font-bold">{videos.length}</p>
-                  <p className="text-slate-500 text-sm">סרטונים</p>
+                  <p className="text-slate-700 text-sm">סרטונים</p>
                 </div>
               </div>
 
@@ -179,7 +179,7 @@ export default function BoostPage() {
                 </div>
                 <div>
                   <p className="text-slate-800 font-bold">תורה</p>
-                  <p className="text-slate-500 text-sm">נושאים</p>
+                  <p className="text-slate-700 text-sm">נושאים</p>
                 </div>
               </div>
 
@@ -189,7 +189,7 @@ export default function BoostPage() {
                 </div>
                 <div>
                   <p className="text-slate-800 font-bold">רוח חשמונאית</p>
-                  <p className="text-slate-500 text-sm">יוצר</p>
+                  <p className="text-slate-700 text-sm">יוצר</p>
                 </div>
               </div>
             </div>
@@ -222,7 +222,7 @@ export default function BoostPage() {
           <div className="flex items-center gap-3 px-4 py-3 bg-gold/10 border border-gold/30 rounded-xl glow-gold">
             <Award className="w-5 h-5 text-gold" />
             <span className="font-bold text-lg text-slate-800">+{estimatedPoints}</span>
-            <span className="text-slate-500 text-sm">נקודות</span>
+            <span className="text-slate-700 text-sm">נקודות</span>
           </div>
         </motion.div>
       )}
@@ -293,9 +293,9 @@ export default function BoostPage() {
                       {video.title}
                     </h3>
                     {video.description && (
-                      <p className="text-slate-500 text-sm line-clamp-2 mb-3">{video.description}</p>
+                      <p className="text-slate-700 text-sm line-clamp-2 mb-3">{video.description}</p>
                     )}
-                    <div className="flex items-center gap-3 text-xs text-slate-400">
+                    <div className="flex items-center gap-3 text-xs text-slate-600">
                       <span className="flex items-center gap-1">
                         <Eye className="w-3.5 h-3.5" />
                         רוח חשמונאית
@@ -315,7 +315,7 @@ export default function BoostPage() {
             <Video className="w-10 h-10 text-gold/50" />
           </div>
           <h3 className="font-bold text-slate-800 text-xl mb-3">אין סרטונים עדיין</h3>
-          <p className="text-slate-500 mb-6 max-w-md mx-auto">
+          <p className="text-slate-700 mb-6 max-w-md mx-auto">
             עדיין לא הועלו סרטונים. חזור מאוחר יותר או עבור ללימוד היומי.
           </p>
           <button
@@ -352,7 +352,7 @@ export default function BoostPage() {
                 <div>
                   <h2 className="font-bold text-slate-800 text-lg">{selectedVideo.title}</h2>
                   {selectedVideo.description && (
-                    <p className="text-slate-500 text-sm line-clamp-1">{selectedVideo.description}</p>
+                    <p className="text-slate-700 text-sm line-clamp-1">{selectedVideo.description}</p>
                   )}
                 </div>
               </div>

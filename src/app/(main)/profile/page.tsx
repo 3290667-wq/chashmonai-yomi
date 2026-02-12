@@ -106,7 +106,7 @@ export default function ProfilePage() {
                 {user?.name || "משתמש"}
               </h1>
               {user?.email && (
-                <p className="text-slate-500 text-sm truncate mt-1" dir="ltr">
+                <p className="text-slate-700 text-sm truncate mt-1" dir="ltr">
                   {user.email}
                 </p>
               )}
@@ -145,7 +145,7 @@ export default function ProfilePage() {
                 <Icon className="w-6 h-6 text-white" />
               </div>
               <p className={`text-2xl font-bold ${stat.textColor}`}>{stat.value}</p>
-              <p className="text-sm text-slate-500 mt-0.5">{stat.label}</p>
+              <p className="text-sm text-slate-700 mt-0.5">{stat.label}</p>
             </div>
           );
         })}
@@ -164,7 +164,7 @@ export default function ProfilePage() {
               <User className="w-5 h-5 text-gold" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-xs text-slate-500">שם מלא</p>
+              <p className="text-xs text-slate-700">שם מלא</p>
               <p className="font-medium text-slate-800 truncate">
                 {user?.name || "לא צוין"}
               </p>
@@ -176,7 +176,7 @@ export default function ProfilePage() {
               <Mail className="w-5 h-5 text-violet-400" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-xs text-slate-500">אימייל</p>
+              <p className="text-xs text-slate-700">אימייל</p>
               <p className="font-medium text-slate-800 truncate" dir="ltr">
                 {user?.email || "לא צוין"}
               </p>
@@ -188,7 +188,7 @@ export default function ProfilePage() {
               <Users className="w-5 h-5 text-emerald-400" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-xs text-slate-500">פלוגה</p>
+              <p className="text-xs text-slate-700">פלוגה</p>
               <p className="font-medium text-slate-800 truncate">
                 {user?.platoon || "לא צוין"}
               </p>
@@ -214,7 +214,7 @@ export default function ProfilePage() {
       {/* Menu Items */}
       <div className="bg-white rounded-2xl border border-sky-200 overflow-hidden">
         <div className="p-4 sm:p-5 border-b border-sky-200 flex items-center gap-2">
-          <Settings className="w-5 h-5 text-slate-500" />
+          <Settings className="w-5 h-5 text-slate-700" />
           <h2 className="font-bold text-slate-800 text-lg">הגדרות</h2>
         </div>
 
@@ -229,14 +229,14 @@ export default function ProfilePage() {
               >
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-sky-50 rounded-lg flex items-center justify-center group-hover:bg-sky-100 transition-colors">
-                    <Icon className="w-5 h-5 text-slate-500" />
+                    <Icon className="w-5 h-5 text-slate-700" />
                   </div>
                   <div>
                     <span className="font-medium text-slate-800 block">{item.label}</span>
-                    <span className="text-xs text-slate-400">{item.description}</span>
+                    <span className="text-xs text-slate-600">{item.description}</span>
                   </div>
                 </div>
-                <ChevronLeft className="w-5 h-5 text-slate-400 group-hover:text-slate-600 transition-colors" />
+                <ChevronLeft className="w-5 h-5 text-slate-600 group-hover:text-slate-600 transition-colors" />
               </Link>
             );
           })}
@@ -254,7 +254,7 @@ export default function ProfilePage() {
 
       {/* Footer */}
       <div className="text-center py-4">
-        <p className="text-slate-400 text-sm">חשמונאי יומי - גרסה 1.0</p>
+        <p className="text-slate-600 text-sm">חשמונאי יומי - גרסה 1.0</p>
         <p className="text-slate-300 text-xs mt-1">למען שמו באהבה</p>
       </div>
     </div>

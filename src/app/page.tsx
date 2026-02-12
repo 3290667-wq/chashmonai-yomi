@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useSyncExternalStore, useCallback } from "react";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import SplashScreen from "@/components/splash-screen";
@@ -43,9 +44,17 @@ export default function Home() {
   return (
     <div className={`min-h-screen bg-gradient-logo ${isLoaded ? "animate-fade-in" : ""}`}>
       {/* Header */}
-      <header className="safe-area-top">
+      <motion.header
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="safe-area-top"
+      >
         <div className="container mx-auto px-4 py-6 flex justify-between items-center">
-          <div className="flex items-center gap-3">
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            className="flex items-center gap-3"
+          >
             <Image
               src="/רוח חשמונאית.png"
               alt="רוח חשמונאית"
@@ -53,55 +62,92 @@ export default function Home() {
               height={50}
               className="drop-shadow-md"
             />
-            <span className="text-xl font-bold text-white">חשמונאי יומי</span>
-          </div>
+            <span className="text-xl font-bold text-slate-800">חשמונאי יומי</span>
+          </motion.div>
+          <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
           <Link
             href="/login"
-            className="px-5 py-2 bg-gold text-slate-900 rounded-full font-bold hover:bg-gold-light transition-colors shadow-md"
+            className="px-5 py-2 bg-gold text-slate-900 rounded-full font-bold hover:bg-gold-light transition-colors shadow-md btn-premium"
           >
             כניסה
           </Link>
+          </motion.div>
         </div>
-      </header>
+      </motion.header>
 
       {/* Hero Section */}
       <main className="container mx-auto px-4 py-8 sm:py-16">
         <div className="text-center max-w-2xl mx-auto">
-          <div className="relative w-32 h-32 sm:w-40 sm:h-40 mx-auto mb-6">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, type: "spring" }}
+            className="relative w-32 h-32 sm:w-40 sm:h-40 mx-auto mb-6"
+          >
+            <div className="absolute inset-0 bg-gold/30 rounded-full blur-xl animate-pulse" />
             <Image
               src="/רוח חשמונאית.png"
               alt="רוח חשמונאית"
               fill
-              className="object-contain drop-shadow-xl"
+              className="object-contain drop-shadow-xl relative z-10"
               priority
             />
-          </div>
+          </motion.div>
 
-          <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="text-4xl sm:text-5xl font-bold text-slate-800 mb-4"
+          >
             רוח חשמונאית
-          </h1>
-          <p className="text-xl sm:text-2xl text-gold mb-2">
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="text-xl sm:text-2xl text-gradient-animated mb-2"
+          >
             אפליקציית לימוד לחיילי חטיבת חשמונאים
-          </p>
-          <p className="text-slate-600 mb-8">
+          </motion.p>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="text-slate-700 mb-8"
+          >
             למען שמו באהבה - לעלות ולהתעלות
-          </p>
+          </motion.p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+            className="flex flex-col sm:flex-row gap-4 justify-center mb-8"
+          >
+            <motion.div whileHover={{ scale: 1.05, y: -4 }} whileTap={{ scale: 0.95 }}>
             <Link
               href="/login"
-              className="px-8 py-4 bg-gradient-to-l from-gold via-gold-light to-gold text-slate-900 rounded-xl font-bold text-lg hover:shadow-xl hover:shadow-gold/30 transition-all shadow-lg transform hover:-translate-y-1"
+              className="px-8 py-4 bg-gradient-to-l from-gold via-gold-light to-gold text-slate-900 rounded-xl font-bold text-lg shadow-lg shadow-gold/30 btn-premium block"
             >
               התחל ללמוד
             </Link>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.05, y: -4 }} whileTap={{ scale: 0.95 }}>
             <Link
               href="/daily"
-              className="px-8 py-4 bg-white text-white rounded-xl font-bold text-lg hover:bg-[#4a3825] transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1 border border-sky-300"
+              className="px-8 py-4 bg-white text-slate-800 rounded-xl font-bold text-lg shadow-lg border border-sky-200 shine-effect block"
             >
               צפה בלימוד היומי
             </Link>
-          </div>
+            </motion.div>
+          </motion.div>
 
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+          >
           <Link
             href="/tutorial"
             className="inline-flex items-center gap-2 text-gold hover:text-gold-light transition-colors mb-8"
@@ -109,37 +155,52 @@ export default function Home() {
             <span className="text-lg">איך משתמשים באפליקציה?</span>
             <span className="animate-bounce-soft">&#x2190;</span>
           </Link>
+          </motion.div>
         </div>
 
         {/* Features */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.7 }}
+          className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto"
+        >
           <FeatureCard
             icon={<BookOpen className="w-8 h-8" />}
             title="לימוד יומי"
             description="משנה ורמב״ם"
+            index={0}
           />
           <FeatureCard
             icon={<Clock className="w-8 h-8" />}
             title="זמני היום"
             description="תפילות וזמנים"
+            index={1}
           />
           <FeatureCard
             icon={<Users className="w-8 h-8" />}
             title="קהילה"
             description="לומדים יחד"
+            index={2}
           />
           <FeatureCard
             icon={<Award className="w-8 h-8" />}
             title="נקודות"
             description="צבירה ופדיון"
+            index={3}
           />
-        </div>
+        </motion.div>
       </main>
 
       {/* Footer */}
-      <footer className="mt-auto py-6 text-center text-slate-600 safe-area-bottom">
+      <motion.footer
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 1.2 }}
+        className="mt-auto py-6 text-center text-slate-700 safe-area-bottom"
+      >
         <p>חטיבת חשמונאים - גדוד 932</p>
-      </footer>
+      </motion.footer>
     </div>
   );
 }
@@ -148,16 +209,24 @@ function FeatureCard({
   icon,
   title,
   description,
+  index,
 }: {
   icon: React.ReactNode;
   title: string;
   description: string;
+  index: number;
 }) {
   return (
-    <div className="bg-white backdrop-blur-sm rounded-2xl p-4 text-center border border-sky-200 hover:border-gold/30 transition-colors">
-      <div className="text-gold mb-2 flex justify-center">{icon}</div>
-      <h3 className="font-bold text-white text-sm sm:text-base">{title}</h3>
-      <p className="text-slate-600 text-xs sm:text-sm">{description}</p>
-    </div>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: 0.8 + index * 0.1 }}
+      whileHover={{ scale: 1.05, y: -4 }}
+      className="bg-white backdrop-blur-sm rounded-2xl p-4 text-center border border-sky-200 hover:border-gold/30 transition-colors card-tilt shine-effect"
+    >
+      <div className="text-gold mb-2 flex justify-center icon-pop">{icon}</div>
+      <h3 className="font-bold text-slate-800 text-sm sm:text-base">{title}</h3>
+      <p className="text-slate-700 text-xs sm:text-sm">{description}</p>
+    </motion.div>
   );
 }

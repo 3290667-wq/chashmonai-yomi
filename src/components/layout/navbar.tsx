@@ -413,7 +413,7 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
                 key={item.href}
                 href={item.href}
                 className={`flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all ${
-                  isActive ? "text-gold" : "text-slate-500 hover:text-slate-800 active:scale-95"
+                  isActive ? "text-gold" : "text-slate-700 hover:text-slate-800 active:scale-95"
                 }`}
               >
                 <div className={`relative p-2.5 rounded-xl transition-all ${

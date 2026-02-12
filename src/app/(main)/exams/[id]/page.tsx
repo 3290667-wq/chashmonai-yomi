@@ -135,7 +135,7 @@ export default function TakeExamPage({ params }: { params: Promise<{ id: string 
     return (
       <div className="py-12 flex flex-col items-center justify-center gap-4">
         <div className="w-12 h-12 border-4 border-gold/30 border-t-gold rounded-full animate-spin" />
-        <p className="text-slate-500">טוען מבחן...</p>
+        <p className="text-slate-700">טוען מבחן...</p>
       </div>
     );
   }
@@ -144,7 +144,7 @@ export default function TakeExamPage({ params }: { params: Promise<{ id: string 
     return (
       <div className="py-12 text-center">
         <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-3" />
-        <p className="text-slate-500">מבחן לא נמצא</p>
+        <p className="text-slate-700">מבחן לא נמצא</p>
       </div>
     );
   }
@@ -160,7 +160,7 @@ export default function TakeExamPage({ params }: { params: Promise<{ id: string 
           <button onClick={() => router.push("/exams")} className="p-2 hover:bg-sky-50 rounded-lg">
             <ChevronRight className="w-5 h-5 text-slate-600" />
           </button>
-          <h1 className="text-2xl font-bold text-white">תוצאות המבחן</h1>
+          <h1 className="text-2xl font-bold text-slate-800">תוצאות המבחן</h1>
         </div>
 
         {/* Score Card */}
@@ -185,7 +185,7 @@ export default function TakeExamPage({ params }: { params: Promise<{ id: string 
             )}
           </div>
 
-          <h2 className="text-3xl font-bold text-white mb-2">
+          <h2 className="text-3xl font-bold text-slate-800 mb-2">
             {attemptResult.score} / {attemptResult.totalQuestions}
           </h2>
           <p className={`text-lg font-medium ${
@@ -206,7 +206,7 @@ export default function TakeExamPage({ params }: { params: Promise<{ id: string 
 
         {/* Questions Review */}
         <div className="space-y-4">
-          <h3 className="text-lg font-bold text-white">סקירת תשובות</h3>
+          <h3 className="text-lg font-bold text-slate-800">סקירת תשובות</h3>
 
           {exam.questions.map((question, index) => {
             const result = results.find((r) => r.questionId === question.id);
@@ -232,8 +232,8 @@ export default function TakeExamPage({ params }: { params: Promise<{ id: string 
                     <XCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
                   )}
                   <div>
-                    <span className="text-slate-500 text-sm">שאלה {index + 1}</span>
-                    <p className="text-white font-medium">{question.questionText}</p>
+                    <span className="text-slate-700 text-sm">שאלה {index + 1}</span>
+                    <p className="text-slate-800 font-medium">{question.questionText}</p>
                   </div>
                 </div>
 
@@ -270,7 +270,7 @@ export default function TakeExamPage({ params }: { params: Promise<{ id: string 
         <div className="flex gap-3">
           <button
             onClick={() => router.push("/exams")}
-            className="flex-1 py-3 border border-sky-300 text-white rounded-xl font-medium hover:bg-sky-50 transition-colors"
+            className="flex-1 py-3 border border-sky-300 text-slate-800 rounded-xl font-medium hover:bg-sky-50 transition-colors"
           >
             חזרה לרשימה
           </button>
@@ -300,7 +300,7 @@ export default function TakeExamPage({ params }: { params: Promise<{ id: string 
             <ChevronRight className="w-5 h-5 text-slate-600" />
           </button>
           <div>
-            <h1 className="text-xl font-bold text-white">{exam.title}</h1>
+            <h1 className="text-xl font-bold text-slate-800">{exam.title}</h1>
             <p className="text-sm text-slate-600">
               {answeredCount} / {totalQuestions} תשובות
             </p>
@@ -331,7 +331,7 @@ export default function TakeExamPage({ params }: { params: Promise<{ id: string 
                 ? "bg-gold text-slate-900"
                 : answers[q.id]
                 ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-                : "bg-sky-100 text-slate-600 hover:bg-sky-200"
+                : "bg-sky-100 text-slate-800 hover:bg-sky-200"
             }`}
           >
             {index + 1}
@@ -343,7 +343,7 @@ export default function TakeExamPage({ params }: { params: Promise<{ id: string 
       <div className="bg-sky-50 border border-sky-200 rounded-2xl p-5">
         <div className="mb-4">
           <span className="text-gold text-sm font-medium">שאלה {currentQuestionIndex + 1} מתוך {totalQuestions}</span>
-          <h2 className="text-lg font-bold text-white mt-2">{currentQuestion.questionText}</h2>
+          <h2 className="text-lg font-bold text-slate-800 mt-2">{currentQuestion.questionText}</h2>
         </div>
 
         <div className="space-y-3">
@@ -358,7 +358,7 @@ export default function TakeExamPage({ params }: { params: Promise<{ id: string 
               onClick={() => handleAnswerSelect(currentQuestion.id, option.key)}
               className={`w-full p-4 rounded-xl text-right transition-all ${
                 answers[currentQuestion.id] === option.key
-                  ? "bg-gold/20 border-2 border-gold text-white"
+                  ? "bg-gold/20 border-2 border-gold text-slate-800"
                   : "bg-sky-50 border border-sky-200 text-slate-700 hover:bg-sky-100 hover:border-sky-300"
               }`}
             >
@@ -374,7 +374,7 @@ export default function TakeExamPage({ params }: { params: Promise<{ id: string 
         <button
           onClick={() => setCurrentQuestionIndex(Math.max(0, currentQuestionIndex - 1))}
           disabled={currentQuestionIndex === 0}
-          className="flex-1 py-3 border border-sky-300 text-white rounded-xl font-medium hover:bg-sky-50 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+          className="flex-1 py-3 border border-sky-300 text-slate-800 rounded-xl font-medium hover:bg-sky-50 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
         >
           הקודם
         </button>
@@ -382,7 +382,7 @@ export default function TakeExamPage({ params }: { params: Promise<{ id: string 
         {currentQuestionIndex < totalQuestions - 1 ? (
           <button
             onClick={() => setCurrentQuestionIndex(currentQuestionIndex + 1)}
-            className="flex-1 py-3 bg-sky-100 text-white rounded-xl font-medium hover:bg-sky-200 transition-colors"
+            className="flex-1 py-3 bg-sky-100 text-slate-800 rounded-xl font-medium hover:bg-sky-200 transition-colors"
           >
             הבא
           </button>

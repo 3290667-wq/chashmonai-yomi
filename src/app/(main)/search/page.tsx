@@ -123,14 +123,14 @@ export default function SearchPage() {
 
       {/* Search Input */}
       <div className="relative">
-        <Search className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+        <Search className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-600" />
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="הקלד לחיפוש..."
           autoFocus
-          className="w-full pr-12 pl-12 py-4 bg-white border border-sky-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gold/50 text-slate-800 placeholder:text-slate-400 text-lg"
+          className="w-full pr-12 pl-12 py-4 bg-white border border-sky-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gold/50 text-slate-800 placeholder:text-slate-600 text-lg"
         />
         {query && (
           <button
@@ -154,7 +154,7 @@ export default function SearchPage() {
               className={`flex items-center gap-2 px-4 py-2 rounded-xl whitespace-nowrap transition-colors ${
                 isSelected
                   ? "bg-gold text-slate-900"
-                  : "bg-white border border-sky-200 text-slate-600 hover:bg-sky-50"
+                  : "bg-white border border-sky-200 text-slate-800 hover:bg-sky-50"
               }`}
             >
               <Icon className="w-4 h-4" />
@@ -210,11 +210,11 @@ export default function SearchPage() {
                             {result.description}
                           </p>
                         )}
-                        <p className="text-xs text-slate-400 mt-2">
+                        <p className="text-xs text-slate-600 mt-2">
                           {new Date(result.createdAt).toLocaleDateString("he-IL")}
                         </p>
                       </div>
-                      <ChevronRight className="w-5 h-5 text-slate-400 rotate-180 flex-shrink-0" />
+                      <ChevronRight className="w-5 h-5 text-slate-600 rotate-180 flex-shrink-0" />
                     </div>
                   </button>
                 );

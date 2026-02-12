@@ -187,7 +187,7 @@ export default function ZmanimPage() {
 
         {LOCATION_CATEGORIES.map((category) => (
           <div key={category.name}>
-            <p className="text-xs text-slate-500 font-medium mb-2">{category.name}</p>
+            <p className="text-xs text-slate-700 font-medium mb-2">{category.name}</p>
             <div className="flex flex-wrap gap-2">
               {category.locations.map((location) => (
                 <button
@@ -222,7 +222,7 @@ export default function ZmanimPage() {
           {loading ? (
             <div className="py-12 flex flex-col items-center justify-center gap-4">
               <div className="w-12 h-12 border-4 border-gold/30 border-t-gold rounded-full animate-spin" />
-              <p className="text-slate-500">טוען זמנים...</p>
+              <p className="text-slate-700">טוען זמנים...</p>
             </div>
           ) : zmanim ? (
             <div className="space-y-2">
@@ -248,7 +248,7 @@ export default function ZmanimPage() {
                         <Icon className="w-5 h-5 text-white" />
                       </div>
                       <div>
-                        <span className={`font-medium ${passed ? "text-slate-500" : "text-slate-800"}`}>
+                        <span className={`font-medium ${passed ? "text-slate-700" : "text-slate-800"}`}>
                           {item.label}
                         </span>
                         {isNext && (
@@ -265,7 +265,7 @@ export default function ZmanimPage() {
                       <span
                         className={`font-mono text-lg font-bold ${
                           passed
-                            ? "text-slate-400 line-through"
+                            ? "text-slate-600 line-through"
                             : isNext
                               ? "text-gold-dark"
                               : "text-slate-800"
@@ -281,7 +281,7 @@ export default function ZmanimPage() {
           ) : (
             <div className="text-center py-12">
               <Sun className="w-16 h-16 text-slate-300 mx-auto mb-3" />
-              <p className="text-slate-500">לא ניתן לטעון את הזמנים</p>
+              <p className="text-slate-700">לא ניתן לטעון את הזמנים</p>
             </div>
           )}
         </div>
