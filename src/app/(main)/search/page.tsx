@@ -116,7 +116,7 @@ export default function SearchPage() {
           <ChevronRight className="w-5 h-5 text-slate-600" />
         </button>
         <div>
-          <h1 className="text-2xl font-bold text-white">חיפוש</h1>
+          <h1 className="text-2xl font-bold text-slate-800">חיפוש</h1>
           <p className="text-sm text-slate-600">חפש תכנים באתר</p>
         </div>
       </div>
@@ -130,7 +130,7 @@ export default function SearchPage() {
           onChange={(e) => setQuery(e.target.value)}
           placeholder="הקלד לחיפוש..."
           autoFocus
-          className="w-full pr-12 pl-12 py-4 bg-white border border-sky-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gold/50 text-white placeholder:text-slate-400 text-lg"
+          className="w-full pr-12 pl-12 py-4 bg-white border border-sky-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gold/50 text-slate-800 placeholder:text-slate-400 text-lg"
         />
         {query && (
           <button
@@ -154,7 +154,7 @@ export default function SearchPage() {
               className={`flex items-center gap-2 px-4 py-2 rounded-xl whitespace-nowrap transition-colors ${
                 isSelected
                   ? "bg-gold text-slate-900"
-                  : "bg-white border border-sky-200 text-white hover:bg-[#4a3825]"
+                  : "bg-white border border-sky-200 text-slate-600 hover:bg-sky-50"
               }`}
             >
               <Icon className="w-4 h-4" />
@@ -173,8 +173,8 @@ export default function SearchPage() {
           </div>
         ) : searched && results.length === 0 ? (
           <div className="py-12 text-center">
-            <Search className="w-16 h-16 text-white/20 mx-auto mb-4" />
-            <h3 className="font-bold text-white text-lg mb-2">לא נמצאו תוצאות</h3>
+            <Search className="w-16 h-16 text-slate-300 mx-auto mb-4" />
+            <h3 className="font-bold text-slate-800 text-lg mb-2">לא נמצאו תוצאות</h3>
             <p className="text-slate-600">
               נסה לחפש עם מילות מפתח אחרות
             </p>
@@ -192,7 +192,7 @@ export default function SearchPage() {
                   <button
                     key={result.id}
                     onClick={() => router.push(getContentUrl(result))}
-                    className="w-full bg-white rounded-2xl border border-sky-200 p-4 text-right hover:bg-[#4a3825] transition-colors"
+                    className="w-full bg-white rounded-2xl border border-sky-200 p-4 text-right hover:bg-sky-50 transition-colors"
                   >
                     <div className="flex items-start gap-3">
                       <div className="w-12 h-12 bg-gradient-to-br from-gold to-gold-dark rounded-xl flex items-center justify-center flex-shrink-0">
@@ -200,7 +200,7 @@ export default function SearchPage() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <h3 className="font-bold text-white">{result.title}</h3>
+                          <h3 className="font-bold text-slate-800">{result.title}</h3>
                           <span className="px-2 py-0.5 bg-gold/20 text-gold rounded-full text-xs">
                             {typeInfo.label}
                           </span>
@@ -223,8 +223,8 @@ export default function SearchPage() {
           </>
         ) : (
           <div className="py-12 text-center">
-            <Search className="w-16 h-16 text-white/20 mx-auto mb-4" />
-            <h3 className="font-bold text-white text-lg mb-2">חפש תכנים</h3>
+            <Search className="w-16 h-16 text-slate-300 mx-auto mb-4" />
+            <h3 className="font-bold text-slate-800 text-lg mb-2">חפש תכנים</h3>
             <p className="text-slate-600">
               הקלד לפחות 2 תווים כדי להתחיל לחפש
             </p>

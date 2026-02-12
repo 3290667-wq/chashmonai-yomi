@@ -199,7 +199,7 @@ export default function BoostPage() {
         <div className="flex flex-wrap items-center gap-3 animate-fade-in">
           <div className="flex items-center gap-3 px-4 py-3 bg-white border border-sky-200 rounded-xl">
             <Clock className="w-5 h-5 text-gold" />
-            <span className="font-mono text-lg font-bold text-white">{formattedDuration}</span>
+            <span className="font-mono text-lg font-bold text-slate-800">{formattedDuration}</span>
             <div
               className={`w-2.5 h-2.5 rounded-full ${
                 isEngaged ? "bg-emerald-400 animate-pulse" : "bg-white/30"
@@ -209,7 +209,7 @@ export default function BoostPage() {
 
           <div className="flex items-center gap-3 px-4 py-3 bg-gold/10 border border-gold/30 rounded-xl">
             <Award className="w-5 h-5 text-gold" />
-            <span className="font-bold text-lg text-white">+{estimatedPoints}</span>
+            <span className="font-bold text-lg text-slate-800">+{estimatedPoints}</span>
             <span className="text-slate-500 text-sm">נקודות</span>
           </div>
         </div>
@@ -268,7 +268,7 @@ export default function BoostPage() {
 
                   {/* Info */}
                   <div className="p-5">
-                    <h3 className="font-bold text-white text-lg line-clamp-2 mb-2 group-hover:text-gold transition-colors">
+                    <h3 className="font-bold text-slate-800 text-lg line-clamp-2 mb-2 group-hover:text-gold-dark transition-colors">
                       {video.title}
                     </h3>
                     {video.description && (
@@ -293,7 +293,7 @@ export default function BoostPage() {
           <div className="w-20 h-20 mx-auto mb-6 bg-gold/10 rounded-full flex items-center justify-center">
             <Video className="w-10 h-10 text-gold/50" />
           </div>
-          <h3 className="font-bold text-white text-xl mb-3">אין סרטונים עדיין</h3>
+          <h3 className="font-bold text-slate-800 text-xl mb-3">אין סרטונים עדיין</h3>
           <p className="text-slate-500 mb-6 max-w-md mx-auto">
             עדיין לא הועלו סרטונים. חזור מאוחר יותר או עבור ללימוד היומי.
           </p>
@@ -317,7 +317,7 @@ export default function BoostPage() {
                   <Video className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h2 className="font-bold text-white text-lg">{selectedVideo.title}</h2>
+                  <h2 className="font-bold text-slate-800 text-lg">{selectedVideo.title}</h2>
                   {selectedVideo.description && (
                     <p className="text-slate-500 text-sm line-clamp-1">{selectedVideo.description}</p>
                   )}
@@ -382,7 +382,7 @@ export default function BoostPage() {
                   href={selectedVideo.videoUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 w-full py-3 bg-sky-50 border border-sky-200 hover:border-gold/30 text-white rounded-xl font-medium transition-all"
+                  className="flex items-center justify-center gap-2 w-full py-3 bg-sky-50 border border-sky-200 hover:border-gold/30 text-slate-700 rounded-xl font-medium transition-all"
                 >
                   <Play className="w-4 h-4" />
                   פתח בחלון חדש
@@ -395,7 +395,7 @@ export default function BoostPage() {
 
       {/* Bottom Motivation */}
       <div className="bg-white border border-sky-200 rounded-xl p-6 text-center">
-        <p className="text-white font-bold text-lg">
+        <p className="text-slate-800 font-bold text-lg">
           &ldquo;חזק ואמץ - לעלות ולהתעלות&rdquo;
         </p>
         <p className="text-gold text-sm mt-2 font-medium">רוח חשמונאית</p>

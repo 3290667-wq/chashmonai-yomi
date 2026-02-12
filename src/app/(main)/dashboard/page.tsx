@@ -14,6 +14,15 @@ import {
   Shield,
   Trophy,
 } from "lucide-react";
+import {
+  HeroAnimation,
+  QuickLinksAnimation,
+  QuickLinkItem,
+  StatsAnimation,
+  StatItem,
+  SectionAnimation,
+  MotivationAnimation
+} from "./animations";
 
 export default async function DashboardPage() {
   const session = await auth();
@@ -77,7 +86,8 @@ export default async function DashboardPage() {
   return (
     <div className="relative min-h-screen py-6 sm:py-8 space-y-6">
       {/* Hero Section - Artlist Style */}
-      <div className="relative rounded-2xl overflow-hidden bg-white border border-sky-200">
+      <HeroAnimation>
+      <div className="relative rounded-2xl overflow-hidden bg-white border border-sky-200 card-interactive">
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
@@ -86,8 +96,8 @@ export default async function DashboardPage() {
             fill
             className="object-cover opacity-50"
           />
-          <div className="absolute inset-0 bg-gradient-to-l from-[#1a140f] via-[#1a140f]/80 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#1a140f] via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-l from-white via-white/80 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
         </div>
 
         {/* Content */}
@@ -132,19 +142,20 @@ export default async function DashboardPage() {
         {/* Gold Bottom Line */}
         <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-gold to-transparent" />
       </div>
+      </HeroAnimation>
 
       {/* Quick Links Grid - Artlist Academy Style */}
+      <QuickLinksAnimation>
       <div className="grid grid-cols-2 gap-4">
         {quickLinks.map((link, index) => {
           const Icon = link.icon;
           return (
+            <QuickLinkItem key={link.href}>
             <Link
-              key={link.href}
               href={link.href}
-              className="group animate-fade-in-up"
-              style={{ animationDelay: `${index * 50}ms` }}
+              className="group block h-full"
             >
-              <div className="relative bg-white border border-sky-200 rounded-xl overflow-hidden h-full transition-all duration-300 hover:border-white/20 hover:translate-y-[-4px] hover:shadow-xl">
+              <div className="relative bg-white border border-sky-200 rounded-xl overflow-hidden h-full transition-all duration-300 hover:border-gold/30 card-hover-lift shine-effect">
                 {/* Background Image */}
                 <div className="absolute inset-0">
                   <Image
@@ -153,7 +164,7 @@ export default async function DashboardPage() {
                     fill
                     className="object-cover opacity-30 group-hover:opacity-40 transition-opacity"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#1a140f] via-[#1a140f]/60 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent" />
                 </div>
 
                 {/* Content */}
@@ -164,8 +175,8 @@ export default async function DashboardPage() {
                   </div>
 
                   {/* Text */}
-                  <h3 className="font-bold text-slate-800 text-lg mb-1">{link.title}</h3>
-                  <p className="text-slate-800/50 text-sm">{link.description}</p>
+                  <h3 className="font-bold text-white text-lg mb-1">{link.title}</h3>
+                  <p className="text-white/70 text-sm">{link.description}</p>
 
                   {/* Arrow */}
                   <div className="absolute bottom-5 left-5 opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all">
@@ -174,12 +185,15 @@ export default async function DashboardPage() {
                 </div>
               </div>
             </Link>
+            </QuickLinkItem>
           );
         })}
       </div>
+      </QuickLinksAnimation>
 
       {/* Stats Section */}
-      <div className="bg-white border border-sky-200 rounded-2xl p-6">
+      <StatsAnimation>
+      <div className="bg-white border border-sky-200 rounded-2xl p-6 liquid-glass">
         <div className="flex items-center gap-4 mb-6">
           <div className="w-12 h-12 bg-gradient-to-br from-gold to-gold-dark rounded-xl flex items-center justify-center shadow-lg">
             <TrendingUp className="w-6 h-6 text-slate-800" />
@@ -194,23 +208,26 @@ export default async function DashboardPage() {
           {stats.map((stat, index) => {
             const Icon = stat.icon;
             return (
+              <StatItem key={index} index={index}>
               <div
-                key={index}
-                className="bg-[#251c14] border border-white/5 rounded-xl p-4 text-center hover:border-sky-200 transition-all"
+                className="bg-sky-50 border border-sky-200 rounded-xl p-4 text-center hover:border-gold/30 transition-all shadow-sm card-tilt"
               >
-                <div className={`w-10 h-10 mx-auto mb-3 rounded-lg flex items-center justify-center bg-sky-50 ${stat.color}`}>
+                <div className={`w-10 h-10 mx-auto mb-3 rounded-lg flex items-center justify-center bg-sky-50 ${stat.color} icon-pop`}>
                   <Icon className="w-5 h-5" />
                 </div>
                 <p className="text-2xl font-bold text-slate-800">{stat.value}</p>
                 <p className="text-slate-800/40 text-sm">{stat.label}</p>
               </div>
+              </StatItem>
             );
           })}
         </div>
       </div>
+      </StatsAnimation>
 
       {/* Daily Learning Preview */}
-      <div className="bg-white border border-sky-200 rounded-2xl overflow-hidden">
+      <SectionAnimation delay={0.3}>
+      <div className="bg-white border border-sky-200 rounded-2xl overflow-hidden liquid-glass">
         <div className="flex items-center justify-between p-6 border-b border-sky-200">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 bg-gradient-to-br from-gold to-gold-dark rounded-xl flex items-center justify-center shadow-lg">
@@ -233,7 +250,7 @@ export default async function DashboardPage() {
         <div className="p-6 grid sm:grid-cols-2 gap-4">
           {/* Mishna Card */}
           <Link href="/daily" className="block group">
-            <div className="bg-[#251c14] border border-white/5 rounded-xl p-5 hover:border-gold/30 transition-all">
+            <div className="bg-sky-50 border border-sky-200 rounded-xl p-5 hover:border-gold/30 transition-all shadow-sm card-hover-lift shine-effect">
               <div className="flex items-center gap-4 mb-4">
                 <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-amber-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
                   <BookOpen className="w-6 h-6 text-slate-800" />
@@ -252,7 +269,7 @@ export default async function DashboardPage() {
 
           {/* Rambam Card */}
           <Link href="/daily" className="block group">
-            <div className="bg-[#251c14] border border-white/5 rounded-xl p-5 hover:border-violet-500/30 transition-all">
+            <div className="bg-sky-50 border border-sky-200 rounded-xl p-5 hover:border-violet-500/30 transition-all shadow-sm card-hover-lift shine-effect">
               <div className="flex items-center gap-4 mb-4">
                 <div className="w-12 h-12 bg-gradient-to-br from-violet-400 to-violet-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
                   <BookOpen className="w-6 h-6 text-slate-800" />
@@ -270,13 +287,15 @@ export default async function DashboardPage() {
           </Link>
         </div>
       </div>
+      </SectionAnimation>
 
       {/* Motivation Card */}
-      <div className="relative rounded-2xl overflow-hidden">
+      <MotivationAnimation>
+      <div className="relative rounded-2xl overflow-hidden glow-gold">
         {/* Background */}
         <div className="absolute inset-0">
           <Image src="/bbbb.png" alt="" fill className="object-cover opacity-40" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#1a140f] via-[#1a140f]/90 to-[#1a140f]/70" />
+          <div className="absolute inset-0 bg-gradient-to-t from-white via-white/90 to-white/70" />
         </div>
 
         {/* Content */}
@@ -284,14 +303,15 @@ export default async function DashboardPage() {
           <p className="text-slate-800 font-bold text-2xl sm:text-3xl font-hebrew leading-relaxed">
             &ldquo;לעלות ולהתעלות&rdquo;
           </p>
-          <p className="text-gold mt-2 text-lg font-semibold">למען שמו באהבה</p>
+          <p className="text-gradient-animated mt-2 text-lg font-semibold">למען שמו באהבה</p>
           <div className="h-px w-32 mx-auto my-6 bg-gradient-to-r from-transparent via-gold to-transparent" />
           <p className="text-slate-800/60 font-medium flex items-center justify-center gap-2">
-            <Shield className="w-4 h-4 text-gold" />
+            <Shield className="w-4 h-4 text-gold icon-pop" />
             רוח חשמונאית
           </p>
         </div>
       </div>
+      </MotivationAnimation>
     </div>
   );
 }

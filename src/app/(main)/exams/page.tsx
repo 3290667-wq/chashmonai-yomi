@@ -63,15 +63,15 @@ export default function ExamsPage() {
     <div className="py-4 sm:py-6 space-y-5">
       {/* Header */}
       <div className="flex items-center gap-2">
-        <button onClick={() => router.back()} className="p-2 hover:bg-white/5 rounded-lg">
-          <ChevronRight className="w-5 h-5 text-white/60" />
+        <button onClick={() => router.back()} className="p-2 hover:bg-sky-50 rounded-lg">
+          <ChevronRight className="w-5 h-5 text-slate-500" />
         </button>
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
             <ClipboardList className="w-7 h-7 text-gold" />
             מבחנים
           </h1>
-          <p className="text-sm text-white/60">
+          <p className="text-sm text-slate-500">
             בחנו את עצמכם וצברו נקודות
           </p>
         </div>
@@ -81,13 +81,13 @@ export default function ExamsPage() {
       {loading ? (
         <div className="py-12 flex flex-col items-center justify-center gap-4">
           <div className="w-12 h-12 border-4 border-gold/30 border-t-gold rounded-full animate-spin" />
-          <p className="text-white/50">טוען מבחנים...</p>
+          <p className="text-slate-500">טוען מבחנים...</p>
         </div>
       ) : exams.length === 0 ? (
         <div className="py-12 text-center">
-          <ClipboardList className="w-16 h-16 text-white/20 mx-auto mb-3" />
-          <p className="text-white/50 mb-2">עדיין אין מבחנים זמינים</p>
-          <p className="text-white/40 text-sm">מבחנים חדשים יפורסמו בקרוב</p>
+          <ClipboardList className="w-16 h-16 text-slate-300 mx-auto mb-3" />
+          <p className="text-slate-500 mb-2">עדיין אין מבחנים זמינים</p>
+          <p className="text-slate-400 text-sm">מבחנים חדשים יפורסמו בקרוב</p>
         </div>
       ) : (
         <div className="grid gap-4">
@@ -99,12 +99,12 @@ export default function ExamsPage() {
               <Link
                 key={exam.id}
                 href={`/exams/${exam.id}`}
-                className={`block bg-[#1e1e1e] border rounded-2xl p-5 transition-all hover:scale-[1.01] ${
+                className={`block bg-white border rounded-2xl p-5 transition-all hover:scale-[1.01] ${
                   isPerfect
                     ? "border-gold/30 bg-gradient-to-br from-gold/5 to-transparent"
                     : isCompleted
                     ? "border-emerald-500/30"
-                    : "border-white/10 hover:border-gold/30"
+                    : "border-sky-200 hover:border-gold/30"
                 }`}
               >
                 <div className="flex items-start gap-4">
@@ -127,16 +127,16 @@ export default function ExamsPage() {
 
                   {/* Content */}
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-bold text-white text-lg">{exam.title}</h3>
+                    <h3 className="font-bold text-slate-800 text-lg">{exam.title}</h3>
                     {exam.description && (
-                      <p className="text-white/60 text-sm mt-1 line-clamp-2">
+                      <p className="text-slate-600 text-sm mt-1 line-clamp-2">
                         {exam.description}
                       </p>
                     )}
 
                     <div className="flex items-center gap-4 mt-3 flex-wrap">
                       {/* Questions count */}
-                      <span className="flex items-center gap-1 text-sm text-white/50">
+                      <span className="flex items-center gap-1 text-sm text-slate-500">
                         <AlertCircle className="w-4 h-4" />
                         {exam.questionsCount} שאלות
                       </span>
@@ -155,7 +155,7 @@ export default function ExamsPage() {
                           <Award className="w-4 h-4" />
                           {exam.userAttempt!.score}/{exam.userAttempt!.totalQuestions}
                           {exam.userAttempt!.attemptCount > 1 && (
-                            <span className="text-white/40 mr-1">
+                            <span className="text-slate-400 mr-1">
                               ({exam.userAttempt!.attemptCount} ניסיונות)
                             </span>
                           )}
@@ -165,13 +165,13 @@ export default function ExamsPage() {
                   </div>
 
                   {/* Arrow */}
-                  <ChevronRight className="w-5 h-5 text-white/30 flex-shrink-0 rotate-180" />
+                  <ChevronRight className="w-5 h-5 text-slate-400 flex-shrink-0 rotate-180" />
                 </div>
 
                 {/* Bottom info for completed exams */}
                 {isCompleted && (
-                  <div className="mt-4 pt-4 border-t border-white/10 flex items-center justify-between">
-                    <span className="text-white/40 text-sm flex items-center gap-1">
+                  <div className="mt-4 pt-4 border-t border-sky-200 flex items-center justify-between">
+                    <span className="text-slate-500 text-sm flex items-center gap-1">
                       <Clock className="w-4 h-4" />
                       הושלם ב-{new Date(exam.userAttempt!.completedAt).toLocaleDateString("he-IL")}
                     </span>

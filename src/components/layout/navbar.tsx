@@ -96,14 +96,14 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
             <div className={`p-2 rounded-lg transition-all ${
               pathname === "/search"
                 ? "bg-gold text-slate-900"
-                : "bg-sky-50 text-slate-600 group-hover:bg-white/10 group-hover:text-slate-800"
+                : "bg-sky-50 text-slate-600 group-hover:bg-sky-200 group-hover:text-slate-800"
             }`}>
               <Search className="w-4 h-4" />
             </div>
             <span className="font-medium">חיפוש</span>
           </Link>
 
-          <div className="h-px bg-white/10 my-4" />
+          <div className="h-px bg-sky-200 my-4" />
 
           {navItems.map((item) => {
             const Icon = item.icon;
@@ -122,7 +122,7 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
                 <div className={`p-2 rounded-lg transition-all ${
                   isActive
                     ? "bg-gold text-slate-900"
-                    : "bg-sky-50 text-slate-600 group-hover:bg-white/10 group-hover:text-slate-800"
+                    : "bg-sky-50 text-slate-600 group-hover:bg-sky-200 group-hover:text-slate-800"
                 }`}>
                   <Icon className="w-4 h-4" />
                 </div>
@@ -138,7 +138,7 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
           })}
 
                     {/* Tutorial Link */}
-          <div className="h-px bg-white/10 my-4" />
+          <div className="h-px bg-sky-200 my-4" />
           <Link
             href="/tutorial"
             className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
@@ -150,7 +150,7 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
             <div className={`p-2 rounded-lg transition-all ${
               pathname === "/tutorial"
                 ? "bg-gold text-slate-900"
-                : "bg-sky-50 text-slate-600 group-hover:bg-white/10 group-hover:text-slate-800"
+                : "bg-sky-50 text-slate-600 group-hover:bg-sky-200 group-hover:text-slate-800"
             }`}>
               <HelpCircle className="w-4 h-4" />
             </div>
@@ -176,7 +176,7 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
                 <div className={`p-2 rounded-lg transition-all ${
                   pathname.startsWith("/admin")
                     ? "bg-gold text-slate-900"
-                    : "bg-sky-50 text-slate-600 group-hover:bg-white/10 group-hover:text-slate-800"
+                    : "bg-sky-50 text-slate-600 group-hover:bg-sky-200 group-hover:text-slate-800"
                 }`}>
                   <Settings className="w-4 h-4" />
                 </div>
@@ -288,7 +288,7 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
               <span className="font-medium text-lg">חיפוש</span>
             </Link>
 
-            <div className="h-px bg-white/10 my-3" />
+            <div className="h-px bg-sky-200 my-3" />
 
             {navItems.map((item) => {
               const Icon = item.icon;
@@ -324,7 +324,7 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
             })}
 
                         {/* Tutorial Link - Mobile */}
-            <div className="h-px bg-white/10 my-3" />
+            <div className="h-px bg-sky-200 my-3" />
             <Link
               href="/tutorial"
               onClick={() => setIsOpen(false)}
@@ -346,7 +346,7 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
 
             {(isAdmin || isRam) && (
               <>
-                <div className="h-px bg-white/10 my-3" />
+                <div className="h-px bg-sky-200 my-3" />
                 <Link
                   href="/admin"
                   onClick={() => setIsOpen(false)}
@@ -368,7 +368,7 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
               </>
             )}
 
-            <div className="h-px bg-white/10 my-3" />
+            <div className="h-px bg-sky-200 my-3" />
 
             <button
               onClick={() => {

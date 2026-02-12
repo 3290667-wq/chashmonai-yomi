@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useEngagement } from "@/hooks/use-engagement";
 import { BookOpen, ChevronDown, ChevronUp, CheckCircle2, Sparkles, Heart, Video, Loader2, Award } from "lucide-react";
 
@@ -160,7 +161,12 @@ export default function DailyPage() {
     <div className="relative py-6 space-y-6">
 
       {/* Header */}
-      <div className="relative bg-white border border-sky-200 rounded-2xl overflow-hidden">
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="relative bg-white border border-sky-200 rounded-2xl overflow-hidden liquid-glass"
+      >
         {/* Gold top line */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-gold to-transparent" />
 
@@ -170,17 +176,27 @@ export default function DailyPage() {
               <BookOpen className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-white">לימוד יומי</h1>
+              <h1 className="text-2xl font-bold text-slate-800">לימוד יומי</h1>
               <p className="text-slate-500 text-sm">משנה יומית ורמב״ם - לעלות ולהתעלות</p>
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Learning Sections */}
-      <div className="space-y-4">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="space-y-4"
+      >
         {/* Mishnah Section */}
-        <div className="bg-white border border-sky-200 rounded-xl overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+          className="bg-white border border-sky-200 rounded-xl overflow-hidden card-interactive shine-effect"
+        >
           <button
             onClick={() => toggleSection("mishnah")}
             className="w-full text-right p-5 flex items-center justify-between hover:bg-sky-50 transition-colors"
@@ -190,7 +206,7 @@ export default function DailyPage() {
                 <BookOpen className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h2 className="font-bold text-white text-lg">משנה יומית</h2>
+                <h2 className="font-bold text-slate-800 text-lg">משנה יומית</h2>
                 {content?.mishnah && (
                   <p className="text-sm text-slate-500 mt-0.5">{content.mishnah.heRef}</p>
                 )}
@@ -205,10 +221,18 @@ export default function DailyPage() {
             </div>
           </button>
 
+          <AnimatePresence>
           {expandedSection === "mishnah" && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="overflow-hidden"
+            >
             <div className="px-5 pb-5 border-t border-sky-200">
               {content?.mishnah ? (
-                <div className="pt-5 text-lg text-white/90 leading-[2] space-y-4">
+                <div className="pt-5 text-lg text-slate-800 leading-[2] space-y-4">
                   {content.mishnah.text.map((paragraph, i) => (
                     <p key={i} className="relative pr-8">
                       <span className="absolute right-0 top-0 text-gold font-bold text-sm">
@@ -222,11 +246,18 @@ export default function DailyPage() {
                 <p className="text-slate-500 py-4">לא נמצא לימוד להיום</p>
               )}
             </div>
+            </motion.div>
           )}
-        </div>
+          </AnimatePresence>
+        </motion.div>
 
         {/* Rambam Section */}
-        <div className="bg-white border border-sky-200 rounded-xl overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.4, delay: 0.2 }}
+          className="bg-white border border-sky-200 rounded-xl overflow-hidden card-interactive shine-effect"
+        >
           <button
             onClick={() => toggleSection("rambam")}
             className="w-full text-right p-5 flex items-center justify-between hover:bg-sky-50 transition-colors"
@@ -236,7 +267,7 @@ export default function DailyPage() {
                 <BookOpen className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h2 className="font-bold text-white text-lg">רמב״ם יומי</h2>
+                <h2 className="font-bold text-slate-800 text-lg">רמב״ם יומי</h2>
                 {content?.rambam && (
                   <p className="text-sm text-slate-500 mt-0.5">{content.rambam.heRef}</p>
                 )}
@@ -251,10 +282,18 @@ export default function DailyPage() {
             </div>
           </button>
 
+          <AnimatePresence>
           {expandedSection === "rambam" && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="overflow-hidden"
+            >
             <div className="px-5 pb-5 border-t border-sky-200">
               {content?.rambam ? (
-                <div className="pt-5 text-lg text-white/90 leading-[2] space-y-4">
+                <div className="pt-5 text-lg text-slate-800 leading-[2] space-y-4">
                   {content.rambam.text.map((paragraph, i) => (
                     <p key={i} className="relative pr-8">
                       <span className="absolute right-0 top-0 text-violet-400 font-bold text-sm">
@@ -268,12 +307,19 @@ export default function DailyPage() {
                 <p className="text-slate-500 py-4">לא נמצא לימוד להיום</p>
               )}
             </div>
+            </motion.div>
           )}
-        </div>
+          </AnimatePresence>
+        </motion.div>
 
         {/* Daily Video Section */}
         {content?.dailyVideo && (
-          <div className="bg-white border border-sky-200 rounded-xl overflow-hidden">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.4, delay: 0.3 }}
+            className="bg-white border border-sky-200 rounded-xl overflow-hidden card-interactive shine-effect"
+          >
             <button
               onClick={() => toggleSection("video")}
               className="w-full text-right p-5 flex items-center justify-between hover:bg-sky-50 transition-colors"
@@ -283,7 +329,7 @@ export default function DailyPage() {
                   <Video className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h2 className="font-bold text-white text-lg">סרטון חיזוק יומי</h2>
+                  <h2 className="font-bold text-slate-800 text-lg">סרטון חיזוק יומי</h2>
                   <p className="text-sm text-slate-500 mt-0.5">{content.dailyVideo.title}</p>
                 </div>
               </div>
@@ -296,7 +342,15 @@ export default function DailyPage() {
               </div>
             </button>
 
+            <AnimatePresence>
             {expandedSection === "video" && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="overflow-hidden"
+              >
               <div className="px-5 pb-5 border-t border-sky-200">
                 <div className="pt-5">
                   {content.dailyVideo.description && (
@@ -334,12 +388,19 @@ export default function DailyPage() {
                   )}
                 </div>
               </div>
+              </motion.div>
             )}
-          </div>
+            </AnimatePresence>
+          </motion.div>
         )}
 
         {/* Chassidut Section */}
-        <div className="bg-white border border-sky-200 rounded-xl overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.4, delay: 0.4 }}
+          className="bg-white border border-sky-200 rounded-xl overflow-hidden card-interactive shine-effect"
+        >
           <button
             onClick={() => toggleSection("chassidut")}
             className="w-full text-right p-5 flex items-center justify-between hover:bg-sky-50 transition-colors"
@@ -349,7 +410,7 @@ export default function DailyPage() {
                 <Sparkles className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h2 className="font-bold text-white text-lg">חסידות יומית</h2>
+                <h2 className="font-bold text-slate-800 text-lg">חסידות יומית</h2>
                 {content?.chassidut && (
                   <p className="text-sm text-slate-500 mt-0.5">{content.chassidut.title}</p>
                 )}
@@ -364,14 +425,22 @@ export default function DailyPage() {
             </div>
           </button>
 
+          <AnimatePresence>
           {expandedSection === "chassidut" && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="overflow-hidden"
+            >
             <div className="px-5 pb-5 border-t border-sky-200">
               {content?.chassidut ? (
                 <div className="pt-5">
                   {content.chassidut.description && (
                     <p className="text-slate-600 text-sm mb-3">{content.chassidut.description}</p>
                   )}
-                  <div className="text-lg text-white/90 leading-[2] whitespace-pre-wrap">
+                  <div className="text-lg text-slate-800 leading-[2] whitespace-pre-wrap">
                     {content.chassidut.content}
                   </div>
                 </div>
@@ -382,11 +451,18 @@ export default function DailyPage() {
                 </div>
               )}
             </div>
+            </motion.div>
           )}
-        </div>
+          </AnimatePresence>
+        </motion.div>
 
         {/* Musar Section */}
-        <div className="bg-white border border-sky-200 rounded-xl overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.4, delay: 0.5 }}
+          className="bg-white border border-sky-200 rounded-xl overflow-hidden card-interactive shine-effect"
+        >
           <button
             onClick={() => toggleSection("musar")}
             className="w-full text-right p-5 flex items-center justify-between hover:bg-sky-50 transition-colors"
@@ -396,7 +472,7 @@ export default function DailyPage() {
                 <Heart className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h2 className="font-bold text-white text-lg">מוסר יומי</h2>
+                <h2 className="font-bold text-slate-800 text-lg">מוסר יומי</h2>
                 {content?.musar && (
                   <p className="text-sm text-slate-500 mt-0.5">{content.musar.title}</p>
                 )}
@@ -411,14 +487,22 @@ export default function DailyPage() {
             </div>
           </button>
 
+          <AnimatePresence>
           {expandedSection === "musar" && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="overflow-hidden"
+            >
             <div className="px-5 pb-5 border-t border-sky-200">
               {content?.musar ? (
                 <div className="pt-5">
                   {content.musar.description && (
                     <p className="text-slate-600 text-sm mb-3">{content.musar.description}</p>
                   )}
-                  <div className="text-lg text-white/90 leading-[2] whitespace-pre-wrap">
+                  <div className="text-lg text-slate-800 leading-[2] whitespace-pre-wrap">
                     {content.musar.content}
                   </div>
                 </div>
@@ -429,29 +513,48 @@ export default function DailyPage() {
                 </div>
               )}
             </div>
+            </motion.div>
           )}
-        </div>
-      </div>
+          </AnimatePresence>
+        </motion.div>
+      </motion.div>
 
       {/* Complete Button */}
-      <div className="pt-2">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.6 }}
+        className="pt-2"
+      >
         {completed ? (
-          <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-6 text-center">
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: "spring", duration: 0.5 }}
+            className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-6 text-center glow-gold"
+          >
             <CheckCircle2 className="w-12 h-12 text-emerald-400 mx-auto mb-2" />
-            <p className="font-bold text-white text-lg">כל הכבוד!</p>
+            <p className="font-bold text-slate-800 text-lg">כל הכבוד!</p>
             <p className="text-emerald-400 text-sm">סיימת את הלימוד היומי</p>
             {pointsEarned > 0 && (
-              <div className="mt-3 flex items-center justify-center gap-2 text-gold">
+              <motion.div
+                initial={{ y: 10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.3 }}
+                className="mt-3 flex items-center justify-center gap-2 text-gold"
+              >
                 <Award className="w-5 h-5" />
                 <span className="font-bold">+{pointsEarned} נקודות נוספו!</span>
-              </div>
+              </motion.div>
             )}
-          </div>
+          </motion.div>
         ) : (
-          <button
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             onClick={handleComplete}
             disabled={completing}
-            className="w-full py-4 bg-gradient-to-l from-gold to-gold-dark text-[#0a0a0a] rounded-xl font-bold text-lg shadow-lg shadow-gold/20 hover:shadow-xl hover:shadow-gold/30 transition-all active:scale-[0.98] disabled:opacity-70"
+            className="w-full py-4 bg-gradient-to-l from-gold to-gold-dark text-[#0a0a0a] rounded-xl font-bold text-lg shadow-lg shadow-gold/20 hover:shadow-xl hover:shadow-gold/30 transition-all disabled:opacity-70 btn-premium"
           >
             {completing ? (
               <span className="flex items-center justify-center gap-2">
@@ -464,16 +567,21 @@ export default function DailyPage() {
                 סיימתי את הלימוד היומי
               </span>
             )}
-          </button>
+          </motion.button>
         )}
-      </div>
+      </motion.div>
 
       {/* Daily tip */}
-      <div className="bg-gold/10 border border-gold/30 rounded-xl p-4 text-center">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.7 }}
+        className="bg-gold/10 border border-gold/30 rounded-xl p-4 text-center animate-float"
+      >
         <p className="text-slate-700 text-sm">
-          <span className="font-bold text-gold">טיפ:</span> לימוד קבוע בכל יום בונה רצף ומגדיל את הנקודות שלך!
+          <span className="font-bold text-gradient-animated">טיפ:</span> לימוד קבוע בכל יום בונה רצף ומגדיל את הנקודות שלך!
         </p>
-      </div>
+      </motion.div>
     </div>
   );
 }

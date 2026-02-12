@@ -211,7 +211,7 @@ export default function LoginPage() {
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder="שם מלא"
-                        className="w-full bg-sky-100 border border-sky-200 rounded-xl pr-12 pl-4 py-4 text-white placeholder:text-slate-400 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-all"
+                        className="w-full bg-sky-100 border border-sky-200 rounded-xl pr-12 pl-4 py-4 text-slate-800 placeholder:text-slate-400 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-all"
                       />
                     </div>
 
@@ -222,7 +222,7 @@ export default function LoginPage() {
                       <select
                         value={formData.platoon}
                         onChange={(e) => setFormData({ ...formData, platoon: e.target.value })}
-                        className="w-full bg-sky-100 border border-sky-200 rounded-xl pr-12 pl-10 py-4 text-white focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-all appearance-none cursor-pointer"
+                        className="w-full bg-sky-100 border border-sky-200 rounded-xl pr-12 pl-10 py-4 text-slate-800 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-all appearance-none cursor-pointer"
                       >
                         <option value="" className="bg-sky-100">בחר פלוגה</option>
                         {platoons.map((platoon) => (
@@ -247,7 +247,7 @@ export default function LoginPage() {
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     placeholder="אימייל"
                     required
-                    className="w-full bg-sky-100 border border-sky-200 rounded-xl pr-12 pl-4 py-4 text-white placeholder:text-slate-400 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-all"
+                    className="w-full bg-sky-100 border border-sky-200 rounded-xl pr-12 pl-4 py-4 text-slate-800 placeholder:text-slate-400 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-all"
                   />
                 </div>
 
@@ -260,7 +260,7 @@ export default function LoginPage() {
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                     placeholder="סיסמה"
                     required
-                    className="w-full bg-sky-100 border border-sky-200 rounded-xl pr-12 pl-12 py-4 text-white placeholder:text-slate-400 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-all"
+                    className="w-full bg-sky-100 border border-sky-200 rounded-xl pr-12 pl-12 py-4 text-slate-800 placeholder:text-slate-400 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-all"
                   />
                   <button
                     type="button"

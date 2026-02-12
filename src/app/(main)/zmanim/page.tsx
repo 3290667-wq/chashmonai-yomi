@@ -212,7 +212,7 @@ export default function ZmanimPage() {
         <div className="p-4 sm:p-5 border-b border-sky-200">
           <div className="flex items-center gap-2">
             <Sun className="w-5 h-5 text-amber-500" />
-            <h2 className="font-bold text-white text-lg">
+            <h2 className="font-bold text-slate-800 text-lg">
               זמני היום ל{selectedLocation.name}
             </h2>
           </div>
@@ -248,7 +248,7 @@ export default function ZmanimPage() {
                         <Icon className="w-5 h-5 text-white" />
                       </div>
                       <div>
-                        <span className={`font-medium ${passed ? "text-slate-500" : "text-white"}`}>
+                        <span className={`font-medium ${passed ? "text-slate-500" : "text-slate-800"}`}>
                           {item.label}
                         </span>
                         {isNext && (
@@ -267,8 +267,8 @@ export default function ZmanimPage() {
                           passed
                             ? "text-slate-400 line-through"
                             : isNext
-                              ? "text-gold"
-                              : "text-white"
+                              ? "text-gold-dark"
+                              : "text-slate-800"
                         }`}
                       >
                         {time}
@@ -280,7 +280,7 @@ export default function ZmanimPage() {
             </div>
           ) : (
             <div className="text-center py-12">
-              <Sun className="w-16 h-16 text-white/20 mx-auto mb-3" />
+              <Sun className="w-16 h-16 text-slate-300 mx-auto mb-3" />
               <p className="text-slate-500">לא ניתן לטעון את הזמנים</p>
             </div>
           )}
