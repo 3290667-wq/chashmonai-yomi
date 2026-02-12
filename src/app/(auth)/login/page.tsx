@@ -105,7 +105,7 @@ export default function LoginPage() {
       {/* Background Image - Left Side */}
       <div className="hidden lg:block lg:w-1/2 relative">
         <Image
-          src="/landscape-sunrise.png"
+          src="/bbba.png"
           alt=""
           fill
           className="object-cover"
@@ -145,7 +145,7 @@ export default function LoginPage() {
         {/* Mobile Background */}
         <div className="lg:hidden absolute inset-0">
           <Image
-            src="/landscape-sunrise.png"
+            src="/bbba.png"
             alt=""
             fill
             className="object-cover opacity-30"

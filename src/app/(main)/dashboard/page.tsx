@@ -81,7 +81,7 @@ export default async function DashboardPage() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
-            src="/landscape-hero.png"
+            src="/bbba.png"
             alt=""
             fill
             className="object-cover opacity-50"
@@ -275,7 +275,7 @@ export default async function DashboardPage() {
       <div className="relative rounded-2xl overflow-hidden">
         {/* Background */}
         <div className="absolute inset-0">
-          <Image src="/landscape-mountains.png" alt="" fill className="object-cover opacity-40" />
+          <Image src="/bbbb.png" alt="" fill className="object-cover opacity-40" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#1a140f] via-[#1a140f]/90 to-[#1a140f]/70" />
         </div>
 
