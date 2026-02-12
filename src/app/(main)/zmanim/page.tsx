@@ -144,20 +144,20 @@ export default function ZmanimPage() {
   return (
     <div className="py-4 sm:py-6 space-y-5">
       {/* Header */}
-      <div className="bg-gradient-to-l from-gold-dark to-gold rounded-2xl p-5 sm:p-6 text-[#1a140f] relative overflow-hidden">
+      <div className="bg-gradient-to-l from-gold-dark to-gold rounded-2xl p-5 sm:p-6 text-slate-900 relative overflow-hidden">
         {/* Decorative sun */}
-        <div className="absolute left-4 top-4 w-20 h-20 bg-white/20 rounded-full blur-2xl" />
+        <div className="absolute left-4 top-4 w-20 h-20 bg-sky-200 rounded-full blur-2xl" />
 
         <div className="relative">
           <div className="flex items-center gap-2 mb-1">
             <Clock className="w-5 h-5" />
             <h1 className="text-2xl font-bold">זמני היום</h1>
           </div>
-          <p className="text-[#1a140f]/70 text-sm mb-4">{formatDate()}</p>
+          <p className="text-slate-600 text-sm mb-4">{formatDate()}</p>
 
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             {/* Current Time */}
-            <div className="bg-[#1a140f]/20 backdrop-blur-sm rounded-xl px-5 py-3">
+            <div className="bg-sky-50/20 backdrop-blur-sm rounded-xl px-5 py-3">
               <span className="text-3xl font-mono font-bold tracking-wider">
                 {formatCurrentTime()}
               </span>
@@ -165,8 +165,8 @@ export default function ZmanimPage() {
 
             {/* Next Zman */}
             {nextZman && (
-              <div className="bg-[#1a140f]/20 backdrop-blur-sm rounded-xl px-4 py-3">
-                <p className="text-[#1a140f]/70 text-xs mb-1">הזמן הבא</p>
+              <div className="bg-sky-50/20 backdrop-blur-sm rounded-xl px-4 py-3">
+                <p className="text-slate-600 text-xs mb-1">הזמן הבא</p>
                 <div className="flex items-center gap-2">
                   <ChevronLeft className="w-4 h-4" />
                   <span className="font-bold">{nextZman.label}</span>
@@ -179,15 +179,15 @@ export default function ZmanimPage() {
       </div>
 
       {/* Location Selector */}
-      <div className="bg-[#3b2d1f] rounded-2xl border border-white/10 p-4 space-y-4">
+      <div className="bg-white rounded-2xl border border-sky-200 p-4 space-y-4">
         <div className="flex items-center gap-2">
           <MapPin className="w-4 h-4 text-gold" />
-          <span className="text-sm text-white/70 font-medium">בחר מיקום</span>
+          <span className="text-sm text-slate-600 font-medium">בחר מיקום</span>
         </div>
 
         {LOCATION_CATEGORIES.map((category) => (
           <div key={category.name}>
-            <p className="text-xs text-white/50 font-medium mb-2">{category.name}</p>
+            <p className="text-xs text-slate-500 font-medium mb-2">{category.name}</p>
             <div className="flex flex-wrap gap-2">
               {category.locations.map((location) => (
                 <button
@@ -195,8 +195,8 @@ export default function ZmanimPage() {
                   onClick={() => setSelectedLocation(location)}
                   className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
                     selectedLocation.id === location.id
-                      ? "bg-gold text-[#1a140f] shadow-md"
-                      : "bg-white/5 text-white/80 hover:bg-white/10 border border-white/10"
+                      ? "bg-gold text-slate-900 shadow-md"
+                      : "bg-sky-50 text-slate-700 hover:bg-sky-100 border border-sky-200"
                   }`}
                 >
                   {location.name}
@@ -208,8 +208,8 @@ export default function ZmanimPage() {
       </div>
 
       {/* Zmanim List */}
-      <div className="bg-[#3b2d1f] rounded-2xl border border-white/10 overflow-hidden">
-        <div className="p-4 sm:p-5 border-b border-white/10">
+      <div className="bg-white rounded-2xl border border-sky-200 overflow-hidden">
+        <div className="p-4 sm:p-5 border-b border-sky-200">
           <div className="flex items-center gap-2">
             <Sun className="w-5 h-5 text-amber-500" />
             <h2 className="font-bold text-white text-lg">
@@ -222,7 +222,7 @@ export default function ZmanimPage() {
           {loading ? (
             <div className="py-12 flex flex-col items-center justify-center gap-4">
               <div className="w-12 h-12 border-4 border-gold/30 border-t-gold rounded-full animate-spin" />
-              <p className="text-white/50">טוען זמנים...</p>
+              <p className="text-slate-500">טוען זמנים...</p>
             </div>
           ) : zmanim ? (
             <div className="space-y-2">
@@ -239,8 +239,8 @@ export default function ZmanimPage() {
                       isNext
                         ? "bg-gold/20 border-2 border-gold/50 shadow-sm"
                         : passed
-                          ? "bg-white/5 opacity-60"
-                          : "bg-white/5"
+                          ? "bg-sky-50 opacity-60"
+                          : "bg-sky-50"
                     }`}
                   >
                     <div className="flex items-center gap-3">
@@ -248,7 +248,7 @@ export default function ZmanimPage() {
                         <Icon className="w-5 h-5 text-white" />
                       </div>
                       <div>
-                        <span className={`font-medium ${passed ? "text-white/50" : "text-white"}`}>
+                        <span className={`font-medium ${passed ? "text-slate-500" : "text-white"}`}>
                           {item.label}
                         </span>
                         {isNext && (
@@ -265,7 +265,7 @@ export default function ZmanimPage() {
                       <span
                         className={`font-mono text-lg font-bold ${
                           passed
-                            ? "text-white/40 line-through"
+                            ? "text-slate-400 line-through"
                             : isNext
                               ? "text-gold"
                               : "text-white"
@@ -281,7 +281,7 @@ export default function ZmanimPage() {
           ) : (
             <div className="text-center py-12">
               <Sun className="w-16 h-16 text-white/20 mx-auto mb-3" />
-              <p className="text-white/50">לא ניתן לטעון את הזמנים</p>
+              <p className="text-slate-500">לא ניתן לטעון את הזמנים</p>
             </div>
           )}
         </div>
@@ -289,7 +289,7 @@ export default function ZmanimPage() {
 
       {/* Info Card */}
       <div className="bg-gold/10 border border-gold/20 rounded-2xl p-4 text-center">
-        <p className="text-white/70 text-sm">
+        <p className="text-slate-600 text-sm">
           הזמנים מחושבים לפי מיקום גאוגרפי ותאריך עברי
         </p>
       </div>

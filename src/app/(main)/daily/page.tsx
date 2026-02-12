@@ -151,7 +151,7 @@ export default function DailyPage() {
         <div className="w-16 h-16 rounded-2xl bg-gold/20 flex items-center justify-center">
           <Loader2 className="w-8 h-8 text-gold animate-spin" />
         </div>
-        <p className="text-white/60 animate-pulse">טוען לימוד יומי...</p>
+        <p className="text-slate-600 animate-pulse">טוען לימוד יומי...</p>
       </div>
     );
   }
@@ -160,7 +160,7 @@ export default function DailyPage() {
     <div className="relative py-6 space-y-6">
 
       {/* Header */}
-      <div className="relative bg-[#3b2d1f] border border-white/10 rounded-2xl overflow-hidden">
+      <div className="relative bg-white border border-sky-200 rounded-2xl overflow-hidden">
         {/* Gold top line */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-gold to-transparent" />
 
@@ -171,7 +171,7 @@ export default function DailyPage() {
             </div>
             <div>
               <h1 className="text-2xl font-bold text-white">לימוד יומי</h1>
-              <p className="text-white/50 text-sm">משנה יומית ורמב״ם - לעלות ולהתעלות</p>
+              <p className="text-slate-500 text-sm">משנה יומית ורמב״ם - לעלות ולהתעלות</p>
             </div>
           </div>
         </div>
@@ -180,10 +180,10 @@ export default function DailyPage() {
       {/* Learning Sections */}
       <div className="space-y-4">
         {/* Mishnah Section */}
-        <div className="bg-[#3b2d1f] border border-white/10 rounded-xl overflow-hidden">
+        <div className="bg-white border border-sky-200 rounded-xl overflow-hidden">
           <button
             onClick={() => toggleSection("mishnah")}
-            className="w-full text-right p-5 flex items-center justify-between hover:bg-white/5 transition-colors"
+            className="w-full text-right p-5 flex items-center justify-between hover:bg-sky-50 transition-colors"
           >
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-amber-600 rounded-xl flex items-center justify-center shadow-lg">
@@ -192,11 +192,11 @@ export default function DailyPage() {
               <div>
                 <h2 className="font-bold text-white text-lg">משנה יומית</h2>
                 {content?.mishnah && (
-                  <p className="text-sm text-white/50 mt-0.5">{content.mishnah.heRef}</p>
+                  <p className="text-sm text-slate-500 mt-0.5">{content.mishnah.heRef}</p>
                 )}
               </div>
             </div>
-            <div className={`p-2 rounded-lg transition-colors ${expandedSection === "mishnah" ? "bg-gold/20 text-gold" : "bg-white/5 text-white/50"}`}>
+            <div className={`p-2 rounded-lg transition-colors ${expandedSection === "mishnah" ? "bg-gold/20 text-gold" : "bg-sky-50 text-slate-500"}`}>
               {expandedSection === "mishnah" ? (
                 <ChevronUp className="w-5 h-5" />
               ) : (
@@ -206,7 +206,7 @@ export default function DailyPage() {
           </button>
 
           {expandedSection === "mishnah" && (
-            <div className="px-5 pb-5 border-t border-white/10">
+            <div className="px-5 pb-5 border-t border-sky-200">
               {content?.mishnah ? (
                 <div className="pt-5 text-lg text-white/90 leading-[2] space-y-4">
                   {content.mishnah.text.map((paragraph, i) => (
@@ -219,17 +219,17 @@ export default function DailyPage() {
                   ))}
                 </div>
               ) : (
-                <p className="text-white/50 py-4">לא נמצא לימוד להיום</p>
+                <p className="text-slate-500 py-4">לא נמצא לימוד להיום</p>
               )}
             </div>
           )}
         </div>
 
         {/* Rambam Section */}
-        <div className="bg-[#3b2d1f] border border-white/10 rounded-xl overflow-hidden">
+        <div className="bg-white border border-sky-200 rounded-xl overflow-hidden">
           <button
             onClick={() => toggleSection("rambam")}
-            className="w-full text-right p-5 flex items-center justify-between hover:bg-white/5 transition-colors"
+            className="w-full text-right p-5 flex items-center justify-between hover:bg-sky-50 transition-colors"
           >
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-gradient-to-br from-violet-400 to-violet-600 rounded-xl flex items-center justify-center shadow-lg">
@@ -238,11 +238,11 @@ export default function DailyPage() {
               <div>
                 <h2 className="font-bold text-white text-lg">רמב״ם יומי</h2>
                 {content?.rambam && (
-                  <p className="text-sm text-white/50 mt-0.5">{content.rambam.heRef}</p>
+                  <p className="text-sm text-slate-500 mt-0.5">{content.rambam.heRef}</p>
                 )}
               </div>
             </div>
-            <div className={`p-2 rounded-lg transition-colors ${expandedSection === "rambam" ? "bg-violet-500/20 text-violet-400" : "bg-white/5 text-white/50"}`}>
+            <div className={`p-2 rounded-lg transition-colors ${expandedSection === "rambam" ? "bg-violet-500/20 text-violet-400" : "bg-sky-50 text-slate-500"}`}>
               {expandedSection === "rambam" ? (
                 <ChevronUp className="w-5 h-5" />
               ) : (
@@ -252,7 +252,7 @@ export default function DailyPage() {
           </button>
 
           {expandedSection === "rambam" && (
-            <div className="px-5 pb-5 border-t border-white/10">
+            <div className="px-5 pb-5 border-t border-sky-200">
               {content?.rambam ? (
                 <div className="pt-5 text-lg text-white/90 leading-[2] space-y-4">
                   {content.rambam.text.map((paragraph, i) => (
@@ -265,7 +265,7 @@ export default function DailyPage() {
                   ))}
                 </div>
               ) : (
-                <p className="text-white/50 py-4">לא נמצא לימוד להיום</p>
+                <p className="text-slate-500 py-4">לא נמצא לימוד להיום</p>
               )}
             </div>
           )}
@@ -273,10 +273,10 @@ export default function DailyPage() {
 
         {/* Daily Video Section */}
         {content?.dailyVideo && (
-          <div className="bg-[#3b2d1f] border border-white/10 rounded-xl overflow-hidden">
+          <div className="bg-white border border-sky-200 rounded-xl overflow-hidden">
             <button
               onClick={() => toggleSection("video")}
-              className="w-full text-right p-5 flex items-center justify-between hover:bg-white/5 transition-colors"
+              className="w-full text-right p-5 flex items-center justify-between hover:bg-sky-50 transition-colors"
             >
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 bg-gradient-to-br from-rose-400 to-rose-600 rounded-xl flex items-center justify-center shadow-lg">
@@ -284,10 +284,10 @@ export default function DailyPage() {
                 </div>
                 <div>
                   <h2 className="font-bold text-white text-lg">סרטון חיזוק יומי</h2>
-                  <p className="text-sm text-white/50 mt-0.5">{content.dailyVideo.title}</p>
+                  <p className="text-sm text-slate-500 mt-0.5">{content.dailyVideo.title}</p>
                 </div>
               </div>
-              <div className={`p-2 rounded-lg transition-colors ${expandedSection === "video" ? "bg-rose-500/20 text-rose-400" : "bg-white/5 text-white/50"}`}>
+              <div className={`p-2 rounded-lg transition-colors ${expandedSection === "video" ? "bg-rose-500/20 text-rose-400" : "bg-sky-50 text-slate-500"}`}>
                 {expandedSection === "video" ? (
                   <ChevronUp className="w-5 h-5" />
                 ) : (
@@ -297,10 +297,10 @@ export default function DailyPage() {
             </button>
 
             {expandedSection === "video" && (
-              <div className="px-5 pb-5 border-t border-white/10">
+              <div className="px-5 pb-5 border-t border-sky-200">
                 <div className="pt-5">
                   {content.dailyVideo.description && (
-                    <p className="text-white/60 mb-4">{content.dailyVideo.description}</p>
+                    <p className="text-slate-600 mb-4">{content.dailyVideo.description}</p>
                   )}
                   {content.dailyVideo.videoUrl && (
                     <div className="space-y-4">
@@ -339,10 +339,10 @@ export default function DailyPage() {
         )}
 
         {/* Chassidut Section */}
-        <div className="bg-[#3b2d1f] border border-white/10 rounded-xl overflow-hidden">
+        <div className="bg-white border border-sky-200 rounded-xl overflow-hidden">
           <button
             onClick={() => toggleSection("chassidut")}
-            className="w-full text-right p-5 flex items-center justify-between hover:bg-white/5 transition-colors"
+            className="w-full text-right p-5 flex items-center justify-between hover:bg-sky-50 transition-colors"
           >
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-gradient-to-br from-gold to-gold-dark rounded-xl flex items-center justify-center shadow-lg">
@@ -351,11 +351,11 @@ export default function DailyPage() {
               <div>
                 <h2 className="font-bold text-white text-lg">חסידות יומית</h2>
                 {content?.chassidut && (
-                  <p className="text-sm text-white/50 mt-0.5">{content.chassidut.title}</p>
+                  <p className="text-sm text-slate-500 mt-0.5">{content.chassidut.title}</p>
                 )}
               </div>
             </div>
-            <div className={`p-2 rounded-lg transition-colors ${expandedSection === "chassidut" ? "bg-gold/20 text-gold" : "bg-white/5 text-white/50"}`}>
+            <div className={`p-2 rounded-lg transition-colors ${expandedSection === "chassidut" ? "bg-gold/20 text-gold" : "bg-sky-50 text-slate-500"}`}>
               {expandedSection === "chassidut" ? (
                 <ChevronUp className="w-5 h-5" />
               ) : (
@@ -365,11 +365,11 @@ export default function DailyPage() {
           </button>
 
           {expandedSection === "chassidut" && (
-            <div className="px-5 pb-5 border-t border-white/10">
+            <div className="px-5 pb-5 border-t border-sky-200">
               {content?.chassidut ? (
                 <div className="pt-5">
                   {content.chassidut.description && (
-                    <p className="text-white/60 text-sm mb-3">{content.chassidut.description}</p>
+                    <p className="text-slate-600 text-sm mb-3">{content.chassidut.description}</p>
                   )}
                   <div className="text-lg text-white/90 leading-[2] whitespace-pre-wrap">
                     {content.chassidut.content}
@@ -378,7 +378,7 @@ export default function DailyPage() {
               ) : (
                 <div className="pt-5 text-center py-8">
                   <Sparkles className="w-12 h-12 text-gold/30 mx-auto mb-3" />
-                  <p className="text-white/50">לא הועלה תוכן חסידות להיום</p>
+                  <p className="text-slate-500">לא הועלה תוכן חסידות להיום</p>
                 </div>
               )}
             </div>
@@ -386,10 +386,10 @@ export default function DailyPage() {
         </div>
 
         {/* Musar Section */}
-        <div className="bg-[#3b2d1f] border border-white/10 rounded-xl overflow-hidden">
+        <div className="bg-white border border-sky-200 rounded-xl overflow-hidden">
           <button
             onClick={() => toggleSection("musar")}
-            className="w-full text-right p-5 flex items-center justify-between hover:bg-white/5 transition-colors"
+            className="w-full text-right p-5 flex items-center justify-between hover:bg-sky-50 transition-colors"
           >
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg">
@@ -398,11 +398,11 @@ export default function DailyPage() {
               <div>
                 <h2 className="font-bold text-white text-lg">מוסר יומי</h2>
                 {content?.musar && (
-                  <p className="text-sm text-white/50 mt-0.5">{content.musar.title}</p>
+                  <p className="text-sm text-slate-500 mt-0.5">{content.musar.title}</p>
                 )}
               </div>
             </div>
-            <div className={`p-2 rounded-lg transition-colors ${expandedSection === "musar" ? "bg-emerald-500/20 text-emerald-400" : "bg-white/5 text-white/50"}`}>
+            <div className={`p-2 rounded-lg transition-colors ${expandedSection === "musar" ? "bg-emerald-500/20 text-emerald-400" : "bg-sky-50 text-slate-500"}`}>
               {expandedSection === "musar" ? (
                 <ChevronUp className="w-5 h-5" />
               ) : (
@@ -412,11 +412,11 @@ export default function DailyPage() {
           </button>
 
           {expandedSection === "musar" && (
-            <div className="px-5 pb-5 border-t border-white/10">
+            <div className="px-5 pb-5 border-t border-sky-200">
               {content?.musar ? (
                 <div className="pt-5">
                   {content.musar.description && (
-                    <p className="text-white/60 text-sm mb-3">{content.musar.description}</p>
+                    <p className="text-slate-600 text-sm mb-3">{content.musar.description}</p>
                   )}
                   <div className="text-lg text-white/90 leading-[2] whitespace-pre-wrap">
                     {content.musar.content}
@@ -425,7 +425,7 @@ export default function DailyPage() {
               ) : (
                 <div className="pt-5 text-center py-8">
                   <Heart className="w-12 h-12 text-emerald-500/30 mx-auto mb-3" />
-                  <p className="text-white/50">לא הועלה תוכן מוסר להיום</p>
+                  <p className="text-slate-500">לא הועלה תוכן מוסר להיום</p>
                 </div>
               )}
             </div>
@@ -470,7 +470,7 @@ export default function DailyPage() {
 
       {/* Daily tip */}
       <div className="bg-gold/10 border border-gold/30 rounded-xl p-4 text-center">
-        <p className="text-white/80 text-sm">
+        <p className="text-slate-700 text-sm">
           <span className="font-bold text-gold">טיפ:</span> לימוד קבוע בכל יום בונה רצף ומגדיל את הנקודות שלך!
         </p>
       </div>

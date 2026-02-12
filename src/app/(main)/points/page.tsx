@@ -208,7 +208,7 @@ export default function PointsPage() {
         <div className="w-16 h-16 rounded-2xl bg-gold/20 flex items-center justify-center">
           <Loader2 className="w-8 h-8 text-gold animate-spin" />
         </div>
-        <p className="text-white/60 animate-pulse">טוען נתונים...</p>
+        <p className="text-slate-600 animate-pulse">טוען נתונים...</p>
       </div>
     );
   }
@@ -235,33 +235,33 @@ export default function PointsPage() {
             </div>
             <div>
               <h1 className="text-2xl sm:text-3xl font-bold text-white">הנקודות שלי</h1>
-              <p className="text-white/50">צבירה ופדיון נקודות</p>
+              <p className="text-slate-500">צבירה ופדיון נקודות</p>
             </div>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div className="bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl p-4 text-center">
+            <div className="bg-sky-100 backdrop-blur-sm border border-sky-200 rounded-xl p-4 text-center">
               <Star className="w-8 h-8 mx-auto mb-2 text-gold" />
               <p className="text-2xl sm:text-3xl font-bold text-white">{pointsData?.currentPoints || 0}</p>
-              <p className="text-xs text-white/50">סה״כ נקודות</p>
+              <p className="text-xs text-slate-500">סה״כ נקודות</p>
             </div>
 
-            <div className="bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl p-4 text-center">
+            <div className="bg-sky-100 backdrop-blur-sm border border-sky-200 rounded-xl p-4 text-center">
               <Gift className="w-8 h-8 mx-auto mb-2 text-emerald-400" />
               <p className="text-2xl sm:text-3xl font-bold text-white">{pointsData?.availablePoints || 0}</p>
-              <p className="text-xs text-white/50">זמין לסליקה</p>
+              <p className="text-xs text-slate-500">זמין לסליקה</p>
             </div>
 
-            <div className="bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl p-4 text-center">
+            <div className="bg-sky-100 backdrop-blur-sm border border-sky-200 rounded-xl p-4 text-center">
               <Flame className="w-8 h-8 mx-auto mb-2 text-orange-400" />
               <p className="text-2xl sm:text-3xl font-bold text-white">{pointsData?.streak || 0}</p>
-              <p className="text-xs text-white/50">ימים רצופים</p>
+              <p className="text-xs text-slate-500">ימים רצופים</p>
             </div>
 
-            <div className="bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl p-4 text-center">
+            <div className="bg-sky-100 backdrop-blur-sm border border-sky-200 rounded-xl p-4 text-center">
               <Clock className="w-8 h-8 mx-auto mb-2 text-violet-400" />
               <p className="text-2xl sm:text-3xl font-bold text-white">{pointsData?.stats.total.minutes || 0}</p>
-              <p className="text-xs text-white/50">דקות לימוד</p>
+              <p className="text-xs text-slate-500">דקות לימוד</p>
             </div>
           </div>
 
@@ -282,7 +282,7 @@ export default function PointsPage() {
                       {prizeData.availablePrizes[prizeData.availablePrizes.length - 1].name}
                     </span>
                   </p>
-                  <p className="text-white/50 text-sm mt-1">
+                  <p className="text-slate-500 text-sm mt-1">
                     ועוד {prizeData.availablePrizes.length - 1} פרסים זמינים
                   </p>
                 </div>
@@ -294,13 +294,13 @@ export default function PointsPage() {
                       <span className="text-white font-medium">הפרס הבא:</span>
                       <span className="text-gold font-bold">{prizeData.nextPrize.name}</span>
                     </div>
-                    <span className="text-white/70 text-sm">
+                    <span className="text-slate-600 text-sm">
                       {prizeData.nextPrize.pointsCost} נקודות
                     </span>
                   </div>
 
                   {/* Progress bar */}
-                  <div className="relative h-3 bg-white/10 rounded-full overflow-hidden mb-2">
+                  <div className="relative h-3 bg-sky-100 rounded-full overflow-hidden mb-2">
                     <div
                       className="absolute inset-y-0 left-0 bg-gradient-to-r from-gold-dark to-gold rounded-full transition-all duration-500"
                       style={{ width: `${prizeData.progressToNextPrize}%` }}
@@ -333,8 +333,8 @@ export default function PointsPage() {
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
               className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all ${
                 activeTab === tab.id
-                  ? "bg-gold text-[#1a140f] shadow-lg shadow-gold/20"
-                  : "bg-[#3b2d1f] border border-white/10 text-white hover:bg-[#4a3825]"
+                  ? "bg-gold text-slate-900 shadow-lg shadow-gold/20"
+                  : "bg-white border border-sky-200 text-white hover:bg-[#4a3825]"
               }`}
             >
               <Icon className="w-4 h-4" />
@@ -349,82 +349,82 @@ export default function PointsPage() {
         <div className="space-y-4">
           {/* Today & Week Stats */}
           <div className="grid sm:grid-cols-2 gap-4">
-            <div className="bg-[#3b2d1f] rounded-2xl border border-white/10 p-5">
+            <div className="bg-white rounded-2xl border border-sky-200 p-5">
               <div className="flex items-center gap-2 mb-4">
                 <Calendar className="w-5 h-5 text-violet-400" />
                 <h2 className="font-bold text-white">היום</h2>
               </div>
               <div className="grid grid-cols-2 gap-3">
-                <div className="text-center p-3 bg-white/5 rounded-xl">
+                <div className="text-center p-3 bg-sky-50 rounded-xl">
                   <p className="text-2xl font-bold text-white">
                     {pointsData?.stats.today.minutes || 0}
                   </p>
-                  <p className="text-xs text-white/50">דקות</p>
+                  <p className="text-xs text-slate-500">דקות</p>
                 </div>
                 <div className="text-center p-3 bg-gold/10 rounded-xl">
                   <p className="text-2xl font-bold text-gold">
                     +{pointsData?.stats.today.points || 0}
                   </p>
-                  <p className="text-xs text-white/50">נקודות</p>
+                  <p className="text-xs text-slate-500">נקודות</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-[#3b2d1f] rounded-2xl border border-white/10 p-5">
+            <div className="bg-white rounded-2xl border border-sky-200 p-5">
               <div className="flex items-center gap-2 mb-4">
                 <TrendingUp className="w-5 h-5 text-emerald-400" />
                 <h2 className="font-bold text-white">השבוע</h2>
               </div>
               <div className="grid grid-cols-2 gap-3">
-                <div className="text-center p-3 bg-white/5 rounded-xl">
+                <div className="text-center p-3 bg-sky-50 rounded-xl">
                   <p className="text-2xl font-bold text-white">
                     {pointsData?.stats.week.minutes || 0}
                   </p>
-                  <p className="text-xs text-white/50">דקות</p>
+                  <p className="text-xs text-slate-500">דקות</p>
                 </div>
                 <div className="text-center p-3 bg-emerald-500/10 rounded-xl">
                   <p className="text-2xl font-bold text-emerald-400">
                     +{pointsData?.stats.week.points || 0}
                   </p>
-                  <p className="text-xs text-white/50">נקודות</p>
+                  <p className="text-xs text-slate-500">נקודות</p>
                 </div>
               </div>
             </div>
           </div>
 
           {/* How Points Work */}
-          <div className="bg-[#3b2d1f] rounded-2xl border border-white/10 overflow-hidden">
-            <div className="p-4 sm:p-5 border-b border-white/10">
+          <div className="bg-white rounded-2xl border border-sky-200 overflow-hidden">
+            <div className="p-4 sm:p-5 border-b border-sky-200">
               <h2 className="font-bold text-white text-lg">איך צוברים נקודות?</h2>
             </div>
             <div className="p-4 sm:p-5 grid sm:grid-cols-3 gap-3">
-              <div className="flex items-start gap-3 p-4 bg-white/5 rounded-xl">
+              <div className="flex items-start gap-3 p-4 bg-sky-50 rounded-xl">
                 <div className="w-10 h-10 bg-gradient-to-br from-violet-400 to-violet-600 rounded-lg flex items-center justify-center flex-shrink-0">
                   <Clock className="w-5 h-5 text-white" />
                 </div>
                 <div>
                   <p className="font-bold text-white">לימוד פעיל</p>
-                  <p className="text-sm text-white/50">1 נקודה לכל 5 דקות</p>
+                  <p className="text-sm text-slate-500">1 נקודה לכל 5 דקות</p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 p-4 bg-white/5 rounded-xl">
+              <div className="flex items-start gap-3 p-4 bg-sky-50 rounded-xl">
                 <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-red-500 rounded-lg flex items-center justify-center flex-shrink-0">
                   <Flame className="w-5 h-5 text-white" />
                 </div>
                 <div>
                   <p className="font-bold text-white">רצף יומי</p>
-                  <p className="text-sm text-white/50">בונוס על לימוד כל יום</p>
+                  <p className="text-sm text-slate-500">בונוס על לימוד כל יום</p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 p-4 bg-white/5 rounded-xl">
+              <div className="flex items-start gap-3 p-4 bg-sky-50 rounded-xl">
                 <div className="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg flex items-center justify-center flex-shrink-0">
                   <BookOpen className="w-5 h-5 text-white" />
                 </div>
                 <div>
                   <p className="font-bold text-white">השלמת פרק</p>
-                  <p className="text-sm text-white/50">בונוס על סיום לימוד</p>
+                  <p className="text-sm text-slate-500">בונוס על סיום לימוד</p>
                 </div>
               </div>
             </div>
@@ -436,13 +436,13 @@ export default function PointsPage() {
       {activeTab === "redeem" && (
         <div className="space-y-4">
           {/* Redeem Form */}
-          <div className="bg-[#3b2d1f] rounded-2xl border border-white/10 overflow-hidden">
-            <div className="p-4 sm:p-5 border-b border-white/10">
+          <div className="bg-white rounded-2xl border border-sky-200 overflow-hidden">
+            <div className="p-4 sm:p-5 border-b border-sky-200">
               <div className="flex items-center gap-2">
                 <Gift className="w-5 h-5 text-emerald-400" />
                 <h2 className="font-bold text-white text-lg">בקשת סליקה בשק״ם</h2>
               </div>
-              <p className="text-sm text-white/50 mt-1">הזן את כמות הנקודות שברצונך לממש</p>
+              <p className="text-sm text-slate-500 mt-1">הזן את כמות הנקודות שברצונך לממש</p>
             </div>
 
             <div className="p-4 sm:p-5 space-y-4">
@@ -461,7 +461,7 @@ export default function PointsPage() {
                   placeholder="כמות נקודות"
                   min="1"
                   max={pointsData?.availablePoints || 0}
-                  className="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-gold/50"
+                  className="flex-1 px-4 py-3 bg-sky-50 border border-sky-200 rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-gold/50"
                 />
                 <button
                   onClick={handleRedeem}
@@ -471,7 +471,7 @@ export default function PointsPage() {
                     parseInt(redeemAmount) < 1 ||
                     parseInt(redeemAmount) > (pointsData?.availablePoints || 0)
                   }
-                  className="px-6 py-3 bg-gold text-[#1a140f] rounded-xl font-bold hover:bg-gold-light transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-6 py-3 bg-gold text-slate-900 rounded-xl font-bold hover:bg-gold-light transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {submitting ? (
                     <Loader2 className="w-5 h-5 animate-spin" />
@@ -488,7 +488,7 @@ export default function PointsPage() {
                     key={amount}
                     onClick={() => setRedeemAmount(amount.toString())}
                     disabled={amount > (pointsData?.availablePoints || 0)}
-                    className="px-4 py-2 rounded-xl text-sm font-medium border border-white/10 text-white hover:bg-white/5 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="px-4 py-2 rounded-xl text-sm font-medium border border-sky-200 text-white hover:bg-sky-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     {amount}
                   </button>
@@ -505,27 +505,27 @@ export default function PointsPage() {
           </div>
 
           {/* Redemption History */}
-          <div className="bg-[#3b2d1f] rounded-2xl border border-white/10 overflow-hidden">
-            <div className="p-4 sm:p-5 border-b border-white/10">
+          <div className="bg-white rounded-2xl border border-sky-200 overflow-hidden">
+            <div className="p-4 sm:p-5 border-b border-sky-200">
               <h2 className="font-bold text-white">בקשות סליקה</h2>
             </div>
 
             {redemptions.length === 0 ? (
               <div className="py-12 text-center">
                 <Gift className="w-16 h-16 text-white/20 mx-auto mb-3" />
-                <p className="text-white/50">אין בקשות סליקה</p>
+                <p className="text-slate-500">אין בקשות סליקה</p>
               </div>
             ) : (
               <div className="divide-y divide-white/10">
                 {redemptions.map((redemption) => (
                   <div key={redemption.id} className="p-4 flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center">
+                      <div className="w-10 h-10 bg-sky-50 rounded-lg flex items-center justify-center">
                         <Gift className="w-5 h-5 text-gold" />
                       </div>
                       <div>
                         <p className="font-bold text-white">{redemption.points} נקודות</p>
-                        <p className="text-xs text-white/50">
+                        <p className="text-xs text-slate-500">
                           {format(new Date(redemption.createdAt), "dd/MM/yyyy HH:mm", { locale: he })}
                         </p>
                       </div>
@@ -552,10 +552,10 @@ export default function PointsPage() {
 
       {/* History Tab */}
       {activeTab === "history" && (
-        <div className="bg-[#3b2d1f] rounded-2xl border border-white/10 overflow-hidden">
-          <div className="p-4 sm:p-5 border-b border-white/10">
+        <div className="bg-white rounded-2xl border border-sky-200 overflow-hidden">
+          <div className="p-4 sm:p-5 border-b border-sky-200">
             <div className="flex items-center gap-2">
-              <History className="w-5 h-5 text-white/60" />
+              <History className="w-5 h-5 text-slate-600" />
               <h2 className="font-bold text-white text-lg">היסטוריית צבירה</h2>
             </div>
           </div>
@@ -563,7 +563,7 @@ export default function PointsPage() {
           {history.length === 0 ? (
             <div className="py-12 text-center">
               <History className="w-16 h-16 text-white/20 mx-auto mb-3" />
-              <p className="text-white/50">אין היסטוריית לימוד עדיין</p>
+              <p className="text-slate-500">אין היסטוריית לימוד עדיין</p>
             </div>
           ) : (
             <div className="divide-y divide-white/10">
@@ -577,12 +577,12 @@ export default function PointsPage() {
                       <p className="font-medium text-white">
                         {getContentTypeLabel(item.contentType)}
                         {item.contentRef && (
-                          <span className="text-white/50 font-normal mr-1">
+                          <span className="text-slate-500 font-normal mr-1">
                             - {item.contentRef}
                           </span>
                         )}
                       </p>
-                      <p className="text-xs text-white/50">
+                      <p className="text-xs text-slate-500">
                         {item.durationMinutes} דקות • {format(new Date(item.startTime), "dd/MM/yyyy HH:mm", { locale: he })}
                       </p>
                     </div>

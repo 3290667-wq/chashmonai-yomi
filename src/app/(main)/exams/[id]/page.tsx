@@ -135,7 +135,7 @@ export default function TakeExamPage({ params }: { params: Promise<{ id: string 
     return (
       <div className="py-12 flex flex-col items-center justify-center gap-4">
         <div className="w-12 h-12 border-4 border-gold/30 border-t-gold rounded-full animate-spin" />
-        <p className="text-white/50">טוען מבחן...</p>
+        <p className="text-slate-500">טוען מבחן...</p>
       </div>
     );
   }
@@ -144,7 +144,7 @@ export default function TakeExamPage({ params }: { params: Promise<{ id: string 
     return (
       <div className="py-12 text-center">
         <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-3" />
-        <p className="text-white/50">מבחן לא נמצא</p>
+        <p className="text-slate-500">מבחן לא נמצא</p>
       </div>
     );
   }
@@ -157,8 +157,8 @@ export default function TakeExamPage({ params }: { params: Promise<{ id: string 
       <div className="py-4 sm:py-6 space-y-5">
         {/* Header */}
         <div className="flex items-center gap-2">
-          <button onClick={() => router.push("/exams")} className="p-2 hover:bg-white/5 rounded-lg">
-            <ChevronRight className="w-5 h-5 text-white/60" />
+          <button onClick={() => router.push("/exams")} className="p-2 hover:bg-sky-50 rounded-lg">
+            <ChevronRight className="w-5 h-5 text-slate-600" />
           </button>
           <h1 className="text-2xl font-bold text-white">תוצאות המבחן</h1>
         </div>
@@ -232,7 +232,7 @@ export default function TakeExamPage({ params }: { params: Promise<{ id: string 
                     <XCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
                   )}
                   <div>
-                    <span className="text-white/50 text-sm">שאלה {index + 1}</span>
+                    <span className="text-slate-500 text-sm">שאלה {index + 1}</span>
                     <p className="text-white font-medium">{question.questionText}</p>
                   </div>
                 </div>
@@ -250,7 +250,7 @@ export default function TakeExamPage({ params }: { params: Promise<{ id: string 
                             ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
                             : isUserAnswer && !isCorrect
                             ? "bg-red-500/20 text-red-300 border border-red-500/30"
-                            : "bg-white/5 text-white/60"
+                            : "bg-sky-50 text-slate-600"
                         }`}
                       >
                         <span className="font-bold ml-2">{option.key}.</span>
@@ -270,13 +270,13 @@ export default function TakeExamPage({ params }: { params: Promise<{ id: string 
         <div className="flex gap-3">
           <button
             onClick={() => router.push("/exams")}
-            className="flex-1 py-3 border border-white/20 text-white rounded-xl font-medium hover:bg-white/5 transition-colors"
+            className="flex-1 py-3 border border-sky-300 text-white rounded-xl font-medium hover:bg-sky-50 transition-colors"
           >
             חזרה לרשימה
           </button>
           <button
             onClick={handleRetry}
-            className="flex-1 py-3 bg-gold text-[#1a140f] rounded-xl font-medium hover:bg-gold-light transition-colors flex items-center justify-center gap-2"
+            className="flex-1 py-3 bg-gold text-slate-900 rounded-xl font-medium hover:bg-gold-light transition-colors flex items-center justify-center gap-2"
           >
             <RotateCcw className="w-5 h-5" />
             נסה שוב
@@ -296,12 +296,12 @@ export default function TakeExamPage({ params }: { params: Promise<{ id: string 
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <button onClick={() => router.push("/exams")} className="p-2 hover:bg-white/5 rounded-lg">
-            <ChevronRight className="w-5 h-5 text-white/60" />
+          <button onClick={() => router.push("/exams")} className="p-2 hover:bg-sky-50 rounded-lg">
+            <ChevronRight className="w-5 h-5 text-slate-600" />
           </button>
           <div>
             <h1 className="text-xl font-bold text-white">{exam.title}</h1>
-            <p className="text-sm text-white/60">
+            <p className="text-sm text-slate-600">
               {answeredCount} / {totalQuestions} תשובות
             </p>
           </div>
@@ -313,7 +313,7 @@ export default function TakeExamPage({ params }: { params: Promise<{ id: string 
       </div>
 
       {/* Progress bar */}
-      <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+      <div className="h-2 bg-sky-100 rounded-full overflow-hidden">
         <div
           className="h-full bg-gold transition-all duration-300"
           style={{ width: `${(answeredCount / totalQuestions) * 100}%` }}
@@ -328,10 +328,10 @@ export default function TakeExamPage({ params }: { params: Promise<{ id: string 
             onClick={() => setCurrentQuestionIndex(index)}
             className={`w-8 h-8 rounded-full text-sm font-medium transition-all ${
               index === currentQuestionIndex
-                ? "bg-gold text-[#1a140f]"
+                ? "bg-gold text-slate-900"
                 : answers[q.id]
                 ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-                : "bg-white/10 text-white/60 hover:bg-white/20"
+                : "bg-sky-100 text-slate-600 hover:bg-sky-200"
             }`}
           >
             {index + 1}
@@ -340,7 +340,7 @@ export default function TakeExamPage({ params }: { params: Promise<{ id: string 
       </div>
 
       {/* Current Question */}
-      <div className="bg-[#1e1e1e] border border-white/10 rounded-2xl p-5">
+      <div className="bg-sky-50 border border-sky-200 rounded-2xl p-5">
         <div className="mb-4">
           <span className="text-gold text-sm font-medium">שאלה {currentQuestionIndex + 1} מתוך {totalQuestions}</span>
           <h2 className="text-lg font-bold text-white mt-2">{currentQuestion.questionText}</h2>
@@ -359,7 +359,7 @@ export default function TakeExamPage({ params }: { params: Promise<{ id: string 
               className={`w-full p-4 rounded-xl text-right transition-all ${
                 answers[currentQuestion.id] === option.key
                   ? "bg-gold/20 border-2 border-gold text-white"
-                  : "bg-white/5 border border-white/10 text-white/80 hover:bg-white/10 hover:border-white/20"
+                  : "bg-sky-50 border border-sky-200 text-slate-700 hover:bg-sky-100 hover:border-sky-300"
               }`}
             >
               <span className="font-bold ml-3">{option.key}.</span>
@@ -374,7 +374,7 @@ export default function TakeExamPage({ params }: { params: Promise<{ id: string 
         <button
           onClick={() => setCurrentQuestionIndex(Math.max(0, currentQuestionIndex - 1))}
           disabled={currentQuestionIndex === 0}
-          className="flex-1 py-3 border border-white/20 text-white rounded-xl font-medium hover:bg-white/5 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+          className="flex-1 py-3 border border-sky-300 text-white rounded-xl font-medium hover:bg-sky-50 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
         >
           הקודם
         </button>
@@ -382,7 +382,7 @@ export default function TakeExamPage({ params }: { params: Promise<{ id: string 
         {currentQuestionIndex < totalQuestions - 1 ? (
           <button
             onClick={() => setCurrentQuestionIndex(currentQuestionIndex + 1)}
-            className="flex-1 py-3 bg-white/10 text-white rounded-xl font-medium hover:bg-white/20 transition-colors"
+            className="flex-1 py-3 bg-sky-100 text-white rounded-xl font-medium hover:bg-sky-200 transition-colors"
           >
             הבא
           </button>
@@ -390,7 +390,7 @@ export default function TakeExamPage({ params }: { params: Promise<{ id: string 
           <button
             onClick={handleSubmit}
             disabled={submitting || answeredCount < totalQuestions}
-            className="flex-1 py-3 bg-gold text-[#1a140f] rounded-xl font-medium hover:bg-gold-light transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="flex-1 py-3 bg-gold text-slate-900 rounded-xl font-medium hover:bg-gold-light transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {submitting ? (
               <>

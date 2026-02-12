@@ -57,7 +57,7 @@ export default function Home() {
           </div>
           <Link
             href="/login"
-            className="px-5 py-2 bg-gold text-[#1a140f] rounded-full font-bold hover:bg-gold-light transition-colors shadow-md"
+            className="px-5 py-2 bg-gold text-slate-900 rounded-full font-bold hover:bg-gold-light transition-colors shadow-md"
           >
             כניסה
           </Link>
@@ -83,20 +83,20 @@ export default function Home() {
           <p className="text-xl sm:text-2xl text-gold mb-2">
             אפליקציית לימוד לחיילי חטיבת חשמונאים
           </p>
-          <p className="text-white/70 mb-8">
+          <p className="text-slate-600 mb-8">
             למען שמו באהבה - לעלות ולהתעלות
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
             <Link
               href="/login"
-              className="px-8 py-4 bg-gradient-to-l from-gold via-gold-light to-gold text-[#1a140f] rounded-xl font-bold text-lg hover:shadow-xl hover:shadow-gold/30 transition-all shadow-lg transform hover:-translate-y-1"
+              className="px-8 py-4 bg-gradient-to-l from-gold via-gold-light to-gold text-slate-900 rounded-xl font-bold text-lg hover:shadow-xl hover:shadow-gold/30 transition-all shadow-lg transform hover:-translate-y-1"
             >
               התחל ללמוד
             </Link>
             <Link
               href="/daily"
-              className="px-8 py-4 bg-[#3b2d1f] text-white rounded-xl font-bold text-lg hover:bg-[#4a3825] transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1 border border-white/20"
+              className="px-8 py-4 bg-white text-white rounded-xl font-bold text-lg hover:bg-[#4a3825] transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1 border border-sky-300"
             >
               צפה בלימוד היומי
             </Link>
@@ -137,7 +137,7 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="mt-auto py-6 text-center text-white/60 safe-area-bottom">
+      <footer className="mt-auto py-6 text-center text-slate-600 safe-area-bottom">
         <p>חטיבת חשמונאים - גדוד 932</p>
       </footer>
     </div>
@@ -154,10 +154,10 @@ function FeatureCard({
   description: string;
 }) {
   return (
-    <div className="bg-[#3b2d1f] backdrop-blur-sm rounded-2xl p-4 text-center border border-white/10 hover:border-gold/30 transition-colors">
+    <div className="bg-white backdrop-blur-sm rounded-2xl p-4 text-center border border-sky-200 hover:border-gold/30 transition-colors">
       <div className="text-gold mb-2 flex justify-center">{icon}</div>
       <h3 className="font-bold text-white text-sm sm:text-base">{title}</h3>
-      <p className="text-white/60 text-xs sm:text-sm">{description}</p>
+      <p className="text-slate-600 text-xs sm:text-sm">{description}</p>
     </div>
   );
 }

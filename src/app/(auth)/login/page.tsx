@@ -101,7 +101,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex relative overflow-hidden bg-[#1a140f]">
+    <div className="min-h-screen flex relative overflow-hidden bg-sky-50">
       {/* Background Image - Left Side */}
       <div className="hidden lg:block lg:w-1/2 relative">
         <Image
@@ -133,7 +133,7 @@ export default function LoginPage() {
               <br />
               <span className="text-gold">למען שמו באהבה</span>
             </h2>
-            <p className="text-white/70 text-lg max-w-md">
+            <p className="text-slate-600 text-lg max-w-md">
               הצטרף לאלפי חיילים הלומדים כל יום משנה יומית ורמב״ם יומי
             </p>
           </div>
@@ -156,8 +156,8 @@ export default function LoginPage() {
         {/* Header */}
         <header className="safe-area-top p-6 relative z-10">
           <Link href="/" className="flex items-center gap-3 w-fit group">
-            <div className="w-10 h-10 rounded-xl bg-[#3b2d1f] border border-white/10 flex items-center justify-center group-hover:border-gold/50 transition-colors">
-              <ArrowLeft className="w-5 h-5 text-white/70 group-hover:text-gold transition-colors" />
+            <div className="w-10 h-10 rounded-xl bg-white border border-sky-200 flex items-center justify-center group-hover:border-gold/50 transition-colors">
+              <ArrowLeft className="w-5 h-5 text-slate-600 group-hover:text-gold transition-colors" />
             </div>
             <div className="lg:hidden flex items-center gap-2">
               <Image
@@ -190,14 +190,14 @@ export default function LoginPage() {
               <h1 className="text-3xl font-bold text-white mb-3">
                 {isRegister ? "הצטרף למשפחה" : "ברוכים הבאים"}
               </h1>
-              <p className="text-white/60">
+              <p className="text-slate-600">
                 {isRegister ? "צור חשבון חדש כדי להתחיל" : "התחבר כדי להמשיך ללמוד"}
               </p>
             </div>
 
             {/* Form Card */}
             <div
-              className="bg-[#3b2d1f] border border-white/10 rounded-2xl p-8 animate-fade-in-up"
+              className="bg-white border border-sky-200 rounded-2xl p-8 animate-fade-in-up"
               style={{ animationDelay: "100ms" }}
             >
               <form onSubmit={handleSubmit} className="space-y-5">
@@ -205,34 +205,34 @@ export default function LoginPage() {
                   <>
                     {/* Name Input */}
                     <div className="relative">
-                      <User className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
+                      <User className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                       <input
                         type="text"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder="שם מלא"
-                        className="w-full bg-[#251c14] border border-white/10 rounded-xl pr-12 pl-4 py-4 text-white placeholder:text-white/40 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-all"
+                        className="w-full bg-sky-100 border border-sky-200 rounded-xl pr-12 pl-4 py-4 text-white placeholder:text-slate-400 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-all"
                       />
                     </div>
 
                     {/* Platoon Select */}
                     <div className="relative">
-                      <Users className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40 pointer-events-none z-10" />
-                      <ChevronDown className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40 pointer-events-none" />
+                      <Users className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none z-10" />
+                      <ChevronDown className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
                       <select
                         value={formData.platoon}
                         onChange={(e) => setFormData({ ...formData, platoon: e.target.value })}
-                        className="w-full bg-[#251c14] border border-white/10 rounded-xl pr-12 pl-10 py-4 text-white focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-all appearance-none cursor-pointer"
+                        className="w-full bg-sky-100 border border-sky-200 rounded-xl pr-12 pl-10 py-4 text-white focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-all appearance-none cursor-pointer"
                       >
-                        <option value="" className="bg-[#251c14]">בחר פלוגה</option>
+                        <option value="" className="bg-sky-100">בחר פלוגה</option>
                         {platoons.map((platoon) => (
-                          <option key={platoon.id} value={platoon.name} className="bg-[#251c14]">
+                          <option key={platoon.id} value={platoon.name} className="bg-sky-100">
                             {platoon.name}
                           </option>
                         ))}
                       </select>
                       {platoons.length === 0 && (
-                        <p className="text-white/40 text-xs mt-1">אין פלוגות זמינות כרגע</p>
+                        <p className="text-slate-400 text-xs mt-1">אין פלוגות זמינות כרגע</p>
                       )}
                     </div>
                   </>
@@ -240,32 +240,32 @@ export default function LoginPage() {
 
                 {/* Email Input */}
                 <div className="relative">
-                  <Mail className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
+                  <Mail className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                   <input
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     placeholder="אימייל"
                     required
-                    className="w-full bg-[#251c14] border border-white/10 rounded-xl pr-12 pl-4 py-4 text-white placeholder:text-white/40 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-all"
+                    className="w-full bg-sky-100 border border-sky-200 rounded-xl pr-12 pl-4 py-4 text-white placeholder:text-slate-400 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-all"
                   />
                 </div>
 
                 {/* Password Input */}
                 <div className="relative">
-                  <Lock className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
+                  <Lock className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                   <input
                     type={showPassword ? "text" : "password"}
                     value={formData.password}
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                     placeholder="סיסמה"
                     required
-                    className="w-full bg-[#251c14] border border-white/10 rounded-xl pr-12 pl-12 py-4 text-white placeholder:text-white/40 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-all"
+                    className="w-full bg-sky-100 border border-sky-200 rounded-xl pr-12 pl-12 py-4 text-white placeholder:text-slate-400 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-all"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors"
                   >
                     {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>
@@ -282,7 +282,7 @@ export default function LoginPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-gradient-to-l from-gold via-gold-light to-gold text-[#1a140f] font-bold text-lg py-4 rounded-xl shadow-lg shadow-gold/20 hover:shadow-xl hover:shadow-gold/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="w-full bg-gradient-to-l from-gold via-gold-light to-gold text-slate-900 font-bold text-lg py-4 rounded-xl shadow-lg shadow-gold/20 hover:shadow-xl hover:shadow-gold/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   {loading ? (
                     <>
@@ -303,9 +303,9 @@ export default function LoginPage() {
 
               {/* Divider */}
               <div className="flex items-center gap-4 my-6">
-                <div className="flex-1 h-px bg-white/10" />
-                <span className="text-white/40 text-sm">או</span>
-                <div className="flex-1 h-px bg-white/10" />
+                <div className="flex-1 h-px bg-sky-100" />
+                <span className="text-slate-400 text-sm">או</span>
+                <div className="flex-1 h-px bg-sky-100" />
               </div>
 
               {/* Toggle Register/Login */}
@@ -333,7 +333,7 @@ export default function LoginPage() {
                 <Shield className="w-5 h-5 text-gold" />
                 <Star className="w-4 h-4 text-gold/50" />
               </div>
-              <p className="text-white/70 font-medium">
+              <p className="text-slate-600 font-medium">
                 &ldquo;למען שמו באהבה - לעלות ולהתעלות&rdquo;
               </p>
               <p className="text-gold/70 text-sm mt-1 font-medium">רוח חשמונאית</p>

@@ -77,7 +77,7 @@ export default async function DashboardPage() {
   return (
     <div className="relative min-h-screen py-6 sm:py-8 space-y-6">
       {/* Hero Section - Artlist Style */}
-      <div className="relative rounded-2xl overflow-hidden bg-[#3b2d1f] border border-white/10">
+      <div className="relative rounded-2xl overflow-hidden bg-white border border-sky-200">
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
@@ -99,30 +99,30 @@ export default async function DashboardPage() {
                 <Sparkles className="w-4 h-4" />
                 {getGreeting()},
               </p>
-              <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">
+              <h1 className="text-3xl sm:text-4xl font-bold text-slate-800 mb-2">
                 {user?.name?.split(" ")[0] || "חייל יקר"}!
               </h1>
-              <p className="text-white/60">ברוך הבא לרוח חשמונאית</p>
+              <p className="text-slate-800/60">ברוך הבא לרוח חשמונאית</p>
             </div>
 
             {/* Stats */}
             <div className="flex flex-wrap gap-3 sm:flex-col sm:items-end">
-              <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10">
+              <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-sky-50 border border-sky-200">
                 <Star className="w-5 h-5 text-gold" />
-                <span className="text-xl font-bold text-white">{user?.points || 0}</span>
-                <span className="text-white/50 text-sm">נקודות</span>
+                <span className="text-xl font-bold text-slate-800">{user?.points || 0}</span>
+                <span className="text-slate-800/50 text-sm">נקודות</span>
               </div>
 
-              <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10">
+              <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-sky-50 border border-sky-200">
                 <Flame className="w-5 h-5 text-orange-400" />
-                <span className="text-xl font-bold text-white">{user?.streak || 0}</span>
-                <span className="text-white/50 text-sm">ימים</span>
+                <span className="text-xl font-bold text-slate-800">{user?.streak || 0}</span>
+                <span className="text-slate-800/50 text-sm">ימים</span>
               </div>
 
               {user?.platoon && (
                 <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gold/10 border border-gold/30">
                   <Shield className="w-4 h-4 text-gold" />
-                  <span className="text-white font-medium">{user.platoon}</span>
+                  <span className="text-slate-800 font-medium">{user.platoon}</span>
                 </div>
               )}
             </div>
@@ -144,7 +144,7 @@ export default async function DashboardPage() {
               className="group animate-fade-in-up"
               style={{ animationDelay: `${index * 50}ms` }}
             >
-              <div className="relative bg-[#3b2d1f] border border-white/10 rounded-xl overflow-hidden h-full transition-all duration-300 hover:border-white/20 hover:translate-y-[-4px] hover:shadow-xl">
+              <div className="relative bg-white border border-sky-200 rounded-xl overflow-hidden h-full transition-all duration-300 hover:border-white/20 hover:translate-y-[-4px] hover:shadow-xl">
                 {/* Background Image */}
                 <div className="absolute inset-0">
                   <Image
@@ -160,12 +160,12 @@ export default async function DashboardPage() {
                 <div className="relative z-10 p-5">
                   {/* Icon */}
                   <div className={`w-12 h-12 bg-gradient-to-br ${link.gradient} rounded-xl flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform`}>
-                    <Icon className="w-6 h-6 text-white" />
+                    <Icon className="w-6 h-6 text-slate-800" />
                   </div>
 
                   {/* Text */}
-                  <h3 className="font-bold text-white text-lg mb-1">{link.title}</h3>
-                  <p className="text-white/50 text-sm">{link.description}</p>
+                  <h3 className="font-bold text-slate-800 text-lg mb-1">{link.title}</h3>
+                  <p className="text-slate-800/50 text-sm">{link.description}</p>
 
                   {/* Arrow */}
                   <div className="absolute bottom-5 left-5 opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all">
@@ -179,14 +179,14 @@ export default async function DashboardPage() {
       </div>
 
       {/* Stats Section */}
-      <div className="bg-[#3b2d1f] border border-white/10 rounded-2xl p-6">
+      <div className="bg-white border border-sky-200 rounded-2xl p-6">
         <div className="flex items-center gap-4 mb-6">
           <div className="w-12 h-12 bg-gradient-to-br from-gold to-gold-dark rounded-xl flex items-center justify-center shadow-lg">
-            <TrendingUp className="w-6 h-6 text-white" />
+            <TrendingUp className="w-6 h-6 text-slate-800" />
           </div>
           <div>
-            <h2 className="font-bold text-white text-xl">הסטטיסטיקות שלי</h2>
-            <p className="text-white/50 text-sm">המעקב אחרי ההתקדמות שלך</p>
+            <h2 className="font-bold text-slate-800 text-xl">הסטטיסטיקות שלי</h2>
+            <p className="text-slate-800/50 text-sm">המעקב אחרי ההתקדמות שלך</p>
           </div>
         </div>
 
@@ -196,13 +196,13 @@ export default async function DashboardPage() {
             return (
               <div
                 key={index}
-                className="bg-[#251c14] border border-white/5 rounded-xl p-4 text-center hover:border-white/10 transition-all"
+                className="bg-[#251c14] border border-white/5 rounded-xl p-4 text-center hover:border-sky-200 transition-all"
               >
-                <div className={`w-10 h-10 mx-auto mb-3 rounded-lg flex items-center justify-center bg-white/5 ${stat.color}`}>
+                <div className={`w-10 h-10 mx-auto mb-3 rounded-lg flex items-center justify-center bg-sky-50 ${stat.color}`}>
                   <Icon className="w-5 h-5" />
                 </div>
-                <p className="text-2xl font-bold text-white">{stat.value}</p>
-                <p className="text-white/40 text-sm">{stat.label}</p>
+                <p className="text-2xl font-bold text-slate-800">{stat.value}</p>
+                <p className="text-slate-800/40 text-sm">{stat.label}</p>
               </div>
             );
           })}
@@ -210,15 +210,15 @@ export default async function DashboardPage() {
       </div>
 
       {/* Daily Learning Preview */}
-      <div className="bg-[#3b2d1f] border border-white/10 rounded-2xl overflow-hidden">
-        <div className="flex items-center justify-between p-6 border-b border-white/10">
+      <div className="bg-white border border-sky-200 rounded-2xl overflow-hidden">
+        <div className="flex items-center justify-between p-6 border-b border-sky-200">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 bg-gradient-to-br from-gold to-gold-dark rounded-xl flex items-center justify-center shadow-lg">
-              <Sparkles className="w-6 h-6 text-white" />
+              <Sparkles className="w-6 h-6 text-slate-800" />
             </div>
             <div>
-              <h2 className="font-bold text-white text-xl">לימוד היום</h2>
-              <p className="text-white/50 text-sm">הלימודים שמחכים לך</p>
+              <h2 className="font-bold text-slate-800 text-xl">לימוד היום</h2>
+              <p className="text-slate-800/50 text-sm">הלימודים שמחכים לך</p>
             </div>
           </div>
           <Link
@@ -236,15 +236,15 @@ export default async function DashboardPage() {
             <div className="bg-[#251c14] border border-white/5 rounded-xl p-5 hover:border-gold/30 transition-all">
               <div className="flex items-center gap-4 mb-4">
                 <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-amber-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                  <BookOpen className="w-6 h-6 text-white" />
+                  <BookOpen className="w-6 h-6 text-slate-800" />
                 </div>
                 <div>
-                  <span className="font-bold text-white text-lg">משנה יומית</span>
-                  <p className="text-white/50 text-sm">מסכת תמורה</p>
+                  <span className="font-bold text-slate-800 text-lg">משנה יומית</span>
+                  <p className="text-slate-800/50 text-sm">מסכת תמורה</p>
                 </div>
               </div>
               <div className="flex items-center justify-between text-sm">
-                <span className="text-white/60">2 משניות להיום</span>
+                <span className="text-slate-800/60">2 משניות להיום</span>
                 <span className="bg-gold/20 text-gold px-3 py-1 rounded-full text-xs font-bold">+10 נקודות</span>
               </div>
             </div>
@@ -255,15 +255,15 @@ export default async function DashboardPage() {
             <div className="bg-[#251c14] border border-white/5 rounded-xl p-5 hover:border-violet-500/30 transition-all">
               <div className="flex items-center gap-4 mb-4">
                 <div className="w-12 h-12 bg-gradient-to-br from-violet-400 to-violet-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                  <BookOpen className="w-6 h-6 text-white" />
+                  <BookOpen className="w-6 h-6 text-slate-800" />
                 </div>
                 <div>
-                  <span className="font-bold text-white text-lg">רמב״ם יומי</span>
-                  <p className="text-white/50 text-sm">הלכות יומיות</p>
+                  <span className="font-bold text-slate-800 text-lg">רמב״ם יומי</span>
+                  <p className="text-slate-800/50 text-sm">הלכות יומיות</p>
                 </div>
               </div>
               <div className="flex items-center justify-between text-sm">
-                <span className="text-white/60">הקדמה - מסירת התורה</span>
+                <span className="text-slate-800/60">הקדמה - מסירת התורה</span>
                 <span className="bg-violet-500/20 text-violet-400 px-3 py-1 rounded-full text-xs font-bold">+15 נקודות</span>
               </div>
             </div>
@@ -281,12 +281,12 @@ export default async function DashboardPage() {
 
         {/* Content */}
         <div className="relative z-10 p-8 sm:p-10 text-center">
-          <p className="text-white font-bold text-2xl sm:text-3xl font-hebrew leading-relaxed">
+          <p className="text-slate-800 font-bold text-2xl sm:text-3xl font-hebrew leading-relaxed">
             &ldquo;לעלות ולהתעלות&rdquo;
           </p>
           <p className="text-gold mt-2 text-lg font-semibold">למען שמו באהבה</p>
           <div className="h-px w-32 mx-auto my-6 bg-gradient-to-r from-transparent via-gold to-transparent" />
-          <p className="text-white/60 font-medium flex items-center justify-center gap-2">
+          <p className="text-slate-800/60 font-medium flex items-center justify-center gap-2">
             <Shield className="w-4 h-4 text-gold" />
             רוח חשמונאית
           </p>

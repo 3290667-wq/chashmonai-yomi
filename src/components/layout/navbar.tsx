@@ -55,7 +55,7 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
       {/* Desktop Sidebar - Artlist Dark Theme */}
       <aside className="hidden lg:flex w-72 flex-col fixed right-0 top-0 bottom-0 z-30">
         {/* Background */}
-        <div className="absolute inset-0 bg-[#121212] border-l border-white/10" />
+        <div className="absolute inset-0 bg-white border-l border-sky-200" />
 
         {/* Subtle Gold Glow */}
         <div className="absolute left-0 top-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-gold/50 to-transparent" />
@@ -64,7 +64,7 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
         <div className="relative h-1 bg-gradient-to-l from-gold-dark via-gold to-gold-dark" />
 
         {/* Logo Header */}
-        <div className="relative p-6 border-b border-white/10">
+        <div className="relative p-6 border-b border-sky-200">
           <Link href="/dashboard" className="flex items-center gap-4 group">
             <div className="relative">
               <div className="absolute inset-0 bg-gold/30 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -77,7 +77,7 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
               />
             </div>
             <div>
-              <h1 className="font-bold text-white text-lg">חשמונאי יומי</h1>
+              <h1 className="font-bold text-slate-800 text-lg">חשמונאי יומי</h1>
               <p className="text-xs text-gold font-medium">לעלות ולהתעלות</p>
             </div>
           </Link>
@@ -90,13 +90,13 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
             className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
               pathname === "/search"
                 ? "bg-gold/15 text-gold"
-                : "text-white/60 hover:bg-white/5 hover:text-white"
+                : "text-slate-600 hover:bg-sky-50 hover:text-slate-800"
             }`}
           >
             <div className={`p-2 rounded-lg transition-all ${
               pathname === "/search"
-                ? "bg-gold text-[#0a0a0a]"
-                : "bg-white/5 text-white/60 group-hover:bg-white/10 group-hover:text-white"
+                ? "bg-gold text-slate-900"
+                : "bg-sky-50 text-slate-600 group-hover:bg-white/10 group-hover:text-slate-800"
             }`}>
               <Search className="w-4 h-4" />
             </div>
@@ -116,19 +116,19 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
                 className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
                   isActive
                     ? "bg-gold/15 text-gold"
-                    : "text-white/60 hover:bg-white/5 hover:text-white"
+                    : "text-slate-600 hover:bg-sky-50 hover:text-slate-800"
                 }`}
               >
                 <div className={`p-2 rounded-lg transition-all ${
                   isActive
-                    ? "bg-gold text-[#0a0a0a]"
-                    : "bg-white/5 text-white/60 group-hover:bg-white/10 group-hover:text-white"
+                    ? "bg-gold text-slate-900"
+                    : "bg-sky-50 text-slate-600 group-hover:bg-white/10 group-hover:text-slate-800"
                 }`}>
                   <Icon className="w-4 h-4" />
                 </div>
                 <span className="font-medium">{item.label}</span>
                 {item.href === "/points" && (
-                  <span className="mr-auto flex items-center gap-1 bg-gold text-[#0a0a0a] text-xs py-1 px-2.5 rounded-full font-bold">
+                  <span className="mr-auto flex items-center gap-1 bg-gold text-slate-900 text-xs py-1 px-2.5 rounded-full font-bold">
                     <Star className="w-3 h-3" />
                     {userPoints}
                   </span>
@@ -144,13 +144,13 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
             className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
               pathname === "/tutorial"
                 ? "bg-gold/15 text-gold"
-                : "text-white/60 hover:bg-white/5 hover:text-white"
+                : "text-slate-600 hover:bg-sky-50 hover:text-slate-800"
             }`}
           >
             <div className={`p-2 rounded-lg transition-all ${
               pathname === "/tutorial"
-                ? "bg-gold text-[#0a0a0a]"
-                : "bg-white/5 text-white/60 group-hover:bg-white/10 group-hover:text-white"
+                ? "bg-gold text-slate-900"
+                : "bg-sky-50 text-slate-600 group-hover:bg-white/10 group-hover:text-slate-800"
             }`}>
               <HelpCircle className="w-4 h-4" />
             </div>
@@ -170,13 +170,13 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
                 className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
                   pathname.startsWith("/admin")
                     ? "bg-gold/15 text-gold"
-                    : "text-white/60 hover:bg-white/5 hover:text-white"
+                    : "text-slate-600 hover:bg-sky-50 hover:text-slate-800"
                 }`}
               >
                 <div className={`p-2 rounded-lg transition-all ${
                   pathname.startsWith("/admin")
-                    ? "bg-gold text-[#0a0a0a]"
-                    : "bg-white/5 text-white/60 group-hover:bg-white/10 group-hover:text-white"
+                    ? "bg-gold text-slate-900"
+                    : "bg-sky-50 text-slate-600 group-hover:bg-white/10 group-hover:text-slate-800"
                 }`}>
                   <Settings className="w-4 h-4" />
                 </div>
@@ -187,14 +187,14 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
         </nav>
 
         {/* User Section */}
-        <div className="relative p-4 border-t border-white/10">
-          <div className="bg-[#1e1e1e] border border-white/10 rounded-xl p-4 mb-3">
+        <div className="relative p-4 border-t border-sky-200">
+          <div className="bg-sky-50 border border-sky-200 rounded-xl p-4 mb-3">
             <div className="flex items-center gap-3">
               <div className="w-11 h-11 bg-gradient-to-br from-gold to-gold-dark rounded-xl flex items-center justify-center shadow-lg">
-                <User className="w-5 h-5 text-white" />
+                <User className="w-5 h-5 text-slate-800" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="font-bold text-white truncate">{userName || "משתמש"}</p>
+                <p className="font-bold text-slate-800 truncate">{userName || "משתמש"}</p>
                 <div className="flex items-center gap-3 mt-1">
                   <span className="text-xs text-gold font-medium flex items-center gap-1">
                     <Star className="w-3 h-3" />
@@ -211,9 +211,9 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
 
           <button
             onClick={() => signOut({ callbackUrl: "/" })}
-            className="group flex items-center gap-3 px-4 py-3 rounded-xl w-full transition-all duration-200 text-white/60 hover:bg-white/5 hover:text-red-400"
+            className="group flex items-center gap-3 px-4 py-3 rounded-xl w-full transition-all duration-200 text-slate-600 hover:bg-sky-50 hover:text-red-400"
           >
-            <div className="p-2 rounded-lg bg-red-500/10 text-red-400 group-hover:bg-red-500 group-hover:text-white transition-all">
+            <div className="p-2 rounded-lg bg-red-500/10 text-red-400 group-hover:bg-red-500 group-hover:text-slate-800 transition-all">
               <LogOut className="w-4 h-4" />
             </div>
             <span className="font-medium">התנתק</span>
@@ -223,7 +223,7 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
 
       {/* Mobile Header - Dark Theme */}
       <header className="lg:hidden fixed top-0 right-0 left-0 px-4 flex items-center justify-between z-50" style={{ paddingTop: 'calc(0.75rem + env(safe-area-inset-top, 0px))', paddingBottom: '0.75rem', minHeight: 'calc(4rem + env(safe-area-inset-top, 0px))' }}>
-        <div className="absolute inset-0 bg-[#0a0a0a]/95 backdrop-blur-xl border-b border-white/10" />
+        <div className="absolute inset-0 bg-white/95 backdrop-blur-xl border-b border-sky-200" />
 
         <Link href="/dashboard" className="relative flex items-center gap-3 group">
           <Image
@@ -233,18 +233,18 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
             height={36}
             className="drop-shadow-lg"
           />
-          <span className="font-bold text-white">חשמונאי יומי</span>
+          <span className="font-bold text-slate-800">חשמונאי יומי</span>
         </Link>
 
         <div className="relative flex items-center gap-2">
           <Link
             href="/search"
-            className="p-2 rounded-xl bg-white/5 border border-white/10 text-white/70 hover:text-gold transition-colors"
+            className="p-2 rounded-xl bg-sky-50 border border-sky-200 text-slate-600 hover:text-gold transition-colors"
           >
             <Search className="w-5 h-5" />
           </Link>
 
-          <div className="flex items-center gap-1 bg-gold text-[#0a0a0a] px-3 py-1.5 rounded-full font-bold text-sm">
+          <div className="flex items-center gap-1 bg-gold text-slate-900 px-3 py-1.5 rounded-full font-bold text-sm">
             <Star className="w-4 h-4" />
             {userPoints}
           </div>
@@ -253,8 +253,8 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
             onClick={() => setIsOpen(!isOpen)}
             className={`p-2 rounded-xl transition-all ${
               isOpen
-                ? "bg-gold text-[#0a0a0a]"
-                : "bg-white/5 border border-white/10 text-white/70 hover:text-white"
+                ? "bg-gold text-slate-900"
+                : "bg-sky-50 border border-sky-200 text-slate-600 hover:text-slate-800"
             }`}
           >
             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -265,7 +265,7 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
       {/* Mobile Dropdown Menu - Dark Theme */}
       {isOpen && (
         <div className="lg:hidden fixed inset-0 top-16 z-40 animate-fade-in overflow-hidden">
-          <div className="absolute inset-0 bg-[#0a0a0a]/98 backdrop-blur-xl" />
+          <div className="absolute inset-0 bg-sky-50/98 backdrop-blur-xl" />
 
           <div className="relative flex flex-col p-5 gap-1 overflow-y-auto max-h-[calc(100vh-4rem)]">
             {/* Search Link */}
@@ -275,13 +275,13 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
               className={`group flex items-center gap-3 px-4 py-4 rounded-xl transition-all ${
                 pathname === "/search"
                   ? "bg-gold/15 text-gold"
-                  : "text-white/60 hover:bg-white/5 hover:text-white"
+                  : "text-slate-600 hover:bg-sky-50 hover:text-slate-800"
               }`}
             >
               <div className={`p-2 rounded-lg ${
                 pathname === "/search"
-                  ? "bg-gold text-[#0a0a0a]"
-                  : "bg-white/5"
+                  ? "bg-gold text-slate-900"
+                  : "bg-sky-50"
               }`}>
                 <Search className="w-5 h-5" />
               </div>
@@ -302,19 +302,19 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
                   className={`group flex items-center gap-3 px-4 py-4 rounded-xl transition-all ${
                     isActive
                       ? "bg-gold/15 text-gold"
-                      : "text-white/60 hover:bg-white/5 hover:text-white"
+                      : "text-slate-600 hover:bg-sky-50 hover:text-slate-800"
                   }`}
                 >
                   <div className={`p-2 rounded-lg ${
                     isActive
-                      ? "bg-gold text-[#0a0a0a]"
-                      : "bg-white/5"
+                      ? "bg-gold text-slate-900"
+                      : "bg-sky-50"
                   }`}>
                     <Icon className="w-5 h-5" />
                   </div>
                   <span className="font-medium text-lg">{item.label}</span>
                   {item.href === "/points" && (
-                    <span className="mr-auto flex items-center gap-1 bg-gold text-[#0a0a0a] text-sm py-1 px-3 rounded-full font-bold">
+                    <span className="mr-auto flex items-center gap-1 bg-gold text-slate-900 text-sm py-1 px-3 rounded-full font-bold">
                       <Star className="w-3 h-3" />
                       {userPoints}
                     </span>
@@ -331,13 +331,13 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
               className={`group flex items-center gap-3 px-4 py-4 rounded-xl transition-all ${
                 pathname === "/tutorial"
                   ? "bg-gold/15 text-gold"
-                  : "text-white/60 hover:bg-white/5 hover:text-white"
+                  : "text-slate-600 hover:bg-sky-50 hover:text-slate-800"
               }`}
             >
               <div className={`p-2 rounded-lg ${
                 pathname === "/tutorial"
-                  ? "bg-gold text-[#0a0a0a]"
-                  : "bg-white/5"
+                  ? "bg-gold text-slate-900"
+                  : "bg-sky-50"
               }`}>
                 <HelpCircle className="w-5 h-5" />
               </div>
@@ -353,13 +353,13 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
                   className={`group flex items-center gap-3 px-4 py-4 rounded-xl transition-all ${
                     pathname.startsWith("/admin")
                       ? "bg-gold/15 text-gold"
-                      : "text-white/60 hover:bg-white/5 hover:text-white"
+                      : "text-slate-600 hover:bg-sky-50 hover:text-slate-800"
                   }`}
                 >
                   <div className={`p-2 rounded-lg ${
                     pathname.startsWith("/admin")
-                      ? "bg-gold text-[#0a0a0a]"
-                      : "bg-white/5"
+                      ? "bg-gold text-slate-900"
+                      : "bg-sky-50"
                   }`}>
                     <Settings className="w-5 h-5" />
                   </div>
@@ -375,7 +375,7 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
                 setIsOpen(false);
                 signOut({ callbackUrl: "/" });
               }}
-              className="group flex items-center gap-3 px-4 py-4 rounded-xl transition-all text-white/60 hover:bg-white/5 hover:text-red-400"
+              className="group flex items-center gap-3 px-4 py-4 rounded-xl transition-all text-slate-600 hover:bg-sky-50 hover:text-red-400"
             >
               <div className="p-2 rounded-lg bg-red-500/10 text-red-400">
                 <LogOut className="w-5 h-5" />
@@ -388,7 +388,7 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
 
       {/* Mobile Bottom Navigation - Dark Theme */}
       <nav className="lg:hidden fixed bottom-0 right-0 left-0 safe-area-bottom z-50">
-        <div className="absolute inset-0 bg-[#0a0a0a]/95 backdrop-blur-xl border-t border-white/10" />
+        <div className="absolute inset-0 bg-white/95 backdrop-blur-xl border-t border-sky-200" />
 
         <div className="relative flex items-center justify-around py-2 px-1">
           {navItems.slice(0, 5).map((item) => {
@@ -400,13 +400,13 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
                 key={item.href}
                 href={item.href}
                 className={`flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all ${
-                  isActive ? "text-gold" : "text-white/50 hover:text-white active:scale-95"
+                  isActive ? "text-gold" : "text-slate-500 hover:text-slate-800 active:scale-95"
                 }`}
               >
                 <div className={`relative p-2.5 rounded-xl transition-all ${
-                  isActive ? "bg-gold shadow-lg shadow-gold/30" : "hover:bg-white/5"
+                  isActive ? "bg-gold shadow-lg shadow-gold/30" : "hover:bg-sky-50"
                 }`}>
-                  <Icon className={`w-5 h-5 ${isActive ? "text-[#0a0a0a]" : ""}`} />
+                  <Icon className={`w-5 h-5 ${isActive ? "text-slate-900" : ""}`} />
                 </div>
                 <span className={`text-[10px] font-bold ${isActive ? "text-gold" : ""}`}>
                   {item.label}
