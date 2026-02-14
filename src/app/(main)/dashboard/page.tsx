@@ -164,7 +164,7 @@ export default async function DashboardPage() {
                     fill
                     className="object-cover opacity-30 group-hover:opacity-40 transition-opacity"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-white via-white/80 to-transparent" />
                 </div>
 
                 {/* Content */}
@@ -175,8 +175,8 @@ export default async function DashboardPage() {
                   </div>
 
                   {/* Text */}
-                  <h3 className="font-bold text-white text-lg mb-1">{link.title}</h3>
-                  <p className="text-white/70 text-sm">{link.description}</p>
+                  <h3 className="font-bold text-slate-900 text-lg mb-1">{link.title}</h3>
+                  <p className="text-slate-800 text-sm">{link.description}</p>
 
                   {/* Arrow */}
                   <div className="absolute bottom-5 left-5 opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all">
