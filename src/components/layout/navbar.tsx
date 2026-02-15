@@ -88,7 +88,37 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
           </Link>
         </div>
 
-        <nav className="relative z-10 flex-1 p-4 space-y-1 overflow-y-auto">
+        <nav className="relative z-10 flex-1 p-4 space-y-1 overflow-y-auto scrollbar-thin">
+          {/* Admin Section - At Top for Visibility */}
+          {(isAdmin || isRam) && (
+            <>
+              <div className="pb-2">
+                <p className="text-xs text-gold px-4 font-bold uppercase tracking-wider flex items-center gap-2">
+                  <Shield className="w-3 h-3" />
+                  ניהול
+                </p>
+              </div>
+              <Link
+                href="/admin"
+                className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
+                  pathname.startsWith("/admin")
+                    ? "bg-gold/15 text-gold"
+                    : "text-slate-600 hover:bg-sky-50 hover:text-slate-800"
+                }`}
+              >
+                <div className={`p-2 rounded-lg transition-all ${
+                  pathname.startsWith("/admin")
+                    ? "bg-gold text-slate-900"
+                    : "bg-sky-50 text-slate-600 group-hover:bg-sky-200 group-hover:text-slate-800"
+                }`}>
+                  <Settings className="w-4 h-4" />
+                </div>
+                <span className="font-medium">דף ניהול</span>
+              </Link>
+              <div className="h-px bg-sky-200 my-4" />
+            </>
+          )}
+
           {/* Search Button */}
           <Link
             href="/search"
@@ -161,34 +191,6 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
             </div>
             <span className="font-medium">מדריך שימוש</span>
           </Link>
-
-          {(isAdmin || isRam) && (
-            <>
-              <div className="pt-6 pb-2">
-                <p className="text-xs text-gold px-4 font-bold uppercase tracking-wider flex items-center gap-2">
-                  <Shield className="w-3 h-3" />
-                  ניהול
-                </p>
-              </div>
-              <Link
-                href="/admin"
-                className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
-                  pathname.startsWith("/admin")
-                    ? "bg-gold/15 text-gold"
-                    : "text-slate-600 hover:bg-sky-50 hover:text-slate-800"
-                }`}
-              >
-                <div className={`p-2 rounded-lg transition-all ${
-                  pathname.startsWith("/admin")
-                    ? "bg-gold text-slate-900"
-                    : "bg-sky-50 text-slate-600 group-hover:bg-sky-200 group-hover:text-slate-800"
-                }`}>
-                  <Settings className="w-4 h-4" />
-                </div>
-                <span className="font-medium">דף ניהול</span>
-              </Link>
-            </>
-          )}
         </nav>
 
         {/* User Section */}
