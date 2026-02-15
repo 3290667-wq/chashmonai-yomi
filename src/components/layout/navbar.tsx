@@ -54,7 +54,7 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
   return (
     <>
       {/* Desktop Sidebar - Artlist Dark Theme */}
-      <aside className="hidden lg:flex w-72 flex-col fixed right-0 top-0 bottom-0 z-30">
+      <aside className="hidden lg:flex w-72 flex-col fixed right-0 top-0 bottom-0 z-30 overflow-hidden">
         {/* Background */}
         <div className="absolute inset-0 bg-white border-l border-sky-200" />
 
@@ -88,7 +88,7 @@ export default function Navbar({ userName, userPoints = 0, userStreak = 0 }: Nav
           </Link>
         </div>
 
-        <nav className="relative z-10 flex-1 p-4 space-y-1 overflow-y-auto scrollbar-thin">
+        <nav className="relative z-10 flex-1 min-h-0 p-4 space-y-1 overflow-y-auto">
           {/* Admin Section - At Top for Visibility */}
           {(isAdmin || isRam) && (
             <>
