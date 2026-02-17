@@ -145,8 +145,9 @@ export async function PATCH(request: NextRequest) {
     return NextResponse.json({ user: updatedUser });
   } catch (error) {
     console.error("Error updating user:", error);
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
-      { error: "Failed to update user" },
+      { error: `שגיאה בעדכון המשתמש: ${errorMessage}` },
       { status: 500 }
     );
   }

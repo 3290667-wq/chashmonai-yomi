@@ -65,16 +65,7 @@ export default function RootLayout({
   return (
     <html lang="he" dir="rtl">
       <body className="antialiased min-h-screen text-foreground">
-        <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-sky-100 to-sky-200 p-8">
-          <div className="text-center max-w-md">
-            <h1 className="text-3xl font-bold text-gray-800 mb-6">
-              האתר לא בשימוש עקב בעיות תקציב
-            </h1>
-            <p className="text-lg text-gray-600">
-              ניתן לפנות למוישי ר. 0583245711
-            </p>
-          </div>
-        </div>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
